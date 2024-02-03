@@ -17,5 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-.docker-compose-prod.yml
-/docker/production
+#.docker-compose-prod.yml
+#/docker/production
