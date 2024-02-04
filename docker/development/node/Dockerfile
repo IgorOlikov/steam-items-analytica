@@ -6,5 +6,5 @@ FROM node:20-alpine
 #RUN usermod -o -u 1000 <user>
 WORKDIR /app
 
-USER app
+##USER app
 
