@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 #.docker-compose-prod.yml
 #/docker/production
+/docker/postgresql
