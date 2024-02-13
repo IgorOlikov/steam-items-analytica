@@ -4,22 +4,38 @@ namespace App\Services;
 
 use App\Models\RefreshSession;
 use App\Models\User;
+use Carbon\FactoryImmutable;
 use DateTimeImmutable;
 use Faker\Provider\Uuid;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
+use Lcobucci\JWT\Encoding\CannotDecodeContent;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Hmac;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Token\Builder;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\Token\UnsupportedHeaderFound;
 use Lcobucci\JWT\UnencryptedToken;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
+use Lcobucci\JWT\Validation\Validator;
 
 class TokenService
 {
     protected Builder $tokenBuilder;
     protected Hmac $algorithm;
     protected InMemory $signingKey;
+    protected FactoryImmutable $clock;
+    protected Validator $validator;
+    protected Parser $parser;
     private DateTimeImmutable $now;
+
 
     public function __construct()
     {
@@ -27,6 +43,9 @@ class TokenService
         $this->tokenBuilder = (new Builder(new JoseEncoder(), ChainedFormatter::default()));
         $this->algorithm    = new Sha256();
         $this->signingKey   = InMemory::plainText(config('app.secret_key'));
+        $this->clock        = new FactoryImmutable();
+        $this->validator    = new Validator();
+        $this->parser       = new Parser(new JoseEncoder());
     }
 
     public function getTokens(User $user, $ip , $userAgent) : array
@@ -92,14 +111,56 @@ class TokenService
         return $refreshToken;
     }
 
-    public function validateAccessToken()
+    public function validateAccessToken(string $token): array|string|bool
     {
+        try {
+            $token = $this->parser->parse($token);
+        } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $e) {
+            echo 'Oh no, an error: ' . $e->getMessage();
+        }
+
+        if(!assert($token instanceof UnencryptedToken)){
+            $message = ['message' => 'invalid token'];
+        } elseif (!$this->validator->validate($token, new SignedWith($this->algorithm, $this->signingKey))){
+            $message = ['message' => 'invalid token'];
+        } elseif (!$this->validator->validate($token, new StrictValidAt($this->clock))) {
+            $message = ['message' => 'token has expired'];
+        } else {
+            $message = true;
+        }
+
+        return $message;
 
     }
 
-    public function validateRefreshToken()
+    public function validateRefreshToken(string $token): array|string|bool
     {
+        try {
+            $token = $this->parser->parse($token);
+        } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $e) {
+            echo 'Oh no, an error: ' . $e->getMessage();
+        }
 
+        if(!assert($token instanceof UnencryptedToken)){
+            $message = ['message' => 'invalid token'];
+        } elseif (!$this->validator->validate($token, new SignedWith($this->algorithm, $this->signingKey))){
+            $message = ['message' => 'invalid token'];
+        } elseif (!$this->validator->validate($token, new StrictValidAt($this->clock))) {
+            $message = ['message' => 'token has expired'];
+        } else {
+            $message = true;
+        }
+
+        return $message;
+    }
+
+    public function getTokenUser($token): User
+    {
+       $token = $this->parser->parse($token);
+
+       $userId = $token->claims()->get('uuid');
+
+        return User::find($userId);
     }
 
 

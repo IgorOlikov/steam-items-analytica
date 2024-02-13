@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\TokenService;
 use Carbon\FactoryImmutable;
 use DateTimeImmutable;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
@@ -63,35 +64,19 @@ class AuthController extends Controller
     {
        $token = $request->input('token');
 
-        $parser = new Parser(new JoseEncoder());
+       $token = $this->tokenService->validateAccessToken($token);
 
-        try {
-            $token = $parser->parse($token);
-        } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $e) {
-            echo 'Oh no, an error: ' . $e->getMessage();
-        }
+       return response($token);
 
-        $signer = new Sha256();
-
-        $now = new FactoryImmutable();
-
-        assert($token instanceof UnencryptedToken);
-
-        $validator = new Validator();
-        if (!$validator->validate($token, new SignedWith($signer, InMemory::plainText(env('SECRET_KEY'))))){
-            return response(['message' => 'invalid token']);
-        }
-        if (!$validator->validate($token, new StrictValidAt($now))) {
-            return response(['message' => 'token has expired']);
-        }
-
-
-        return response(['token' => $token->claims()->all()]);
     }
 
     public function refreshTokens(RefreshTokensRequest $request)
     {
-            dd($request->validated());
+        $refreshToken = $request->validated('refresh_token');
+        //$this->tokenService->validateRefreshToken();
+        //$this->tokenService->getTokens($refreshToken);
+        return $this->tokenService->getTokenUser($refreshToken);
+
     }
 
 
