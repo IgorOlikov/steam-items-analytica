@@ -7,16 +7,12 @@ use App\Models\User;
 use Carbon\FactoryImmutable;
 use DateTimeImmutable;
 use Faker\Provider\Uuid;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Response;
 use Lcobucci\JWT\Encoding\CannotDecodeContent;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Hmac;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Token\Builder;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use Lcobucci\JWT\Token\Parser;
@@ -130,16 +126,16 @@ class TokenService
         }
 
         return $message;
-
     }
 
-    public function validateRefreshToken(string $token): array|string|bool
+    public function validateRefreshToken(string $token): array|bool
     {
         try {
             $token = $this->parser->parse($token);
         } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $e) {
             echo 'Oh no, an error: ' . $e->getMessage();
         }
+
 
         if(!assert($token instanceof UnencryptedToken)){
             $message = ['message' => 'invalid token'];
@@ -161,6 +157,19 @@ class TokenService
        $userId = $token->claims()->get('uuid');
 
         return User::find($userId);
+    }
+
+    public function deleteOldRefreshToken(string $refreshToken): void
+    {
+        $refreshToken = $this->parser->parse($refreshToken);
+
+        $refreshTokenId = $refreshToken->claims()->get('jti');
+
+        $refreshSession = RefreshSession::find($refreshTokenId);
+
+        if (!empty($refreshSession)){
+            $refreshSession->delete();
+        }
     }
 
 

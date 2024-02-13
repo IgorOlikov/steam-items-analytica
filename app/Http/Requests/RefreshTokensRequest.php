@@ -22,7 +22,6 @@ class RefreshTokensRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'access_token' => ['required','string'],
             'refresh_token' => ['required','string'],
         ];
     }

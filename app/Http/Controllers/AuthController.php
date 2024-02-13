@@ -73,10 +73,20 @@ class AuthController extends Controller
     public function refreshTokens(RefreshTokensRequest $request)
     {
         $refreshToken = $request->validated('refresh_token');
-        //$this->tokenService->validateRefreshToken();
-        //$this->tokenService->getTokens($refreshToken);
-        return $this->tokenService->getTokenUser($refreshToken);
 
+        $validateResult = $this->tokenService->validateRefreshToken($refreshToken);
+
+        if (!$validateResult === true){
+            return response($validateResult,401);
+        }
+
+        $user = $this->tokenService->getTokenUser($refreshToken);
+
+        $this->tokenService->deleteOldRefreshToken($refreshToken);
+
+        $newTokens = $this->tokenService->getTokens($user,$request->ip(),$request->userAgent());
+
+        return response($newTokens,200);
     }
 
 
