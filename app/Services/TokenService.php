@@ -68,7 +68,7 @@ class TokenService
             // time that the token was issue (iat claim)
             ->issuedAt($this->now)
             // time that the token can be used (nbf claim)
-            ->canOnlyBeUsedAfter($this->now->modify('+1 minute'))
+            ->canOnlyBeUsedAfter($this->now->modify('+1 second'))
             //(exp claim)
             ->expiresAt($this->now->modify('+1 hour'))
             ->getToken($this->algorithm, $this->signingKey);
@@ -90,7 +90,7 @@ class TokenService
             // time that the token was issue (iat claim)
             ->issuedAt($this->now)
             // time that the token can be used (nbf claim)
-            ->canOnlyBeUsedAfter($this->now->modify('+1 minute'))
+            ->canOnlyBeUsedAfter($this->now->modify('+1 second'))
             // expiration time of the token (exp claim)
             ->expiresAt($this->now->modify('+1 month'))
             ->getToken($this->algorithm, $this->signingKey);
