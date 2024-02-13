@@ -7,22 +7,8 @@ use App\Http\Requests\RefreshTokensRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\TokenService;
-use Carbon\FactoryImmutable;
-use DateTimeImmutable;
-use http\Client\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Lcobucci\JWT\Encoding\ChainedFormatter;
-use Lcobucci\JWT\Encoding\JoseEncoder;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Token\Builder;
-use Lcobucci\JWT\Token\Parser;
-use Lcobucci\JWT\UnencryptedToken;
-use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
-use Lcobucci\JWT\Validation\Validator;
-use Psr\Clock\ClockInterface;
+
 
 class AuthController extends Controller
 {
@@ -41,6 +27,9 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         dd($request->validated());
+
+
+
     }
 
     public function register(RegisterRequest $request)
