@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('refresh_token');
             $table->string('user_agent');
             $table->string('ip');
-            $table->timeTz('expires_in');
+            $table->timestamp('expires_in');
             $table->timestamps();
         });
     }

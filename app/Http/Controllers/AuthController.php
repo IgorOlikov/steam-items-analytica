@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RefreshTokensRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\TokenService;
@@ -84,7 +85,13 @@ class AuthController extends Controller
             return response(['message' => 'token has expired']);
         }
 
+
         return response(['token' => $token->claims()->all()]);
+    }
+
+    public function refreshTokens(RefreshTokensRequest $request)
+    {
+            dd($request->validated());
     }
 
 

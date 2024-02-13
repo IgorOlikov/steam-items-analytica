@@ -15,6 +15,7 @@ Route::get('/', function () {
 
 Route::prefix('/auth')->group(function (){
    Route::get('/token',[AuthController::class,'token']);
+    Route::post('/refresh-tokens',[AuthController::class,'refreshTokens']);
     Route::post('/token-validate',[AuthController::class,'validateToken']);
     Route::post('/register',[AuthController::class,'register']);
     Route::post('/login',[AuthController::class,'login']);
