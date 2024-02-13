@@ -32,8 +32,9 @@ class AuthController extends Controller
     {
     }
 
-    public function index()
+    public function index(Request $request)
     {
+       // $request->user()
         return '/auth -> index() Resource api';
     }
 
@@ -67,7 +68,6 @@ class AuthController extends Controller
        $token = $this->tokenService->validateAccessToken($token);
 
        return response($token);
-
     }
 
     public function refreshTokens(RefreshTokensRequest $request)
