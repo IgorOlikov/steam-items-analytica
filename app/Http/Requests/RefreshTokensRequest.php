@@ -3,10 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\JWT;
-use Tymon\JWTAuth\JWTGuard;
-use Tymon\JWTAuth\Token;
 
 class RefreshTokensRequest extends FormRequest
 {
@@ -19,7 +15,7 @@ class RefreshTokensRequest extends FormRequest
 
          $type = $payload->get('token_type');
 
-         if (!$type === "refresh_token"){
+         if ($type !== "refresh_token"){
              return false;
          }
         return true;

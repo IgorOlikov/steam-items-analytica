@@ -17,6 +17,12 @@ Route::prefix('/auth')->middleware('api')->group(function (){
     Route::post('/refresh-tokens',[AuthController::class,'refreshTokens']);
 });
 
-Route::middleware(['api','jwt.verified'])->group(function () {
-    Route::get('profile',[ProfileController::class,'index']);
+Route::middleware(
+    [
+        'api',
+        //'jwt.verified',
+        'access.token.only'
+    ])
+    ->group(function () {
+        Route::get('profile',[ProfileController::class,'index']);
 });

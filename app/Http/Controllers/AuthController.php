@@ -9,6 +9,7 @@ use App\Models\RefreshSession;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Faker\Provider\Uuid;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 
 
 class AuthController extends Controller
@@ -79,7 +80,7 @@ class AuthController extends Controller
             RefreshSession::find($refreshTokenId)->delete();
         }
 
-       $newRefreshToken = auth()
+        $newRefreshToken = auth()
            ->setTTL(43800)
            ->claims([
                'jti' => $refreshTokenId = Uuid::uuid()
