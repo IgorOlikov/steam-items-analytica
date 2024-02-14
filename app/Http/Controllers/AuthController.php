@@ -18,27 +18,32 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
-    public function index(Request $request)
+    public function register(RegisterRequest $request)
     {
-       // $request->user()
-        return '/auth -> index() Resource api';
+
     }
+
     public function login(LoginRequest $request)
     {
         if(! auth()->attempt($request->validated())){
             return response(['message' => 'The provided credentials do not match our records']);
         }
-
         $user = $request->user();
 
         $accessToken = auth()
             ->setTTL(60)
-            ->claims(['jti' => Uuid::uuid()])
+            ->claims([
+                'jti' => Uuid::uuid(),
+                'token_type' => 'access_token'
+                ])
             ->login($user);
 
         $refreshToken = auth()
             ->setTTL(43800)
-            ->claims(['jti' => $refreshTokenId = Uuid::uuid()])
+            ->claims([
+                'jti' => $refreshTokenId = Uuid::uuid(),
+                'token_type' => 'refresh_token'
+            ])
             ->login($user);
 
         RefreshSession::create([
@@ -53,7 +58,7 @@ class AuthController extends Controller
         return response([
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken
-        ]);
+        ],200);
     }
     public function logout()
     {
@@ -61,17 +66,47 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
-    public function register(RegisterRequest $request)
-    {
 
-    }
-    public function token(Request $request)
-    {
-      $a =  auth()->factory()->getTTL() * 60;
-    }
     public function refreshTokens(RefreshTokensRequest $request)
     {
+        $payload = auth()->payload();
 
+        $refreshTokenId = $payload->get('jti');
+
+        $user = auth()->user();
+
+        if(RefreshSession::find($refreshTokenId)->exists()){
+            RefreshSession::find($refreshTokenId)->delete();
+        }
+
+       $newRefreshToken = auth()
+           ->setTTL(43800)
+           ->claims([
+               'jti' => $refreshTokenId = Uuid::uuid()
+           ])
+           ->refresh(true,false);
+
+        RefreshSession::create([
+            'id' => $refreshTokenId,
+            'user_id' => $user->id,
+            'refresh_token' => $newRefreshToken,
+            'expires_in' => Carbon::now(5)->addMinutes(43800),
+            'user_agent' => $request->userAgent(),
+            'ip' => $request->ip(),
+        ]);
+
+        $newAccessToken = auth()
+            ->setTTL(60)
+            ->claims([
+                'jti' => Uuid::uuid(),
+                'token_type' => 'access_token'
+            ])
+            ->login($user);
+
+        return response([
+            'access_token' => $newAccessToken,
+            'refresh_token' => $newRefreshToken
+        ],200);
     }
 
 

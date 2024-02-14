@@ -12,11 +12,9 @@ Route::get('/', function () {
 });
 
 Route::prefix('/auth')->middleware('api')->group(function (){
-   Route::get('/token',[AuthController::class,'token']); //delete
     Route::post('/register',[AuthController::class,'register']);
     Route::post('/login',[AuthController::class,'login']);
     Route::post('/refresh-tokens',[AuthController::class,'refreshTokens']);
-    Route::post('/token-validate',[AuthController::class,'validateToken']); // to middleware
 });
 
 Route::middleware(['api','jwt.verified'])->group(function () {

@@ -3,6 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWT;
+use Tymon\JWTAuth\JWTGuard;
+use Tymon\JWTAuth\Token;
 
 class RefreshTokensRequest extends FormRequest
 {
@@ -11,6 +15,13 @@ class RefreshTokensRequest extends FormRequest
      */
     public function authorize(): bool
     {
+         $payload = auth()->payload();
+
+         $type = $payload->get('token_type');
+
+         if (!$type === "refresh_token"){
+             return false;
+         }
         return true;
     }
 
@@ -22,7 +33,7 @@ class RefreshTokensRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'refresh_token' => ['required','string'],
+            'token' => ['required','string'],
         ];
     }
 }
