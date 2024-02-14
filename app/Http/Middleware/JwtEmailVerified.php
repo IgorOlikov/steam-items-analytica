@@ -2,17 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\TokenService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ValidateToken
+class JwtEmailVerified
 {
-    public function __construct(private readonly TokenService $tokenService)
-    {
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -20,12 +15,8 @@ class ValidateToken
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $access_token = $request->bearerToken();
-
-        $validationResult = $this->tokenService->validateAccessToken($access_token);
-
-        if ($validationResult !== true){
-            return response($validationResult,401);
+        if(!auth()->user()->hasVerifiedEmail()){
+            return response(['message' => 'Verify your email'],401);
         }
 
         return $next($request);

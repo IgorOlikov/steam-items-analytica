@@ -11,7 +11,7 @@ Route::get('/', function () {
     return "hello";
 });
 
-Route::prefix('/auth')->group(function (){
+Route::prefix('/auth')->middleware('api')->group(function (){
    Route::get('/token',[AuthController::class,'token']); //delete
     Route::post('/register',[AuthController::class,'register']);
     Route::post('/login',[AuthController::class,'login']);
@@ -19,6 +19,6 @@ Route::prefix('/auth')->group(function (){
     Route::post('/token-validate',[AuthController::class,'validateToken']); // to middleware
 });
 
-Route::middleware('jwt')->group(function () {
+Route::middleware(['api','jwt.verified'])->group(function () {
     Route::get('profile',[ProfileController::class,'index']);
 });

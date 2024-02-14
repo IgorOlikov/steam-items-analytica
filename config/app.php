@@ -126,7 +126,6 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'secret_key' => env('SECRET_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -170,6 +169,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
     ])->toArray(),
 
     /*

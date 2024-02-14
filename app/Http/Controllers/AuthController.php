@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RefreshTokensRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
-use App\Services\TokenService;
+use App\Models\RefreshSession;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Faker\Provider\Uuid;
 
 
 class AuthController extends Controller
 {
-    public function __construct(
-        private readonly TokenService $tokenService
-    )
+    public function __construct()
     {
+        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
     public function index(Request $request)
@@ -23,61 +23,56 @@ class AuthController extends Controller
        // $request->user()
         return '/auth -> index() Resource api';
     }
-
     public function login(LoginRequest $request)
     {
-        dd($request->validated());
-
-
-
-    }
-
-    public function register(RegisterRequest $request)
-    {
-        $creds = $request->validated();
-        $user = User::create($creds);
-
-        //$tokens = $this->tokenService->getTokens($user);
-
-        return response($user,201);
-    }
-
-    public function token(Request $request)
-    {
-
-       $user = User::first();
-       $tokens = $this->tokenService->getTokens($user, $request->ip(), $request->userAgent());
-        return response($tokens);
-    }
-
-    public function validateToken(Request $request)
-    {
-       $token = $request->input('token');
-
-       $token = $this->tokenService->validateAccessToken($token);
-
-       return response($token);
-    }
-
-    public function refreshTokens(RefreshTokensRequest $request)
-    {
-        $refreshToken = $request->validated('refresh_token');
-
-        $validateResult = $this->tokenService->validateRefreshToken($refreshToken);
-
-        if (!$validateResult === true){
-            return response($validateResult,401);
+        if(! auth()->attempt($request->validated())){
+            return response(['message' => 'The provided credentials do not match our records']);
         }
 
-        $user = $this->tokenService->getTokenUser($refreshToken);
+        $user = $request->user();
 
-        $this->tokenService->deleteOldRefreshToken($refreshToken);
+        $accessToken = auth()
+            ->setTTL(60)
+            ->claims(['jti' => Uuid::uuid()])
+            ->login($user);
 
-        $newTokens = $this->tokenService->getTokens($user,$request->ip(),$request->userAgent());
+        $refreshToken = auth()
+            ->setTTL(43800)
+            ->claims(['jti' => $refreshTokenId = Uuid::uuid()])
+            ->login($user);
 
-        return response($newTokens,200);
+        RefreshSession::create([
+            'id' => $refreshTokenId,
+            'user_id' => $user->id,
+            'refresh_token' => $refreshToken,
+            'expires_in' => Carbon::now(5)->addMinutes(43800),
+            'user_agent' => $request->userAgent(),
+            'ip' => $request->ip(),
+            ]);
+
+        return response([
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken
+        ]);
     }
+    public function logout()
+    {
+        auth()->logout();
 
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    public function register(RegisterRequest $request)
+    {
+
+    }
+    public function token(Request $request)
+    {
+      $a =  auth()->factory()->getTTL() * 60;
+    }
+    public function refreshTokens(RefreshTokensRequest $request)
+    {
+
+    }
 
 
 

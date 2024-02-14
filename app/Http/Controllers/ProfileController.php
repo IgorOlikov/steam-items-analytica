@@ -8,6 +8,6 @@ class ProfileController extends Controller
 {
     public function index(Request $request)
     {
-        return $request->jwtUser();
+        return response()->json(auth()->user());
     }
 }
