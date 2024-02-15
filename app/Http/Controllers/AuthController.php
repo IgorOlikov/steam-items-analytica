@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RefreshTokensRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Jobs\SendEmailVerification;
 use App\Models\RefreshSession;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Faker\Provider\Uuid;
-use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
-
 
 class AuthController extends Controller
 {
@@ -21,7 +22,26 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        $credentials = $request->validated();
 
+        $user = User::create($credentials);
+
+        $accessToken = auth()
+            ->setTTL(60)
+            ->claims([
+                'jti' => Uuid::uuid(),
+                'token_type' => 'access_token'
+            ])
+            ->login($user);
+
+        //send email job
+        dispatch(new SendEmailVerification($user));
+
+        return response([
+            'message' => 'User created successfully, check your email'
+        ],
+            201,
+            ['Authorization' => 'Bearer' . ' ' . $accessToken]);
     }
 
     public function login(LoginRequest $request)
