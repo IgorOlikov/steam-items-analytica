@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\LogoutRequest;
 use App\Http\Requests\RefreshTokensRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Jobs\SendEmailVerification;
 use App\Models\RefreshSession;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use Faker\Provider\Uuid;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Token;
+
 
 class AuthController extends Controller
 {
@@ -81,8 +83,13 @@ class AuthController extends Controller
             'refresh_token' => $refreshToken
         ],200);
     }
-    public function logout()
+    public function logout(LogoutRequest $request)
     {
+        $tokens = $request->validated();
+
+        //refresh token invalidate
+        JWTAuth::manager()->invalidate(new Token($tokens['refresh_token']), true);
+
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
@@ -128,26 +135,5 @@ class AuthController extends Controller
             'access_token' => $newAccessToken,
             'refresh_token' => $newRefreshToken
         ],200);
-    }
-
-
-    public function store(Request $request)
-    {
-       dd($request);
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 }
