@@ -12,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Http\Parser\Cookies;
 use Tymon\JWTAuth\Token;
 
 
@@ -39,11 +40,19 @@ class AuthController extends Controller
         //send email job
         dispatch(new SendEmailVerification($user));
 
+        //$name = null, $value = null, $minutes = 0, $path = null, $domain = null,
+        // $secure = null, $httpOnly = true, $raw = false, $sameSite = null)
+        $accessToken = 'Bearer' . ' ' . $accessToken;
+
         return response([
             'message' => 'User created successfully, check your email'
-        ],
-            201,
-            ['Authorization' => 'Bearer' . ' ' . $accessToken]);
+        ], 201)->withCookie($accessToken)
+            ->cookie('token',
+                $accessToken,
+                '60',
+                '/api/v1/auth'
+                ,'localhost'
+                ,false,false);
     }
 
     public function login(LoginRequest $request)
@@ -78,10 +87,18 @@ class AuthController extends Controller
             'ip' => $request->ip(),
             ]);
 
+        $accessToken = 'Bearer' . ' ' . $accessToken;
+
         return response([
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken
-        ],200);
+        ],200)
+            ->cookie('token',
+                $accessToken,
+                '60',
+                '/api/v1/auth'
+                ,'localhost'
+                ,false,false);
     }
     public function logout(LogoutRequest $request)
     {
@@ -101,7 +118,7 @@ class AuthController extends Controller
         //access token invalidate(to blacklist)
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out'],200);
+        return response(['message' => 'Successfully logged out'],200);
     }
 
     public function refreshTokens(RefreshTokensRequest $request)
@@ -142,9 +159,17 @@ class AuthController extends Controller
             ])
             ->login($user);
 
+        $newAccessToken = 'Bearer' . ' ' . $newAccessToken;
+
         return response([
             'access_token' => $newAccessToken,
             'refresh_token' => $newRefreshToken
-        ],200);
+        ],200)
+            ->cookie('token',
+                $newAccessToken,
+                '60',
+                '/api/v1/auth'
+                ,'localhost'
+                ,false,false);
     }
 }
