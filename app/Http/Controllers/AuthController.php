@@ -87,9 +87,10 @@ class AuthController extends Controller
     {
         $tokens = $request->validated();
 
-        //refresh token invalidate
+        //refresh token invalidate(to blacklist)
         JWTAuth::manager()->invalidate(new Token($tokens['refresh_token']), true);
 
+        //access token invalidate(to blacklist)
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
@@ -97,6 +98,7 @@ class AuthController extends Controller
 
     public function refreshTokens(RefreshTokensRequest $request)
     {
+        //accepts refresh token from request
         $payload = auth()->payload();
 
         $refreshTokenId = $payload->get('jti');
@@ -106,7 +108,7 @@ class AuthController extends Controller
         if(RefreshSession::find($refreshTokenId)->exists()){
             RefreshSession::find($refreshTokenId)->delete();
         }
-
+        //create new Refresh token , old blacklisted
         $newRefreshToken = auth()
            ->setTTL(43800)
            ->claims([
@@ -123,6 +125,7 @@ class AuthController extends Controller
             'ip' => $request->ip(),
         ]);
 
+        //create new Access token
         $newAccessToken = auth()
             ->setTTL(60)
             ->claims([
