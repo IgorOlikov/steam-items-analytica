@@ -87,13 +87,21 @@ class AuthController extends Controller
     {
         $tokens = $request->validated();
 
+        $payload = JWTAuth::manager()->decode(new Token($tokens['refresh_token']));
+
+        $refreshTokenId = $payload->get('jti');
+
+        if(RefreshSession::find($refreshTokenId)->exists()){
+            RefreshSession::find($refreshTokenId)->delete();
+        }
+
         //refresh token invalidate(to blacklist)
         JWTAuth::manager()->invalidate(new Token($tokens['refresh_token']), true);
 
         //access token invalidate(to blacklist)
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'],200);
     }
 
     public function refreshTokens(RefreshTokensRequest $request)
