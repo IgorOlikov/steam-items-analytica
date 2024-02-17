@@ -78,11 +78,4 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
         $this->notify(new VerifyEmailCustom());
     }
 
-   // public function sendPasswordResetNotification($token): void
-   // {
-   //     $url = 'https://example.com/reset-password?token='.$token;
-    //
-   //     $this->notify(new ResetPasswordNotification($url));
-   // }
-
 }

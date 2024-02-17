@@ -5,7 +5,6 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -27,9 +26,6 @@ class AuthServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://example.com/reset-password?token='.$token;
         });
-        //
-        //VerifyEmail::createUrlUsing(function ($notifiable) {
-        //    //return 'https://example.com/verify-email/?'.$notifiable;
-        //});
+
     }
 }

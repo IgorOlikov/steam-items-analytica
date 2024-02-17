@@ -99,9 +99,7 @@ class VerifyEmailCustom extends Notification
 
         // generate url for yous SPA page to send it to user
         return config('app.frontend_url') . '/email/verify' . '?' . http_build_query($params + compact('signature'), false);
-
     }
-
 
     /**
      * Set a callback that should be used when creating the email verification URL.
