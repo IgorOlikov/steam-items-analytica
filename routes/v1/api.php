@@ -4,7 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 
 //api/v1/
@@ -26,10 +29,10 @@ Route::prefix('/auth')->middleware('api')->group(function (){
     Route::post('/forgot-password',[ResetPasswordController::class,'sendEmailPasswdResetLink'])
         ->middleware('guest')
         ->name('password.email');;
-    Route::get('/reset-password/{token}',function (string $token) {
-        return ['token' => $token]; })
-        ->middleware('guest')
-        ->name('password.reset');
+    //Route::get('/reset-password/{token}',function (string $token) {
+    //    return ['token' => $token]; })
+    //    ->middleware('guest')
+    //    ->name('password.reset');
     Route::post('/reset-password',[ResetPasswordController::class,'resetPassword'])
         ->middleware('guest')
         ->name('password.update');
@@ -50,5 +53,17 @@ Route::middleware(
 });
 
 Route::get('test-guest',function (){
-   return 'GUEST!';
+   $url = URL::temporarySignedRoute(
+        'verification.verify',
+        Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+        [
+            'id' => 'aaaaa',
+            'hash' => 'bbbbb',
+        ]
+    ,false);
+   //return urlencode($url);
+    return ($url);
+
+    //return url(\route('login',null,false));
+   //return 'GUEST!';
 })->middleware('api','guest');

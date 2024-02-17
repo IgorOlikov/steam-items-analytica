@@ -12,7 +12,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Http\Parser\Cookies;
 use Tymon\JWTAuth\Token;
 
 
@@ -117,6 +116,8 @@ class AuthController extends Controller
 
         //access token invalidate(to blacklist)
         auth()->logout();
+
+        //$cookie = Cookie::forget('cookieName');!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         return response(['message' => 'Successfully logged out'],200);
     }

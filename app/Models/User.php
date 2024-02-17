@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyEmailCustom;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuids, \Illuminate\Auth\Passwords\CanResetPassword;
@@ -71,4 +72,17 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
     {
         return [];
     }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new VerifyEmailCustom());
+    }
+
+   // public function sendPasswordResetNotification($token): void
+   // {
+   //     $url = 'https://example.com/reset-password?token='.$token;
+    //
+   //     $this->notify(new ResetPasswordNotification($url));
+   // }
+
 }
