@@ -29,10 +29,6 @@ Route::prefix('/auth')->middleware('api')->group(function (){
     Route::post('/forgot-password',[ResetPasswordController::class,'sendEmailPasswdResetLink'])
         ->middleware('guest')
         ->name('password.email');;
-    //Route::get('/reset-password/{token}',function (string $token) {
-    //    return ['token' => $token]; })
-    //    ->middleware('guest')
-    //    ->name('password.reset');
     Route::post('/reset-password',[ResetPasswordController::class,'resetPassword'])
         ->middleware('guest')
         ->name('password.update');

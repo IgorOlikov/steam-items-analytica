@@ -25,6 +25,6 @@ class EmailVerificationController extends Controller
     {
         $request->fulfill();
 
-        return redirect('/');
+        return response(['message' => 'Email has been verified']);
     }
 }

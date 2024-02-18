@@ -117,8 +117,6 @@ class AuthController extends Controller
         //access token invalidate(to blacklist)
         auth()->logout();
 
-        //$cookie = Cookie::forget('cookieName');!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         return response(['message' => 'Successfully logged out'],200);
     }
 
