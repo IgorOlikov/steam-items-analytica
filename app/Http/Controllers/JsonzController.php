@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductCategory;
+use App\Models\Jsonz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class ProductCategoryController extends Controller
+class JsonzController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $productCategories = ProductCategory::all();
+       $row = DB::table('jsonz')
+            ->whereJsonContains('content->Бренд','Интел')
+            ->get();
 
-        return response($productCategories,200);
+       return response($row);
     }
 
     /**
@@ -22,9 +25,11 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-       $productCategory = ProductCategory::create($request->input());
+          $jsonz = Jsonz::create([
+               'content' => json_encode($request->input('content'))
+           ]);
 
-       return response($productCategory,201);
+            return response($jsonz);
 
     }
 

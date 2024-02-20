@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -11,7 +12,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+
+        return response($categories,200);
     }
 
     /**
@@ -19,7 +22,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $category = Category::create($request->input());
+
+        return response($category,201);
     }
 
     /**

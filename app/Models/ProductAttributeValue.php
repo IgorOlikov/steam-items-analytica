@@ -10,7 +10,7 @@ class ProductAttributeValue extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['id','name','values','product_attribute_id'];
+    protected $fillable = ['id','name','values','product_id','product_attribute_id'];
 
     protected $table = 'product_attribute_values';
 }

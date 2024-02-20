@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductCategory;
+use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
 
-class ProductCategoryController extends Controller
+class ProductAttributeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $productCategories = ProductCategory::all();
+       $productAttributes = ProductAttribute::all();
 
-        return response($productCategories,200);
+       return response($productAttributes,200);
     }
 
     /**
@@ -22,10 +22,13 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-       $productCategory = ProductCategory::create($request->input());
 
-       return response($productCategory,201);
+       $productAttribute = ProductAttribute::create([
+           'product_category_id' => $request->input('product_category_id'),
+           'attributes' => json_encode($request->input('attributes'))
+       ]);
 
+        return response($productAttribute);
     }
 
     /**
