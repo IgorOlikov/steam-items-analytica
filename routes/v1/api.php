@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Carbon;
@@ -35,6 +36,7 @@ Route::prefix('/auth')->middleware('api')->group(function (){
 });
 
 
+Route::apiResource('/products', ProductController::class);
 
 
 Route::middleware(

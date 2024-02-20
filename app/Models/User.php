@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuids, \Illuminate\Auth\Passwords\CanResetPassword;
