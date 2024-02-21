@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\JsonzController;
-use App\Http\Controllers\ProductAttributeController;
-use App\Http\Controllers\ProductAttributeValueController;
-use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\AttributeValueController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
@@ -40,12 +41,15 @@ Route::prefix('/auth')->middleware('api')->group(function (){
         ->name('password.update');
 });
 
-Route::apiResource('/categories', CategoryController::class);
-Route::apiResource('/product-categories', ProductCategoryController::class);
-Route::apiResource('/products', ProductController::class);
-Route::apiResource('/product-attributes', ProductAttributeController::class);
-Route::apiResource('/attribute-values', ProductAttributeValueController::class);
+Route::apiResource('/catalog', CatalogController::class);
+Route::apiResource('/category', CategoryController::class);
+Route::apiResource('/product', ProductController::class);
+Route::apiResource('/attributes', AttributeController::class);
+Route::apiResource('/attribute-values', AttributeValueController::class);
 Route::apiResource('/jsonz', JsonzController::class);
+
+
+Route::apiResource('category.product', CategoryProductController::class);
 
 Route::middleware(
     [

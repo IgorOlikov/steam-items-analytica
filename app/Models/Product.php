@@ -10,7 +10,7 @@ class Product extends Model
 {
     use HasFactory,HasUuids;
 
-    protected $fillable = ['id','product_category_id','name','price'];
+    protected $fillable = ['id','category_id','name','price'];
 
-
+    protected $table = 'products';
 }

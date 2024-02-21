@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductAttribute extends Model
+class Catalog extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['id','attributes','product_category_id','product_id'];
+    protected $fillable = ['id','name'];
 
-    protected $table = 'product_attributes';
+    protected $table = 'catalog';
 }

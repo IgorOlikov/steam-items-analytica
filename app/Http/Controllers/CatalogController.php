@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductCategory;
+use App\Models\Catalog;
 use Illuminate\Http\Request;
 
-class ProductCategoryController extends Controller
+class CatalogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $productCategories = ProductCategory::all();
+        $categories = Catalog::all();
 
-        return response($productCategories,200);
+        return response($categories,200);
     }
 
     /**
@@ -22,10 +22,10 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-       $productCategory = ProductCategory::create($request->input());
 
-       return response($productCategory,201);
+        $category = Catalog::create($request->input());
 
+        return response($category,201);
     }
 
     /**

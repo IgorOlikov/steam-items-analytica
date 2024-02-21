@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory,HasUuids;
 
-    protected $fillable = ['id','name'];
+    protected $fillable = ['id','catalog_id','name'];
 
     protected $table = 'categories';
 }

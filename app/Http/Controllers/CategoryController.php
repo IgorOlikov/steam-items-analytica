@@ -12,9 +12,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+       $productCategories = Category::all();
 
-        return response($categories,200);
+        return response($productCategories,200);
     }
 
     /**
@@ -22,10 +22,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+       $productCategory = Category::create($request->input());
 
-        $category = Category::create($request->input());
+       return response($productCategory,201);
 
-        return response($category,201);
     }
 
     /**

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_categories', function (Blueprint $table) {
+        Schema::create('catalog', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('category_id')->constrained('categories');
             $table->string('name');
             $table->timestamps();
         });
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_category');
+        Schema::dropIfExists('category');
     }
 };

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductAttributeValue;
+use App\Models\AttributeValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

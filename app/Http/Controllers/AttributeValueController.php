@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductAttribute;
+use App\Models\AttributeValue;
 use Illuminate\Http\Request;
 
-class ProductAttributeController extends Controller
+class AttributeValueController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $productAttributes = ProductAttribute::all();
+       $attributeValues = AttributeValue::all();
 
-       return response($productAttributes,200);
+       return response($attributeValues);
     }
 
     /**
@@ -23,12 +23,13 @@ class ProductAttributeController extends Controller
     public function store(Request $request)
     {
 
-       $productAttribute = ProductAttribute::create([
-           'product_category_id' => $request->input('product_category_id'),
-           'attributes' => json_encode($request->input('attributes'))
-       ]);
+      $productAttributeValue = AttributeValue::create([
+            'product_id' => $request->input('product_id'),
+            'product_attribute_id' => $request->input('product_attribute_id'),
+            'values' => json_encode($request->input('values'))
+        ]);
 
-        return response($productAttribute);
+      return response($productAttributeValue,201);
     }
 
     /**

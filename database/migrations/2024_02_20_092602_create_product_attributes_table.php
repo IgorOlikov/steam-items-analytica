@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_attributes', function (Blueprint $table) {
+        Schema::create('attributes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('product_category_id')->constrained('product_categories');
+            $table->foreignUuid('category_id')->constrained('categories');
             $table->jsonb('attributes');
             $table->timestamps();
         });

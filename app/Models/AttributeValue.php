@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductAttributeValue extends Model
+class AttributeValue extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['id','name','values','product_id','product_attribute_id'];
+    protected $fillable = ['id','name','values','product_id','attribute_id'];
 
-    protected $table = 'product_attribute_values';
+    protected $table = 'attribute_values';
 }
