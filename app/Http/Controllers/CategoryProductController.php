@@ -10,6 +10,8 @@ class CategoryProductController extends Controller
 {
     public function index(Request $request,Category $category)
     {
+        dd($request);
+
        $products = Product::query()->where('category_id',$category->id)->get();
 
 
