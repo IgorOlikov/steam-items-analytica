@@ -11,9 +11,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        //$products = Product::all();
+        $products = Product::all()->load('attributeValue');
 
-       $products = DB::table('product_attribute_values')->whereJsonContains('values->Цвет','Белый')->get();
+       //$products = DB::table('product_attribute_values')->whereJsonContains('values->Цвет','Белый')->get();
 
 
 

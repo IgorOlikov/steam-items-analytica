@@ -12,7 +12,7 @@ class Filter extends Model
 
     protected $table = 'filters';
 
-    protected $fillable = ['id','filters'];
+    protected $fillable = ['id','category_id','filters'];
 
 
 }

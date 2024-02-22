@@ -4,20 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\FilterService;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;
+
 
 class CategoryProductController extends Controller
 {
     public function index(Request $request,Category $category)
     {
-       $products = QueryBuilder::for(Product::class)
-           ->where('category_id',$category->id)
-           //->allowedSorts()
-           ->get();
-
-       //$products = Product::query()->where('category_id',$category->id)->get();
-
+       $products = (new FilterService($category))->filter()->get(['products.*','values']);
 
         return response($products);
     }

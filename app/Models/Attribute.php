@@ -10,7 +10,7 @@ class Attribute extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['id','attributes','category_id','product_id'];
+    protected $fillable = ['id','attributes','category_id'];
 
     protected $table = 'attributes';
 }

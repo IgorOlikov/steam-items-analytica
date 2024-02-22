@@ -25,7 +25,7 @@ class AttributeValueController extends Controller
 
       $productAttributeValue = AttributeValue::create([
             'product_id' => $request->input('product_id'),
-            'product_attribute_id' => $request->input('product_attribute_id'),
+            'attribute_id' => $request->input('attribute_id'),
             'values' => json_encode($request->input('values'))
         ]);
 

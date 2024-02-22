@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CategoryFilterController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\JsonzController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
@@ -48,8 +50,9 @@ Route::apiResource('/attributes', AttributeController::class);
 Route::apiResource('/attribute-values', AttributeValueController::class);
 Route::apiResource('/jsonz', JsonzController::class);
 
-
 Route::apiResource('category.product', CategoryProductController::class);
+Route::apiResource('category.filter', CategoryFilterController::class);
+Route::apiResource('filter', FilterController::class);
 
 Route::middleware(
     [

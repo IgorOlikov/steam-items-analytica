@@ -24,7 +24,7 @@ class AttributeController extends Controller
     {
 
        $productAttribute = Attribute::create([
-           'product_category_id' => $request->input('product_category_id'),
+           'category_id' => $request->input('category_id'),
            'attributes' => json_encode($request->input('attributes'))
        ]);
 
