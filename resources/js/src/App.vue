@@ -1,25 +1,19 @@
+<template>
+
+    <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14 ">
+        <Header/>
+
+
+        <router-view></router-view>
+    </div>
+
+</template>
+
 <script setup>
-import axios from "axios";
-import {onMounted} from "vue";
 
-async function fetchApi() {
-    const { data }  = await axios.get(`http://localhost/api/v1/product`)
-
-    console.log(data)
-}
-
-
-
-onMounted(async () => {
-    await fetchApi()
-;});
-
-
+import Header from "@/components/Header.vue";
 </script>
 
-<template>
-        <h1 class="text-amber-300">APP COMPONENT</h1>
-</template>
 
 <style scoped>
 
