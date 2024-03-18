@@ -14,7 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create();
+        $this->call([
+           CategoriesSeeder::class,
+        ]);
+        //User::factory()->create();
+
+        //$product = require __DIR__ . '/seeder-data/ProductArray.php';
+        //dd($product);
+
+        //$categories = require __DIR__ . '/seeder-data/CategoriesArray.php';
+        //dd($categories);
 
         //Product::factory(30)->create();
 
