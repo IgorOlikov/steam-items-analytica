@@ -1,12 +1,13 @@
 <template>
     <div class="bg-slate-400 h-64">
         <h1>HEADER COMPONENT</h1>
-        <router-link to="/">Link to home</router-link>
-        <router-link to="/about">Link to about</router-link>
+        <router-link to="/">Главная</router-link>
+        <router-link to="/about">О сайте</router-link>
+        <router-link to="/catalog">Каталог</router-link>
         <div>
             <ul>
-                <li><router-link to="login">Login</router-link></li>
-                <li><router-link to="register">Register</router-link></li>
+                <li v-if="!authStore.auth"><router-link to="/login">Войти</router-link></li>
+                <li v-else><router-link to="/profile">Профиль</router-link></li>
             </ul>
         </div>
     </div>
@@ -19,6 +20,8 @@
 import {useAuthStore} from "@/store/AuthStore.js";
 
 const authStore = useAuthStore();
+
+
 
 
 </script>

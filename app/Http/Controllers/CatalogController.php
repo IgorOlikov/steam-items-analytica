@@ -15,6 +15,11 @@ class CatalogController extends Controller
         return response($categories,200);
     }
 
+    public function showCatalogCategory(Request $request,Category $category)
+    {
+        return response($category);
+    }
+
     public function store(Request $request)
     {
         //

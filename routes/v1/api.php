@@ -44,6 +44,7 @@ Route::prefix('/auth')->middleware('api')->group(function (){
 });
 
 Route::apiResource('/catalog', CatalogController::class);
+Route::get('/catalog/category/{category}', [CatalogController::class,'showCatalogCategory']);
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/product', ProductController::class);
 Route::apiResource('/attributes', AttributeController::class);

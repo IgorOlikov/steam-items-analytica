@@ -18,11 +18,12 @@ async function fetchApi() {
 
 onMounted(async () => {
     await fetchApi()
-    ;});
+
+});
 </script>
 
 <template>
-    <div class="min-h-screen">
+    <div>
     <h1>Home Page</h1>
     <h1 v-for="product in products"  class="text-amber-300">APP COMPONENT{{ product.name }}</h1>
     </div>
