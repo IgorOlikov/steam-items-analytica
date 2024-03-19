@@ -3,10 +3,14 @@ import HomePage from "@/pages/HomePage.vue";
 import AboutPage from "@/pages/AboutPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
-import CatalogPage from "@/pages/CatalogPage.vue";
-import CategoryIdPage from "@/pages/CatalogCategoryPage.vue";
-import CatalogCategoryPage from "@/pages/CatalogCategoryPage.vue";
-import CategoryProductPage from "@/pages/CategoryProductPage.vue";
+import CatalogPage from "@/pages/CatalogMainPage.vue";
+import CategoryIdPage from "@/pages/CatalogCategoryIdPage.vue";
+import CatalogCategoryPage from "@/pages/CatalogCategoryIdPage.vue";
+import CategoryProductPage from "@/pages/CategoryProductsPage.vue";
+import CatalogMainPage from "@/pages/CatalogMainPage.vue";
+import CatalogCategoryIdPage from "@/pages/CatalogCategoryIdPage.vue";
+import CategoryProductsPage from "@/pages/CategoryProductsPage.vue";
+import ProductPage from "@/pages/ProductPage.vue";
 
 
 const routes = [
@@ -23,13 +27,19 @@ const routes = [
         path: '/login', component: LoginPage
     },
     {
-        path: '/catalog', component: CatalogPage
+        path: '/catalog', component: CatalogMainPage
     },
     {
-        path: '/catalog/category/:id', component: CatalogCategoryPage
+        path: '/catalog/category/:id', component: CatalogCategoryIdPage
     },
     {
-        path: '/category/:id/product', component: CategoryProductPage
+        path: '/category/:id/products', component: CategoryProductsPage
+    },
+    {
+        path: '/category/:id/products', component: CategoryProductsPage
+    },
+    {
+        path: '/catalog/category/:categoryId/products/:productId', component: ProductPage
     },
 
 ]

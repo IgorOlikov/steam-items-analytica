@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductsSeeder extends Seeder
 {
@@ -12,6 +14,12 @@ class ProductsSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+       $category = Category::where('name','LIKE', '%Смартфоны')->get();
+
+       $i = 1;
+       while ($i <= 10){
+        $category[0]->product()->create(['name' => Str::random(), 'price' => mt_rand(100, 5000),]);
+        $i++;
+        }
     }
 }

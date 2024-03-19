@@ -45,6 +45,8 @@ Route::prefix('/auth')->middleware('api')->group(function (){
 
 Route::apiResource('/catalog', CatalogController::class);
 Route::get('/catalog/category/{category}', [CatalogController::class,'showCatalogCategory']);
+
+
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/product', ProductController::class);
 Route::apiResource('/attributes', AttributeController::class);
@@ -52,6 +54,8 @@ Route::apiResource('/attribute-values', AttributeValueController::class);
 Route::apiResource('/jsonz', JsonzController::class);
 
 Route::apiResource('category.product', CategoryProductController::class);
+
+
 Route::apiResource('category.filter', CategoryFilterController::class);
 Route::apiResource('filter', FilterController::class);
 

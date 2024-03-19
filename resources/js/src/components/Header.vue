@@ -10,6 +10,7 @@
                 <li v-else><router-link to="/profile">Профиль</router-link></li>
             </ul>
         </div>
+        <catalog-menu/>
     </div>
 
 
@@ -18,6 +19,7 @@
 
 <script setup>
 import {useAuthStore} from "@/store/AuthStore.js";
+import CatalogMenu from "@/components/CatalogMenu.vue";
 
 const authStore = useAuthStore();
 

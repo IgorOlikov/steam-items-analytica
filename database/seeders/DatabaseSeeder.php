@@ -16,14 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
            CategoriesSeeder::class,
+            ProductsSeeder::class,
         ]);
         //User::factory()->create();
 
-        //$product = require __DIR__ . '/seeder-data/ProductArray.php';
-        //dd($product);
-
-        //$categories = require __DIR__ . '/seeder-data/CategoriesArray.php';
-        //dd($categories);
 
         //Product::factory(30)->create();
 

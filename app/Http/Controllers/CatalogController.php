@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
+
+    public function catalogMenu()
+    {
+        $categories = Category::whereNull('parent_id')
+            ->with('categories')->get();
+
+        return response($categories,200);
+    }
+
     public function index()
     {
         $categories = Category::whereNull('parent_id')->with('categories')->get();
@@ -15,9 +24,13 @@ class CatalogController extends Controller
         return response($categories,200);
     }
 
+
     public function showCatalogCategory(Request $request,Category $category)
     {
-        return response($category);
+        $categories = Category::where('parent_id','=',$category->id)
+            ->with('categories')->get();
+
+        return response($categories);
     }
 
     public function store(Request $request)

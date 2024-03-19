@@ -12,9 +12,12 @@ class CategoryProductController extends Controller
 {
     public function index(Request $request,Category $category)
     {
-       $products = (new FilterService($category))->filter()->get(['products.*','values']);
+       //$products = (new FilterService($category))->filter()->get(['products.*','values']);
 
-        return response($products);
+        $products = $category->products()->get();
+
+
+        return response($products,200);
     }
 
     public function store(Request $request)
@@ -24,7 +27,7 @@ class CategoryProductController extends Controller
 
     public function show(Request $request,Category $category, Product $product)
     {
-        dd($category,$product);
+        return response($product);
     }
 
     public function update(Request $request, string $id)
