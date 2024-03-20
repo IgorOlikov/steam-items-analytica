@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jsonz', function (Blueprint $table) {
-            $table->id();
-            $table->json('content');
+        Schema::create('carts', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jsonz');
+        Schema::dropIfExists('carts');
     }
 };
