@@ -1,6 +1,9 @@
 <template>
     <h1>Product Page</h1>
-    <h1>{{ product }}</h1>
+    <p>Product ID = {{ product.id }}</p>
+    <p>Category ID = {{ product.category_id }}</p>
+    <p>Name = {{ product.name }}</p>
+    <p>Price = {{ product.price }}</p>
 </template>
 
 <script setup>
@@ -11,19 +14,13 @@ import axios from "axios";
 const product = ref([])
 
 const route = useRoute();
-const productId = route.params.productId;
-const categoryId = route.params.categoryId;
+const { productId, categoryId } = route.params
 
-//console.log(route.params)
 
 async function fetchCatalog() {
     const { data } = await axios.get(`http://localhost/api/v1/category/${categoryId}/product/${productId}`)
 
    product.value = data;
-
-    //product.value = data.map((obj) => ({
-    //    ...obj
-    //}));
 }
 
 onMounted(async () => {

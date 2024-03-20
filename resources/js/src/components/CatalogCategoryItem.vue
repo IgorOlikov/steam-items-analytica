@@ -24,7 +24,7 @@ defineProps({
     <div
         v-else
         >
-        <a :href="`/category/${id}/products`">
+        <a :href="`/catalog/category/${id}/product`">
             <p>{{ name}}</p>
         </a>
     </div>

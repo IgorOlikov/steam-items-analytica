@@ -1,5 +1,5 @@
 <template>
-  <h1>Category id = {{ $route.params.id }} Products Page</h1>
+  <h1>Category id = {{ $route.params.categoryId }} Products Page</h1>
    <div>
        <div>
             <product-filter></product-filter>
@@ -25,7 +25,7 @@ import ProductFilter from "@/components/ProductFilter.vue";
 const products = ref([])
 
 const route = useRoute();
-const categoryId = route.params.id;
+const categoryId = route.params.categoryId;
 
 async function fetchCatalog() {
     const { data } = await axios.get(`http://localhost/api/v1/category/${categoryId}/product`)
