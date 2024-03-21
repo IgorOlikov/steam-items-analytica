@@ -6,6 +6,7 @@ defineProps({
     categories: Array,
     id: String,
     name: String,
+    slug: String,
 
 
 })
@@ -17,14 +18,14 @@ defineProps({
     <div
         v-if="categories.length !== 0"
         class="border">
-        <a :href="`/catalog/category/${id}`">
+        <a :href="`/catalog/category/${slug}`">
             <p>{{ name }}</p>
         </a>
     </div>
     <div
         v-else
         >
-        <a :href="`/catalog/category/${id}/product`">
+        <a :href="`/catalog/category/${slug}/product`">
             <p>{{ name}}</p>
         </a>
     </div>

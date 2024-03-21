@@ -19,6 +19,7 @@ defineProps({
             :key="category.id"
             :name="category.name"
             :categories="category.categories"
+            :slug="category.slug"
 
         />
     <!--v if catalog.catagories   :link -->

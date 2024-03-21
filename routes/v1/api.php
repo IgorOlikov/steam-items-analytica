@@ -48,7 +48,7 @@ Route::prefix('/auth')->middleware('api')->group(function (){
 
 /* Main site routes */
 Route::apiResource('/catalog', CatalogController::class);
-Route::get('/catalog/category/{category}', [CatalogController::class,'showCatalogCategory']);
+Route::get('/catalog/category/{category:slug}', [CatalogController::class,'showCatalogCategory']); //??!?!??
 
 
 Route::apiResource('/category', CategoryController::class);
@@ -57,7 +57,13 @@ Route::apiResource('/attributes', AttributeController::class);
 Route::apiResource('/attribute-values', AttributeValueController::class);
 
 
-Route::apiResource('category.product', CategoryProductController::class);
+//Route::apiResource('category.product', CategoryProductController::class);
+
+Route::apiResource('category.product', CategoryProductController::class)
+    ->scoped([
+        'category' => 'slug',
+        'product' => 'slug'
+    ]);
 
 
 Route::apiResource('category.filter', CategoryFilterController::class);

@@ -3,16 +3,13 @@ import HomePage from "@/pages/HomePage.vue";
 import AboutPage from "@/pages/AboutPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
-import CatalogPage from "@/pages/CatalogMainPage.vue";
-import CategoryIdPage from "@/pages/CategoryIdPage.vue";
-import CatalogCategoryPage from "@/pages/CategoryIdPage.vue";
-import CategoryProductPage from "@/pages/CategoryIdProductPage.vue";
+import CategoryIdPage from "@/pages/CategorySlugPage.vue";
 import CatalogMainPage from "@/pages/CatalogMainPage.vue";
-import CatalogCategoryIdPage from "@/pages/CategoryIdPage.vue";
-import CategoryProductsPage from "@/pages/CategoryIdProductPage.vue";
-import ProductPage from "@/pages/CategoryIdProductIdPage.vue";
-import CategoryIdProductPage from "@/pages/CategoryIdProductPage.vue";
-import CategoryIdProductIdPage from "@/pages/CategoryIdProductIdPage.vue";
+import CategoryIdProductPage from "@/pages/CategorySlugProductPage.vue";
+import CategoryIdProductIdPage from "@/pages/CategorySlugProductSlugPage.vue";
+import CategorySlugProductSlugPage from "@/pages/CategorySlugProductSlugPage.vue";
+import CategorySlugProductPage from "@/pages/CategorySlugProductPage.vue";
+import CategorySlugPage from "@/pages/CategorySlugPage.vue";
 
 
 const routes = [
@@ -32,13 +29,13 @@ const routes = [
         path: '/catalog', component: CatalogMainPage
     },
     {
-        path: '/catalog/category/:categoryId', component: CategoryIdPage
+        path: '/catalog/category/:categorySlug', component: CategorySlugPage
     },
     {
-        path: '/catalog/category/:categoryId/product', component: CategoryIdProductPage
+        path: '/catalog/category/:categorySlug/product', component: CategorySlugProductPage
     },
     {
-        path: '/catalog/category/:categoryId/product/:productId', component: CategoryIdProductIdPage
+        path: '/catalog/category/:categorySlug/product/:productSlug', component: CategorySlugProductSlugPage
     },
 
 ]

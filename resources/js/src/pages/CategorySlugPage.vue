@@ -8,10 +8,10 @@ import CatalogCategoryList from "@/components/CatalogCategoryList.vue";
 const catalog = ref([])
 
 const route = useRoute();
-const categoryId = route.params.categoryId;
+const categorySlug = route.params.categorySlug;
 
 async function fetchCatalog() {
-    const { data } = await axios.get(`http://localhost/api/v1/catalog/category/${categoryId}`)
+    const { data } = await axios.get(`http://localhost/api/v1/catalog/category/${categorySlug}`) //?!
 
     catalog.value = data.map((obj) => ({
         ...obj
