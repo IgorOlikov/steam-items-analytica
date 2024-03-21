@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart_items', function (Blueprint $table) {
-            $table->uuid('id')->primary();
             $table->foreignUuid('cart_id')->constrained('carts');
             $table->unsignedDouble('price',8,2);
             $table->unsignedInteger('quantity');

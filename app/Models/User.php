@@ -8,6 +8,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -52,6 +55,34 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
     {
         return $this->hasMany(RefreshSession::class,'user_id','id');
     }
+
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class,'user_id','id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class,'user_id','id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class,'user_id','id');
+    }
+
+    public function cart(): HasOne
+    {
+        return $this->hasOne(Cart::class,'user_id','id');
+    }
+
+
+
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

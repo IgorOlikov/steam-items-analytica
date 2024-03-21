@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_lines', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('order_id')->constrained('id');
+            $table->uuid('id');
+            $table->primary('id');
+            $table->foreignUuid('order_id')->constrained('orders');
             $table->foreignUuid('product_id')->constrained('products');
             $table->unsignedDouble('price',8,2);
             $table->unsignedInteger('quantity');
