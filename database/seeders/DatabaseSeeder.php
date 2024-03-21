@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,12 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
             CategoriesSeeder::class,
             ProductsSeeder::class,
         ]);
+
+
+        //dd(Str::slug('ПК и ноутбуки фывйцуйц йцуйцуф фвфв'));
+
+
         //User::factory()->create();
 
 

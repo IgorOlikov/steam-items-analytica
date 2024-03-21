@@ -15,7 +15,7 @@ class Category extends Model
 {
     use HasFactory,HasUuids;
 
-    protected $fillable = ['id','parent_id','name'];
+    protected $fillable = ['id','parent_id','name','slug'];
 
     protected $table = 'categories';
 

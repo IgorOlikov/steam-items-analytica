@@ -18,7 +18,11 @@ class ProductsSeeder extends Seeder
 
        $i = 1;
        while ($i <= 10){
-        $category[0]->product()->create(['name' => Str::random(), 'price' => mt_rand(100, 5000),]);
+        $category[0]->product()->create([
+            'name' => $name = Str::random(),
+            'price' => mt_rand(100, 5000),
+            'slug' => Str::slug($name),
+            ]);
         $i++;
         }
     }
