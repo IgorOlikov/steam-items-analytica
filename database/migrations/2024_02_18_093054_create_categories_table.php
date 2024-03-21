@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->foreignUuid('parent_id')->nullable()->constrained('categories');
             $table->string('name');
+            $table->string('slug')->nullable(); // change later
+            $table->foreignUuid('parent_id')->nullable()->constrained('categories');
             $table->timestamps();
         });
     }

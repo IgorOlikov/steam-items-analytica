@@ -24,6 +24,8 @@ Route::get('/', function () {
     return "hello";
 })->middleware('api','jwt.verified');
 
+
+/* Auth routes */
 Route::prefix('/auth')->middleware('api')->group(function (){
     Route::post('/register',[AuthController::class,'register'])->name('register');
     Route::post('/login',[AuthController::class,'login'])->name('login');
@@ -43,6 +45,8 @@ Route::prefix('/auth')->middleware('api')->group(function (){
         ->name('password.update');
 });
 
+
+/* Main site routes */
 Route::apiResource('/catalog', CatalogController::class);
 Route::get('/catalog/category/{category}', [CatalogController::class,'showCatalogCategory']);
 
@@ -51,7 +55,7 @@ Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/product', ProductController::class);
 Route::apiResource('/attributes', AttributeController::class);
 Route::apiResource('/attribute-values', AttributeValueController::class);
-Route::apiResource('/jsonz', JsonzController::class);
+
 
 Route::apiResource('category.product', CategoryProductController::class);
 
@@ -59,6 +63,7 @@ Route::apiResource('category.product', CategoryProductController::class);
 Route::apiResource('category.filter', CategoryFilterController::class);
 Route::apiResource('filter', FilterController::class);
 
+//profile
 Route::middleware(
     [
         'api',
@@ -70,6 +75,8 @@ Route::middleware(
         Route::get('profile',[ProfileController::class,'index']);
 });
 
+
+//test
 Route::get('test-guest',function (){
    $url = URL::temporarySignedRoute(
         'verification.verify',
