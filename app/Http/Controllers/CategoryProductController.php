@@ -17,6 +17,7 @@ class CategoryProductController extends Controller
         $products = $category->products()->get();
 
 
+
         return response($products,200);
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('slug')->nullable(); // change later
-            $table->unsignedDouble('price',8,2);
+            $table->unsignedFloat('price',8,2);
             $table->foreignUuid('category_id')->constrained('categories');
             $table->timestamps();
         });

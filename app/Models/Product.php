@@ -16,6 +16,10 @@ class Product extends Model
 {
     use HasFactory,HasUuids;
 
+    protected $casts = [
+      'price' => 'float'
+    ];
+
     protected $fillable = ['id','category_id','name','price','slug'];
 
     protected $table = 'products';

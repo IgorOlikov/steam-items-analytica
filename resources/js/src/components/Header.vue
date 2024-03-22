@@ -20,11 +20,12 @@
 <script setup>
 import {useAuthStore} from "@/store/AuthStore.js";
 import CatalogMenu from "@/components/CatalogMenu.vue";
+import {ref} from "vue";
 
 const authStore = useAuthStore();
 
-
-
+const wishList = ref([]);
+const cart = ref([]);
 
 </script>
 

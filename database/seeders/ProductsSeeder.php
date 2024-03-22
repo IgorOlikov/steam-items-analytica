@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
+
 class ProductsSeeder extends Seeder
 {
     /**
@@ -20,7 +21,7 @@ class ProductsSeeder extends Seeder
        while ($i <= 10){
         $category[0]->product()->create([
             'name' => $name = Str::random(),
-            'price' => mt_rand(100, 5000),
+            'price' => fake()->randomFloat(2,10),
             'slug' => Str::slug($name),
             ]);
         $i++;
