@@ -73,9 +73,10 @@ class AuthController extends Controller
             ->cookie('token',
                 $refreshToken,
                 (string)config('jwt.refresh_ttl'),
-                '/api/v1/auth'
-                ,'localhost'
-                ,false,false);
+                '/api/v1/auth',
+                'localhost',
+                true,
+                false);
 
         /*
          *  set httpOnly Cookie
@@ -132,18 +133,19 @@ class AuthController extends Controller
                 'role_id' => $user->role_id,
                 ]
         ],200)
-            ->cookie('token',                   //name
+            ->cookie('token',                    //name
                 $refreshToken,                          //value
                 (string)config('jwt.refresh_ttl'), //expires
-                '/api/v1/auth'                          //domain
-                ,'localhost'                            //path
-                ,false,false);                          //httpOnly-false,secure-false !
+                '/api/v1/auth',                          //domain
+                'localhost',                            //path
+                true,                                 //httpOnly-true(no javascript access)
+                false);              //<---            //secure-if TRUE 'ONLY httpS conn'!!!!!
     }
     public function logout(LogoutRequest $request)
     {
-        $tokens = $request->validated();
+        $refreshToken = $request->cookie('token');
 
-        $payload = JWTAuth::manager()->decode(new Token($tokens['refresh_token']));
+        $payload = JWTAuth::manager()->decode(new Token($refreshToken));
 
         $refreshTokenId = $payload->get('jti');
 
@@ -152,21 +154,28 @@ class AuthController extends Controller
         }
 
         //refresh token invalidate(to blacklist)
-        JWTAuth::manager()->invalidate(new Token($tokens['refresh_token']), true);
+        JWTAuth::manager()->invalidate(new Token($refreshToken), true);
 
         //access token invalidate(to blacklist)
         auth()->logout();
 
-        return response(['message' => 'Successfully logged out'],200);
+        /*
+         * "delete" old cookie
+         */
+        return response(['message' => 'Successfully logged out'],200)
+            ->cookie('token',
+                '',
+                time() - 3600,
+                '/api/v1/auth',
+                'localhost',
+                true,
+                false);
     }
 
     public function refreshTokens(RefreshTokensRequest $request) //RefreshTokensRequest
     {
-
-
         //accepts refresh token from request
         $payload = auth()->payload();
-
 
         $refreshTokenId = $payload->get('jti');
 
@@ -220,6 +229,6 @@ class AuthController extends Controller
                 (string)config('jwt.refresh_ttl'),
                 '/api/v1/auth'
                 ,'localhost'
-                ,false,false);
+                ,true,false);
     }
 }

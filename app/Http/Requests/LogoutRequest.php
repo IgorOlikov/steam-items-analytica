@@ -11,6 +11,12 @@ class LogoutRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $refreshToken = $this->cookie('token');
+
+        if (!isset($refreshToken)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -22,8 +28,7 @@ class LogoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'access_token' => ['required','string'],
-            'refresh_token' => ['required','string']
+
         ];
     }
 }
