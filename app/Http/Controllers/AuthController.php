@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\JwtAuthServiceInterface;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
 use App\Http\Requests\RefreshTokensRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Jobs\SendEmailVerification;
-use App\Models\RefreshSession;
 use App\Models\User;
-use Carbon\Carbon;
-use Faker\Provider\Uuid;
-use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Token;
-
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
-    public function __construct()
+    public function __construct(
+        protected JwtAuthServiceInterface $jwtAuthService
+    )
     {
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
@@ -30,34 +27,13 @@ class AuthController extends Controller
         //send email notification - job
         dispatch(new SendEmailVerification($user));
 
-        $accessToken = auth()
-            ->setTTL(config('jwt.ttl'))
-            ->claims([
-                'jti' => Uuid::uuid(),
-                'token_type' => 'access_token',
-                'role_id' => 2,
-            ])
-            ->login($user);
+        $accessToken = $this->jwtAuthService
+            ->createAccessToken($user);
 
-        $refreshToken = auth()
-            ->setTTL(config('jwt.refresh_ttl'))
-            ->claims([
-                'jti' => $refreshTokenId = Uuid::uuid(),
-                'token_type' => 'refresh_token',   //custom claims model
-                'role_id' => 2,
-            ])
-            ->login($user);
+        $refreshToken = $this->jwtAuthService
+            ->createRefreshToken($user, $request->userAgent(), $request->ip());
 
-        RefreshSession::create([
-            'id' => $refreshTokenId,
-            'user_id' => $user->id,
-            'refresh_token' => $refreshToken,
-            'expires_in' => Carbon::now(config('app.server_timezone'))
-                ->addMinutes(config('jwt.refresh_ttl')),
-            'user_agent' => $request->userAgent(),
-            'ip' => $request->ip(),
-        ]);
-
+        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth', 'localhost', true, false);
 
         return response([
             'message' => 'User created successfully, check your email',
@@ -69,20 +45,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role_id' => 2,
             ],
-        ], 201)
-            ->cookie('token',
-                $refreshToken,
-                (string)config('jwt.refresh_ttl'),
-                '/api/v1/auth',
-                'localhost',
-                true,
-                false);
-
-        /*
-         *  set httpOnly Cookie
-         *  $name = null, $value = null, $minutes = 0, $path = null, $domain = null,
-         *  $secure = null, $httpOnly = true, $raw = false, $sameSite = null)
-         */
+        ], 201)->withCookie($cookie);
     }
 
     public function login(LoginRequest $request)
@@ -92,35 +55,15 @@ class AuthController extends Controller
                 'message' => 'The provided credentials do not match our records',
                 ],400);
         }
+
         $user = $request->user();
 
-        $accessToken = auth()
-            ->setTTL(config('jwt.ttl'))
-            ->claims([
-                'jti' => Uuid::uuid(),
-                'token_type' => 'access_token',
-                'role_id' => $user->role_id,
-                ])
-            ->login($user);
+        $accessToken = $this->jwtAuthService->createAccessToken($user, $user->role_id);
 
-        $refreshToken = auth()
-            ->setTTL(config('jwt.refresh_ttl'))
-            ->claims([
-                'jti' => $refreshTokenId = Uuid::uuid(),
-                'token_type' => 'refresh_token',
-                'role_id' => $user->role_id,
-            ])
-            ->login($user);
+        $refreshToken = $this->jwtAuthService
+            ->createRefreshToken($user, $request->userAgent(), $request->ip(), $user->role_id);
 
-        RefreshSession::create([
-            'id' => $refreshTokenId,
-            'user_id' => $user->id,
-            'refresh_token' => $refreshToken,
-            'expires_in' => Carbon::now(config('app.server_timezone'))
-                ->addMinutes(config('jwt.refresh_ttl')),
-            'user_agent' => $request->userAgent(),
-            'ip' => $request->ip(),
-            ]);
+        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'),'/api/v1/auth','localhost', true, false);
 
         return response([
             'message' => 'Successfully, log in',
@@ -132,86 +75,47 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role_id' => $user->role_id,
                 ]
-        ],200)
-            ->cookie('token',                    //name
-                $refreshToken,                          //value
-                (string)config('jwt.refresh_ttl'), //expires
-                '/api/v1/auth',                          //domain
-                'localhost',                            //path
-                true,                                 //httpOnly-true(no javascript access)
-                false);              //<---            //secure-if TRUE 'ONLY httpS conn'!!!!!
+        ],200)->withCookie($cookie);
     }
     public function logout(LogoutRequest $request)
     {
         $refreshToken = $request->cookie('token');
 
-        $payload = JWTAuth::manager()->decode(new Token($refreshToken));
+        $payload = $this->jwtAuthService->getPayloadFromToken($refreshToken);
 
-        $refreshTokenId = $payload->get('jti');
+        $refreshTokenId = $this->jwtAuthService->getTokenIdFromPayload($payload);
 
-        if(RefreshSession::find($refreshTokenId)->exists()){
-            RefreshSession::find($refreshTokenId)->delete();
-        }
+        $this->jwtAuthService->deleteRefreshSession($refreshTokenId);
 
-        //refresh token invalidate(to blacklist)
-        JWTAuth::manager()->invalidate(new Token($refreshToken), true);
+        //refresh token to blacklist
+       $this->jwtAuthService->invalidateToken($refreshToken);
 
-        //access token invalidate(to blacklist)
+        //access token to blacklist
         auth()->logout();
 
-        /*
-         * "delete" old cookie
-         */
-        return response(['message' => 'Successfully logged out'],200)
-            ->cookie('token',
-                '',
-                time() - 3600,
-                '/api/v1/auth',
-                'localhost',
-                true,
-                false);
+        //delete old cookie
+        $cookie = Cookie::make('token', '', time() - 3600, '/api/v1/auth', 'localhost', true, false);
+
+        return response(['message' => 'Successfully logged out'],200)->withCookie($cookie);
     }
 
-    public function refreshTokens(RefreshTokensRequest $request) //RefreshTokensRequest
+    public function refreshTokens(RefreshTokensRequest $request)
     {
-        //accepts refresh token from request
-        $payload = auth()->payload();
-
-        $refreshTokenId = $payload->get('jti');
-
         $user = auth()->user();
 
-        if(RefreshSession::find($refreshTokenId)->exists()){
-            RefreshSession::find($refreshTokenId)->delete();
-        }
-        //create new Refresh token , old blacklisted
-        $newRefreshToken = auth()
-           ->setTTL(config('jwt.refresh_ttl'))
-           ->claims([
-               'jti' => $refreshTokenId = Uuid::uuid(),
-               'role_id' => $user->role_id,
-           ])
-           ->refresh(true,false);
+        //fetch refresh token from request
+        $payload = auth()->payload();
 
-        //create new Access token
-        $newAccessToken = auth()
-            ->setTTL(config('jwt.ttl'))
-            ->claims([
-                'jti' => Uuid::uuid(),
-                'token_type' => 'access_token',
-                'role_id' => $user->role_id,
-            ])
-            ->login($user);
+        //get token old id
+        $oldRefreshTokenId = $payload->get('jti');
 
-        RefreshSession::create([
-            'id' => $refreshTokenId,
-            'user_id' => $user->id,
-            'refresh_token' => $newRefreshToken,
-            'expires_in' => Carbon::now(config('app.server_timezone'))
-                ->addMinutes(config('jwt.refresh_ttl')),
-            'user_agent' => $request->userAgent(),
-            'ip' => $request->ip(),
-        ]);
+        $newAccessToken = $this->jwtAuthService
+            ->createAccessToken($user, $user->role_id);
+
+        $newRefreshToken = $this->jwtAuthService
+              ->refreshRefreshToken($user, $oldRefreshTokenId, $request->userAgent(), $request->ip());
+
+        $cookie = Cookie::make('token', $newRefreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth','localhost',true,false);
 
         return response([
             'message' => 'Successfully, refreshed',
@@ -223,12 +127,6 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role_id' => $user->role_id,
                 ]
-        ],200)
-            ->cookie('token',
-                $newRefreshToken,
-                (string)config('jwt.refresh_ttl'),
-                '/api/v1/auth'
-                ,'localhost'
-                ,true,false);
+        ],200)->withCookie($cookie);
     }
 }
