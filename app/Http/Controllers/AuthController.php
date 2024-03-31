@@ -33,7 +33,7 @@ class AuthController extends Controller
         $refreshToken = $this->jwtAuthService
             ->createRefreshToken($user, $request->userAgent(), $request->ip());
 
-        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth', 'localhost', true, false);
+        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth', 'localhost', false, true);
 
         return response([
             'message' => 'User created successfully, check your email',
@@ -63,7 +63,7 @@ class AuthController extends Controller
         $refreshToken = $this->jwtAuthService
             ->createRefreshToken($user, $request->userAgent(), $request->ip(), $user->role_id);
 
-        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'),'/api/v1/auth','localhost', true, false);
+        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'),'/api/v1/auth','localhost', false, true);
 
         return response([
             'message' => 'Successfully, log in',
@@ -94,7 +94,7 @@ class AuthController extends Controller
         auth()->logout();
 
         //delete old cookie
-        $cookie = Cookie::make('token', '', time() - 3600, '/api/v1/auth', 'localhost', true, false);
+        $cookie = Cookie::make('token', '', time() - 3600, '/api/v1/auth', 'localhost', false, true);
 
         return response(['message' => 'Successfully logged out'],200)->withCookie($cookie);
     }
@@ -115,7 +115,7 @@ class AuthController extends Controller
         $newRefreshToken = $this->jwtAuthService
               ->refreshRefreshToken($user, $oldRefreshTokenId, $request->userAgent(), $request->ip());
 
-        $cookie = Cookie::make('token', $newRefreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth','localhost',true,false);
+        $cookie = Cookie::make('token', $newRefreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth','localhost',false,true);
 
         return response([
             'message' => 'Successfully, refreshed',

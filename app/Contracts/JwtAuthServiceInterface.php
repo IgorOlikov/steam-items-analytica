@@ -8,9 +8,9 @@ use Tymon\JWTAuth\Token;
 
 interface JwtAuthServiceInterface
 {
-    public function createAccessToken(User $user, int $roleId = 2): Token;
+    public function createAccessToken(User $user, int $roleId = 2): string;
 
-    public function createRefreshToken(User $user,string $userAgent,string $ip, int $roleId = 2): Token;
+    public function createRefreshToken(User $user,string $userAgent,string $ip, int $roleId = 2): string;
 
     public function createRefreshSession(
         string $refreshTokenId,
@@ -20,7 +20,7 @@ interface JwtAuthServiceInterface
         string $ip
     ): void;
 
-    public function refreshRefreshToken(User $user, string $oldRefreshTokenId, string $userAgent, string $ip): Token;
+    public function refreshRefreshToken(User $user, string $oldRefreshTokenId, string $userAgent, string $ip): string;
 
     public function deleteRefreshSession(string $refreshTokenId): void;
 

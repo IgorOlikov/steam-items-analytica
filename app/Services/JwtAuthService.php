@@ -14,7 +14,7 @@ use Tymon\JWTAuth\Token;
 class JwtAuthService implements JwtAuthServiceInterface
 {
 
-    public function createAccessToken(User $user, int $roleId = 2): Token
+    public function createAccessToken(User $user, int $roleId = 2): string
     {
         return auth()
             ->setTTL(config('jwt.ttl'))
@@ -26,7 +26,7 @@ class JwtAuthService implements JwtAuthServiceInterface
             ->login($user);
     }
 
-    public function createRefreshToken(User $user, string $userAgent, string $ip, int $roleId = 2): Token
+    public function createRefreshToken(User $user, string $userAgent, string $ip, int $roleId = 2): string
     {
         $refreshToken = auth()
             ->setTTL(config('jwt.refresh_ttl'))
@@ -42,7 +42,7 @@ class JwtAuthService implements JwtAuthServiceInterface
         return $refreshToken;
     }
 
-    public function refreshRefreshToken(User $user, string $oldRefreshTokenId, string $userAgent, string $ip): Token
+    public function refreshRefreshToken(User $user, string $oldRefreshTokenId, string $userAgent, string $ip): string
     {
         $this->deleteRefreshSession($oldRefreshTokenId);
 
