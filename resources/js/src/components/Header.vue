@@ -5,10 +5,20 @@
         <router-link to="/about">О сайте</router-link>
         <router-link to="/catalog">Каталог</router-link>
         <div>
-            <ul>
-                <li v-if="!authStore.auth"><router-link to="/login">Войти</router-link></li>
-                <li v-else><router-link to="/profile">Профиль</router-link></li>
-            </ul>
+            <div v-if="!authStore.auth">
+                <ul>
+                    <li><router-link to="/login">Войти</router-link></li>
+                    <li><router-link to="/register">Зарегестрироваться</router-link></li>
+                </ul>
+            </div>
+            <div v-else>
+                <ul>
+                    <li><router-link to="/profile">Профиль</router-link></li>
+                    <li
+                        @click="authStore.logout()"
+                        class="cursor-pointer">Выйти</li>
+                </ul>
+            </div>
         </div>
         <catalog-menu/>
     </div>

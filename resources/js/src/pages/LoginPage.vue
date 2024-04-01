@@ -1,20 +1,4 @@
-<script setup>
-
-import {ref} from "vue";
-import {useAuthStore} from "@/store/AuthStore.js";
-
-const email = ref('');
-const password = ref('');
-
-
-const authStore = useAuthStore();
-
-
-
-</script>
-
 <template>
-<div class="min-h-screen bg-gray-200 ">
     <div class="min-h-screen flex items-center justify-center w-full dark:bg-gray-200">
         <div class="bg-white dark:bg-green-300 shadow-md rounded-lg px-8 py-6 max-w-md">
             <h1 class="text-2xl font-bold text-center mb-4 dark:text-gray-200">Welcome Back!</h1>
@@ -54,8 +38,22 @@ const authStore = useAuthStore();
             </form>
         </div>
     </div>
-</div>
 </template>
+<script setup>
+import {ref} from "vue";
+import {useAuthStore} from "@/store/AuthStore.js";
+
+const email = ref('');
+const password = ref('');
+
+
+const authStore = useAuthStore();
+
+
+
+</script>
+
+
 
 <style scoped>
 

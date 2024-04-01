@@ -8,7 +8,7 @@ use App\Http\Controllers\ResetPasswordController;
 Route::prefix('/auth')->middleware('api')->group(function (){
     Route::post('/register',[AuthController::class,'register'])->name('register');
     Route::post('/login',[AuthController::class,'login'])->name('login');
-    Route::get('/refresh-tokens',[AuthController::class,'refreshTokens']);
+    Route::post('/refresh-tokens',[AuthController::class,'refreshTokens']);
     Route::post('/logout',[AuthController::class,'logout'])->name('logout')
         ->middleware('access.token.only');
 

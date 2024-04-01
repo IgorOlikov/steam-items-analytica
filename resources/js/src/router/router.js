@@ -7,6 +7,7 @@ import CatalogMainPage from "@/pages/CatalogMainPage.vue";
 import CategorySlugProductSlugPage from "@/pages/CategorySlugProductSlugPage.vue";
 import CategorySlugProductPage from "@/pages/CategorySlugProductPage.vue";
 import CategorySlugPage from "@/pages/CategorySlugPage.vue";
+import ProfilePage from "@/pages/ProfilePage.vue";
 
 
 const routes = [
@@ -21,6 +22,9 @@ const routes = [
     },
     {
         path: '/login', component: LoginPage
+    },
+    {
+        path: '/profile', component: ProfilePage
     },
     {
         path: '/catalog', component: CatalogMainPage
