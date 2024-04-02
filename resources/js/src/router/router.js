@@ -103,27 +103,27 @@ router.beforeEach((to, from, next) => {
 
    if ((to.name === 'register' || to.name === 'login') && authStore.auth) {
        console.log('Вы уже авторизованы!')
+       next('/')
 
-       router.push('/')
-    } else if (to.meta.authRequired && !authStore.auth) { // треб авториз a польз не авториз -> login
-        next('/login')
+   } else if (to.meta.authRequired && !authStore.auth) {
+       console.log('Вы не авторизованы!')
+       next('/login')
 
-    //Треб авториз и подтв почта, а пользователь не авторизован и не подтвердил почту
-    } else if ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && !(authStore.auth && authStore.userInfo.value.email_verified)) {
+   } else if (to.name === 'verifyEmail' || to.name === 'verifyEmailRequest') {
+       if (!(to.meta.authRequired &&  to.meta.emailVerifyRequired) && (authStore.auth && authStore.userInfo.value.email_verified)) {
+           console.log('Почта уже подтверждена!')
+           next('/')
+       }
+   }  else if ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && !(authStore.auth && authStore.userInfo.value.email_verified)) {
         console.log('Потча не подтверждена или пользователь не авторизован!')
-
-       if (!authStore.auth) {
-            router.push('/login')
-        } else if (authStore.auth && !authStore.userInfo.email_verified) {
-            router.push('/verify-email')
+        if (!authStore.auth) {
+            next('/login')
+        } else if (authStore.auth && !authStore.userInfo.value.email_verified) {
+            next('/verify-email')
         }
-    } else  if ((to.name === 'verifyEmail' || to.name === 'verifyEmailRequest') && ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && (authStore.auth && authStore.userInfo.value.email_verified))) {
-        console.log('Почта уже подтверждена!')
-
-        router.push('/')
-    } else {
-        next();
-    }
-})
+   } else {
+       next();
+   }
+});
 
 export default router;
