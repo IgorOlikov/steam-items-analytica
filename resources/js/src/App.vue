@@ -21,7 +21,9 @@ const authStore = useAuthStore()
 
 
 onMounted(() => {
-    authStore.checkUserAuthStatus()
+    authStore.checkUserAuthStatus();
+    console.log(authStore.userInfo.value)
+    console.log(authStore.userInfo.value.email)
 })
 
 </script>

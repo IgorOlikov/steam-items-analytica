@@ -1,11 +1,12 @@
 import {defineStore} from "pinia";
-import {computed, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 import axios from "axios";
+import router from "@/router/router.js";
 
 export const useAuthStore
     = defineStore('authStore', () => {
 
-    const userInfo = ref([]);
+    const userInfo = reactive({});
 
     const expiresIn = ref();
 
@@ -31,9 +32,13 @@ export const useAuthStore
            });
            localStorage.setItem('token', response.data.access_token)
            expiresIn.value = response.data.expires_in
-           userInfo.value = response.data.user
-           localStorage.setItem('userInfo', response.data.user)
+           userInfo.value =  response.data.user
+
+
+
+           localStorage.setItem('userInfo', JSON.stringify(userInfo.value))
            auth.value = true
+           await router.push('/')
        } catch (err) {
            errorMessage.value = err.response.data.message
        }
@@ -52,8 +57,9 @@ export const useAuthStore
                 localStorage.setItem('token', response.data.access_token)
                 expiresIn.value = response.data.expires_in
                 userInfo.value = response.data.user
-                localStorage.setItem('userInfo', response.data.user)
+                localStorage.setItem('userInfo', JSON.stringify(userInfo.value))
                 auth.value = true
+                await router.push('/') /// verify email
             } catch (err) {
                 errorMessage.value = err.response.data.message
             }
@@ -65,14 +71,15 @@ export const useAuthStore
             const response = await axios.post(`${appDomain}${apiVersion}/auth/logout`, null,
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
-            localStorage.removeItem('token')
-            localStorage.removeItem('userInfo')
-            auth.value = false;
         } catch (err) {
             console.log(err.response.data.message)
+
+        } finally {
+            auth.value = false
             localStorage.removeItem('token')
             localStorage.removeItem('userInfo')
-            auth.value = false
+            userInfo.value = {}
+
         }
     }
 
@@ -93,7 +100,7 @@ export const useAuthStore
 
     const checkUserAuthStatus = async () => {
        const accessToken = localStorage.getItem('token')
-        if (accessToken.length > 0) {
+        if (accessToken) {
             userInfo.value = JSON.parse(localStorage.getItem('userInfo'))
             auth.value = true
         } else {
