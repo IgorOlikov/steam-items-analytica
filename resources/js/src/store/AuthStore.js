@@ -86,7 +86,7 @@ export const useAuthStore
     const refreshToken = async () => {
         try {
             const response = await axios.post(`${appDomain}${apiVersion}/auth/refresh-tokens`, null, {
-                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`} //?????only refresh
             });
             localStorage.setItem('token', response.data.access_token)
             expiresIn.value = response.data.expires_in
