@@ -1,1 +1,5 @@
-Интернет магазин VueJs SPA Laravel API Jwt(refresh,access tokens), TailwindCss
+Интернет магазин. 
+
+VueJs - Vue Router ,Pinia, Axios(interceptors). 
+
+Laravel - Jwt, Postgresql, Docker, queues(jobs, notifications), scheduler.
