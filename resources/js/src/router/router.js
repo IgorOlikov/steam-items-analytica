@@ -9,6 +9,10 @@ import CategorySlugProductPage from "@/pages/CategorySlugProductPage.vue";
 import CategorySlugPage from "@/pages/CategorySlugPage.vue";
 import ProfilePage from "@/pages/ProfilePage.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
+import VerifyEmailPage from "@/pages/VerifyEmailRequestPage.vue";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage.vue";
+import VerifyEmailRequestPage from "@/pages/VerifyEmailRequestPage.vue";
+import SendEmailVeryficationPage from "@/pages/SendEmailVeryficationPage.vue";
 
 
 const routes = [
@@ -37,10 +41,28 @@ const routes = [
         meta: { authRequired: false }
     },
     {
+        path: '/verify-email',
+        component: SendEmailVeryficationPage,
+        name: 'verifyEmail',
+        meta: { authRequired: true, emailVerifyRequired: false }
+    },
+    {
+        path: '/verify-email-request',
+        component: VerifyEmailRequestPage,
+        name: 'verifyEmailRequest',
+        meta: { authRequired: true, emailVerifyRequired: false }
+    },
+    {
+        path: '/forgot-password',
+        component: ForgotPasswordPage,
+        name: 'forgotPassword',
+        meta: { authRequired: false }
+    },
+    {
         path: '/profile',
         component: ProfilePage,
         name: 'profile',
-        meta: { authRequired: true }
+        meta: { authRequired: true, emailVerifyRequired: true  }
     },
     {
         path: '/catalog',
@@ -79,14 +101,26 @@ router.beforeEach((to, from, next) => {
 
 
 
-    if (to.name === 'login' && authStore.auth) {
-        router.push('/')
-        //do nothing or to home
-    } else if (to.name === 'register' && authStore.auth) {
-        router.push('/')
+   if ((to.name === 'register' || to.name === 'login') && authStore.auth) {
+       console.log('Вы уже авторизованы!')
 
-    } else if (to.meta.authRequired && !authStore.auth) { // треб авториз и польз не авториз -> login
+       router.push('/')
+    } else if (to.meta.authRequired && !authStore.auth) { // треб авториз a польз не авториз -> login
         next('/login')
+
+    //Треб авториз и подтв почта, а пользователь не авторизован и не подтвердил почту
+    } else if ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && !(authStore.auth && authStore.userInfo.value.email_verified)) {
+        console.log('Потча не подтверждена или пользователь не авторизован!')
+
+       if (!authStore.auth) {
+            router.push('/login')
+        } else if (authStore.auth && !authStore.userInfo.email_verified) {
+            router.push('/verify-email')
+        }
+    } else  if ((to.name === 'verifyEmail' || to.name === 'verifyEmailRequest') && ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && (authStore.auth && authStore.userInfo.value.email_verified))) {
+        console.log('Почта уже подтверждена!')
+
+        router.push('/')
     } else {
         next();
     }

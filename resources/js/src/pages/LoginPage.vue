@@ -19,9 +19,9 @@
                     <input
                         v-model="password"
                         type="password" id="password" class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your password" required>
-                    <a href="#"
-                       class="text-xs text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Forgot
-                        Password?</a>
+                    <a :href="`/forgot-password`"
+                       class="text-xs text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Забыл пароль?</a>
                 </div>
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center">
@@ -29,8 +29,8 @@
                         <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Remember me</label>
                     </div>
                     <a href="#"
-                       class="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create
-                        Account</a>
+                       class="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Зарегестрироваться</a>
                 </div>
                 <button
                     @click.prevent="authStore.sighIn(email,password)"
@@ -42,6 +42,9 @@
 <script setup>
 import {ref} from "vue";
 import {useAuthStore} from "@/store/AuthStore.js";
+import router from "@/router/router.js";
+
+
 
 const email = ref('');
 const password = ref('');

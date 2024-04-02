@@ -44,6 +44,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role_id' => 2,
+                'email_verified' => ($user->email_verified_at !== null),
             ],
         ], 201)->withCookie($cookie);
     }
@@ -74,6 +75,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role_id' => $user->role_id,
+                'email_verified' => ($user->email_verified_at !== null),
                 ]
         ],200)->withCookie($cookie);
     }
@@ -126,6 +128,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role_id' => $user->role_id,
+                'email_verified' => ($user->email_verified_at !== null),
                 ]
         ],200)->withCookie($cookie);
     }
