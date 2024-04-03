@@ -19,7 +19,7 @@ axiosJwtApi.interceptors.response.use((response) => {
     const authStore = useAuthStore();
     console.log(error)
     const originalRequest = error.config
-    if (error.response.status === 500 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
             const response = await axios.post(`http://localhost/api/v1/auth/refresh-tokens`,null, {
@@ -37,6 +37,8 @@ axiosJwtApi.interceptors.response.use((response) => {
 
         }
         return axiosJwtApi(originalRequest);
+    } else if (error.response.status === 401){
+        //logout
     }
 })
 
