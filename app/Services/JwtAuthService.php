@@ -118,7 +118,4 @@ class JwtAuthService implements JwtAuthServiceInterface
         return $payload->get('jti');
     }
 
-
-
-
 }

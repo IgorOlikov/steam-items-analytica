@@ -16,38 +16,27 @@ axiosJwtApi.interceptors.request.use((config) => {
 axiosJwtApi.interceptors.response.use((response) => {
     return response
 }, async function (error){
-        console.log(error)
+    const authStore = useAuthStore();
+    console.log(error)
     const originalRequest = error.config
     if (error.response.status === 500 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
-            alert('before refresh request')
-            alert(localStorage.getItem('token'))
-
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
-            }
-            alert('get cooke before refresh request')
-            alert(getCookie('token'))
-
-            const newToken = await axios.post(`http://localhost/api/v1/auth/refresh-tokens`,null, {
+            const response = await axios.post(`http://localhost/api/v1/auth/refresh-tokens`,null, {
                 withCredentials:true,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
             }
-            })
-            alert('refresh request отработал')
-            alert(newToken.data.access_token)
-            console.log(newToken)
-            localStorage.setItem('token', newToken.data.access_token)
+            });
+            localStorage.setItem('token', response.data.access_token)
+            authStore.userInfo.value = response.data.user
+            authStore.expiresIn.value = response.data.expires_in
         } catch (err) {
 
         }
-        //return axiosJwtApi(originalRequest);
+        return axiosJwtApi(originalRequest);
     }
 })
 
