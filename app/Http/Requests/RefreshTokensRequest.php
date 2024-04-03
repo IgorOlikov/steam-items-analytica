@@ -11,13 +11,14 @@ class RefreshTokensRequest extends FormRequest
      */
     public function authorize(): bool
     {
-         $payload = auth()->payload();
 
-         $type = $payload->get('token_type');
+        $payload = auth()->payload();
 
-         if ($type !== "refresh_token") {
+        $type = $payload->get('token_type');
+
+        if ($type !== "refresh_token") {
              return false;
-         }
+        }
 
         return true;
     }

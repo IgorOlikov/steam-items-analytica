@@ -8,6 +8,8 @@ class ProfileController extends Controller
 {
     public function index(Request $request)
     {
+        //return response(auth()->getToken());
+
         return response()->json(auth()->user());
     }
 }

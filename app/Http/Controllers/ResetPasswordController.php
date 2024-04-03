@@ -33,7 +33,7 @@ class ResetPasswordController extends Controller
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'password_confirmation' => 'required|min:8',
+            'password_confirmation' => 'required|min:8', // УБРАТЬ ПОТОМ!!!
         ]);
 
         $status = Password::reset(
@@ -45,7 +45,7 @@ class ResetPasswordController extends Controller
 
                 $user->save();
 
-                event(new PasswordReset($user));
+                event(new PasswordReset($user)); // Добавить очередь?
             }
         );
 

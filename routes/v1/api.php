@@ -63,7 +63,7 @@ Route::middleware(
 
 
 /* Test */
-Route::get('test-guest',function (){
+Route::get('test-guest',function () {
    $url = URL::temporarySignedRoute(
         'verification.verify',
         Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),

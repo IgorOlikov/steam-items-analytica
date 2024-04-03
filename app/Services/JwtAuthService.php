@@ -42,21 +42,39 @@ class JwtAuthService implements JwtAuthServiceInterface
         return $refreshToken;
     }
 
-    public function refreshRefreshToken(User $user, string $oldRefreshTokenId, string $userAgent, string $ip): string
+    public function createTokenPair(
+        User $user,
+        string $oldRefreshToken,
+        string $oldRefreshTokenId,
+        string $userAgent,
+        string $ip
+    ): array
     {
-        $this->deleteRefreshSession($oldRefreshTokenId);
+        $newAccessToken = auth()
+            ->setTTL(config('jwt.ttl'))
+            ->claims([
+                'jti' => Uuid::uuid(),
+                'token_type' => 'access_token',
+                'role_id' => $user->role_id,
+            ])
+            ->login($user);
 
         $newRefreshToken = auth()
             ->setTTL(config('jwt.refresh_ttl'))
             ->claims([
                 'jti' => $newRefreshTokenId = Uuid::uuid(),
+                'token_type' => 'refresh_token',
                 'role_id' => $user->role_id,
             ])
-            ->refresh(true,false);
+            ->login($user);
+
+        $this->invalidateToken($oldRefreshToken);
+
+        $this->deleteRefreshSession($oldRefreshTokenId);
 
         $this->createRefreshSession($newRefreshTokenId, $user->id, $newRefreshToken, $userAgent, $ip);
 
-        return $newRefreshToken;
+        return [$newAccessToken, $newRefreshToken];
     }
 
     public function createRefreshSession(

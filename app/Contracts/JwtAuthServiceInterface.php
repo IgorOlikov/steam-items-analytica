@@ -20,7 +20,13 @@ interface JwtAuthServiceInterface
         string $ip
     ): void;
 
-    public function refreshRefreshToken(User $user, string $oldRefreshTokenId, string $userAgent, string $ip): string;
+    public function createTokenPair(
+        User $user,
+        string $oldRefreshToken,
+        string $oldRefreshTokenId,
+        string $userAgent,
+        string $ip
+    ): array;
 
     public function deleteRefreshSession(string $refreshTokenId): void;
 

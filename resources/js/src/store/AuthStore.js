@@ -79,7 +79,7 @@ export const useAuthStore
             localStorage.removeItem('token')
             localStorage.removeItem('userInfo')
             userInfo.value = {}
-
+            await router.push('/')
         }
     }
 

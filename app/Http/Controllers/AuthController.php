@@ -17,7 +17,7 @@ class AuthController extends Controller
         protected JwtAuthServiceInterface $jwtAuthService
     )
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login','register']]); //'refresh-tokens'
     }
 
     public function register(RegisterRequest $request)
@@ -32,8 +32,8 @@ class AuthController extends Controller
 
         $refreshToken = $this->jwtAuthService
             ->createRefreshToken($user, $request->userAgent(), $request->ip());
-
-        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth', 'localhost', false, true);
+                //'/api/v1/auth'
+        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'), '/', 'localhost', false, false);
 
         return response([
             'message' => 'User created successfully, check your email',
@@ -64,7 +64,7 @@ class AuthController extends Controller
         $refreshToken = $this->jwtAuthService
             ->createRefreshToken($user, $request->userAgent(), $request->ip(), $user->role_id);
 
-        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'),'/api/v1/auth','localhost', false, true);
+        $cookie = Cookie::make('token', $refreshToken, (string)config('jwt.refresh_ttl'),'/','localhost', false, false);
 
         return response([
             'message' => 'Successfully, log in',
@@ -96,7 +96,7 @@ class AuthController extends Controller
         auth()->logout();
 
         //delete old cookie
-        $cookie = Cookie::make('token', '', time() - 3600, '/api/v1/auth', 'localhost', false, true);
+        $cookie = Cookie::make('token', '', time() - 3600, '/', 'localhost', false, false);
 
         return response(['message' => 'Successfully logged out'],200)->withCookie($cookie);
     }
@@ -105,19 +105,15 @@ class AuthController extends Controller
     {
         $user = auth()->user();
 
-        //fetch refresh token from request
-        $payload = auth()->payload();
+        $oldRefreshToken = $request->cookie('token');
 
-        //get token old id
-        $oldRefreshTokenId = $payload->get('jti');
+        $oldRefreshTokenId = auth()->payload()->get('jti');
 
-        $newAccessToken = $this->jwtAuthService
-            ->createAccessToken($user, $user->role_id);
+        [$newAccessToken, $newRefreshToken] = $this->jwtAuthService
+            ->createTokenPair($user, $oldRefreshToken, $oldRefreshTokenId, $request->userAgent(), $request->ip());
 
-        $newRefreshToken = $this->jwtAuthService
-              ->refreshRefreshToken($user, $oldRefreshTokenId, $request->userAgent(), $request->ip());
-
-        $cookie = Cookie::make('token', $newRefreshToken, (string)config('jwt.refresh_ttl'), '/api/v1/auth','localhost',false,true);
+        //data format!!! check // httponly true potom
+        $cookie = Cookie::make('token', $newRefreshToken, (string)config('jwt.refresh_ttl'), '/','localhost',false,false);
 
         return response([
             'message' => 'Successfully, refreshed',

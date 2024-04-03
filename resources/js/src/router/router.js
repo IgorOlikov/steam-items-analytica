@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
+import {useAuthStore} from "@/store/AuthStore.js";
 import HomePage from "@/pages/HomePage.vue";
 import AboutPage from "@/pages/AboutPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
@@ -8,11 +9,10 @@ import CategorySlugProductSlugPage from "@/pages/CategorySlugProductSlugPage.vue
 import CategorySlugProductPage from "@/pages/CategorySlugProductPage.vue";
 import CategorySlugPage from "@/pages/CategorySlugPage.vue";
 import ProfilePage from "@/pages/ProfilePage.vue";
-import {useAuthStore} from "@/store/AuthStore.js";
-import VerifyEmailPage from "@/pages/VerifyEmailRequestPage.vue";
-import ForgotPasswordPage from "@/pages/ForgotPasswordPage.vue";
 import VerifyEmailRequestPage from "@/pages/VerifyEmailRequestPage.vue";
-import SendEmailVeryficationPage from "@/pages/SendEmailVeryficationPage.vue";
+import SendEmailVerificationPage from "@/pages/SendEmailVerificationPage.vue";
+import SendEmailForgotPasswordPage from "@/pages/SendEmailForgotPasswordPage.vue";
+import ResetPasswordRequestPage from "@/pages/ResetPasswordRequestPage.vue";
 
 
 const routes = [
@@ -42,7 +42,7 @@ const routes = [
     },
     {
         path: '/verify-email',
-        component: SendEmailVeryficationPage,
+        component: SendEmailVerificationPage,
         name: 'verifyEmail',
         meta: { authRequired: true, emailVerifyRequired: false }
     },
@@ -54,8 +54,14 @@ const routes = [
     },
     {
         path: '/forgot-password',
-        component: ForgotPasswordPage,
+        component: SendEmailForgotPasswordPage,
         name: 'forgotPassword',
+        meta: { authRequired: false }
+    },
+    {
+        path: '/forgot-password-request',
+        component: ResetPasswordRequestPage,
+        name: 'forgotPasswordRequest',
         meta: { authRequired: false }
     },
     {
@@ -88,7 +94,6 @@ const routes = [
         name: 'categoryProduct',
         meta: { authRequired: false }
     },
-
 ]
 
 const router = createRouter({
@@ -100,30 +105,29 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
 
-
-   if ((to.name === 'register' || to.name === 'login') && authStore.auth) {
+    if ((to.name === 'register' || to.name === 'login') && authStore.auth) {
        console.log('Вы уже авторизованы!')
        next('/')
 
-   } else if (to.meta.authRequired && !authStore.auth) {
+    } else if (to.meta.authRequired && !authStore.auth) {
        console.log('Вы не авторизованы!')
        next('/login')
 
-   } else if (to.name === 'verifyEmail' || to.name === 'verifyEmailRequest') {
+    } else if (to.name === 'verifyEmail' || to.name === 'verifyEmailRequest') {
        if (!(to.meta.authRequired &&  to.meta.emailVerifyRequired) && (authStore.auth && authStore.userInfo.value.email_verified)) {
            console.log('Почта уже подтверждена!')
            next('/')
        }
-   }  else if ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && !(authStore.auth && authStore.userInfo.value.email_verified)) {
-        console.log('Потча не подтверждена или пользователь не авторизован!')
+    }  else if ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && !(authStore.auth && authStore.userInfo.value.email_verified)) {
+        console.log('Почта не подтверждена или пользователь не авторизован!')
         if (!authStore.auth) {
             next('/login')
         } else if (authStore.auth && !authStore.userInfo.value.email_verified) {
             next('/verify-email')
         }
-   } else {
-       next();
-   }
+    } else {
+        next();
+    }
 });
 
 export default router;
