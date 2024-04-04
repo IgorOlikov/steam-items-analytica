@@ -26,6 +26,10 @@ Route::get('/', function () {
 /* Auth routes */
 require_once 'Auth.php';
 
+Route::get('about', function () {
+   return response('about',400);
+});
+
 
 /* Main site routes */
 Route::apiResource('/catalog', CatalogController::class);
@@ -52,7 +56,7 @@ Route::apiResource('filter', FilterController::class);
 /* Profile */
 Route::middleware(
     [
-        'api',
+        'auth:api',
         'access.token.only',
         'jwt.verified',
 

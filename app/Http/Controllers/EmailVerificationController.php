@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Requests\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 class EmailVerificationController extends Controller
@@ -11,7 +11,7 @@ class EmailVerificationController extends Controller
     {
         if (auth()->user()->hasVerifiedEmail()) {
 
-            return response(['message' => 'Email has been already verified.']);
+            return response(['message' => 'Email has been already verified'],200)->json();
         }
 
         auth()->user()->sendEmailVerificationNotification();

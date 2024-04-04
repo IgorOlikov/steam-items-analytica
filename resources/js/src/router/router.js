@@ -123,11 +123,11 @@ router.beforeEach((to, from, next) => {
         if (!authStore.auth) {
             next('/login')
         } else if (authStore.auth && !authStore.userInfo.value.email_verified) {
+            console.log('Отправьте письмо')
             next('/verify-email')
         }
-    } else {
-        next();
     }
+    next()
 });
 
 export default router;

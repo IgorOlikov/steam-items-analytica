@@ -77,13 +77,14 @@ class VerifyEmailCustom extends Notification
     protected function verificationUrl($notifiable): string
     {
         $params = [
+            'id' => $notifiable->getKey(),
+            'hash' => sha1($notifiable->getEmailForVerification()),
             'expires' => Carbon::now()
                 ->addMinutes(Config::get('auth.verification.expire', 60))
                 ->getTimestamp(),
-            'id' => $notifiable->getKey(),
-            'hash' => sha1($notifiable->getEmailForVerification()),
+
         ];
-        ksort($params);
+        //ksort($params);
 
         // then create API url for verification. my API have `/api` prefix,
         // so i don't want to show that url to users
@@ -97,8 +98,13 @@ class VerifyEmailCustom extends Notification
         $key = config('app.key');
         $signature = hash_hmac('sha256', $url, $key);
 
-        // generate url for yous SPA page to send it to user
-        return config('app.frontend_url') . '/email/verify' . '?' . http_build_query($params + compact('signature'), false);
+
+        $frontendUrl = \config('app.frontend_url') . '/verify-email/';
+
+        // generate url for your SPA page ,send to user email ! Link for FRONTEND !
+
+        return $frontendUrl . $params['id'] . '/' . $params['hash'] .
+            '?expires=' . $params['expires'] . '&signature=' . $signature;
     }
 
     /**
