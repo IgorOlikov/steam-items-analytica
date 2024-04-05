@@ -5,7 +5,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ResetPasswordController;
 
 
-Route::prefix('/auth')->middleware('api')->group(function () {
+Route::prefix('/auth')->middleware('auth:api')->group(function () {
 
     Route::post('/register',[AuthController::class,'register'])->name('register');
     Route::post('/login',[AuthController::class,'login'])->name('login');

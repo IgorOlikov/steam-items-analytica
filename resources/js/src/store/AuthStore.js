@@ -93,8 +93,11 @@ export const useAuthStore
 
     const checkUserAuthStatus = async () => {
        const accessToken = localStorage.getItem('token')
-        if (accessToken) {
-            userInfo.value = JSON.parse(localStorage.getItem('userInfo'))
+       const userInfoStorage = localStorage.getItem('userInfo')
+
+
+        if (accessToken && userInfoStorage) {
+            userInfo.value = JSON.parse(userInfoStorage)
             auth.value = true
         } else {
             auth.value = false
@@ -111,5 +114,8 @@ export const useAuthStore
         errorMessage,
         isErrorMessage,
         userInfo,
-        expiresIn}
+        expiresIn,
+        appDomain,
+        apiVersion
+    }
 });

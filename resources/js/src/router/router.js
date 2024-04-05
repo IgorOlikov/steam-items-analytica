@@ -47,7 +47,7 @@ const routes = [
         meta: { authRequired: true, emailVerifyRequired: false }
     },
     {
-        path: '/verify-email-request',
+        path: '/verify-email-request/:id/:hash',
         component: VerifyEmailRequestPage,
         name: 'verifyEmailRequest',
         meta: { authRequired: true, emailVerifyRequired: false }

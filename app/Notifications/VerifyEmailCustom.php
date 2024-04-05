@@ -84,7 +84,6 @@ class VerifyEmailCustom extends Notification
                 ->getTimestamp(),
 
         ];
-        //ksort($params);
 
         // then create API url for verification. my API have `/api` prefix,
         // so i don't want to show that url to users
@@ -99,7 +98,7 @@ class VerifyEmailCustom extends Notification
         $signature = hash_hmac('sha256', $url, $key);
 
 
-        $frontendUrl = \config('app.frontend_url') . '/verify-email/';
+        $frontendUrl = \config('app.frontend_url') . '/verify-email-request/';
 
         // generate url for your SPA page ,send to user email ! Link for FRONTEND !
 
