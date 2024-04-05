@@ -12,11 +12,6 @@ use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
-    public function __construct()
-    {
-        //$this->middleware('auth:api', ['except' => ['sendEmailPasswdResetLink','resetPassword']]);
-    }
-
     public function sendEmailPasswdResetLink(Request $request)
     {
         $request->validate([

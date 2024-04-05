@@ -5,11 +5,14 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ResetPasswordController;
 
 
-Route::prefix('/auth')->middleware('api')->group(function () { /// auth:
+Route::prefix('/auth')->group(function () {
 
     Route::post('/register',[AuthController::class,'register'])->name('register');
+
     Route::post('/login',[AuthController::class,'login'])->name('login');
+
     Route::post('/refresh-tokens',[AuthController::class,'refreshTokens'])->name('refresh-tokens');
+
     Route::post('/logout',[AuthController::class,'logout'])->name('logout')
         ->middleware('access.token.only');
 
@@ -25,7 +28,7 @@ Route::prefix('/auth')->middleware('api')->group(function () { /// auth:
 
 
     Route::post('/forgot-password',[ResetPasswordController::class,'sendEmailPasswdResetLink'])
-        //->middleware('guest')
+        ->middleware('guest')
         ->name('password.email');
 
     Route::post('/reset-password',[ResetPasswordController::class,'resetPassword'])
@@ -33,7 +36,5 @@ Route::prefix('/auth')->middleware('api')->group(function () { /// auth:
         ->name('password.update');
 
 });
-
-
 
 

@@ -17,7 +17,7 @@ class AuthController extends Controller
         protected JwtAuthServiceInterface $jwtAuthService
     )
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]); //'refresh-tokens'
+        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
     public function register(RegisterRequest $request)

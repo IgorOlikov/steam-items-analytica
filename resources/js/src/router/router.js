@@ -104,27 +104,31 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
-
     if ((to.name === 'register' || to.name === 'login') && authStore.auth) {
        console.log('Вы уже авторизованы!')
-       next('/')
+        return next('/')
 
     } else if (to.meta.authRequired && !authStore.auth) {
        console.log('Вы не авторизованы!')
-       next('/login')
+        return next('/login')
 
     } else if (to.name === 'verifyEmail' || to.name === 'verifyEmailRequest') {
        if (!(to.meta.authRequired &&  to.meta.emailVerifyRequired) && (authStore.auth && authStore.userInfo.value.email_verified)) {
            console.log('Почта уже подтверждена!')
-           next('/')
+           return  next('/')
        }
+    } else if (to.name === 'forgotPassword' || to.name === 'forgotPasswordRequest') {
+        if (!(to.meta.authRequired &&  to.meta.emailVerifyRequired) && (authStore.auth)) {
+            console.log('Вы авторизованы!')
+            return next('/')
+        }
     }  else if ((to.meta.authRequired &&  to.meta.emailVerifyRequired) && !(authStore.auth && authStore.userInfo.value.email_verified)) {
         console.log('Почта не подтверждена или пользователь не авторизован!')
         if (!authStore.auth) {
-            next('/login')
+            return next('/login')
         } else if (authStore.auth && !authStore.userInfo.value.email_verified) {
             console.log('Отправьте письмо')
-            next('/verify-email')
+            return next('/verify-email')
         }
     }
     next()
