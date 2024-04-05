@@ -26,7 +26,7 @@ const verifyEmailRequest = async () => {
         const response = await axiosJwtApi.get(url)
 
         authStore.userInfo.value.email_verified = true
-        localStorage.setItem('userInfo', JSON.stringify(authStore.userInfo))
+        localStorage.setItem('userInfo', JSON.stringify(authStore.userInfo.value))
         await router.push('/')
     } catch (err) {
         console.log(err)
