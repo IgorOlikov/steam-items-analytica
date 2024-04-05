@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
 import axios from "axios";
 import router from "@/router/router.js";
+import axiosJwtApi from "@/Axios/Api.js";
 
 export const useAuthStore
     = defineStore('authStore', () => {
@@ -68,7 +69,7 @@ export const useAuthStore
 
     const logout = async () => {
         try{
-            const response = await axios.post(`${appDomain}${apiVersion}/auth/logout`, null, {
+            const response = await axiosJwtApi.post(`${appDomain}${apiVersion}/auth/logout`, null, {
                 headers: {
                     withCredentials: true,
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -92,9 +93,8 @@ export const useAuthStore
 
 
     const checkUserAuthStatus = async () => {
-       const accessToken = localStorage.getItem('token')
-       const userInfoStorage = localStorage.getItem('userInfo')
-
+        const accessToken = localStorage.getItem('token')
+        const userInfoStorage = localStorage.getItem('userInfo')
 
         if (accessToken && userInfoStorage) {
             userInfo.value = JSON.parse(userInfoStorage)

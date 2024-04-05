@@ -5,7 +5,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ResetPasswordController;
 
 
-Route::prefix('/auth')->middleware('auth:api')->group(function () {
+Route::prefix('/auth')->middleware('api')->group(function () { /// auth:
 
     Route::post('/register',[AuthController::class,'register'])->name('register');
     Route::post('/login',[AuthController::class,'login'])->name('login');
@@ -13,21 +13,27 @@ Route::prefix('/auth')->middleware('auth:api')->group(function () {
     Route::post('/logout',[AuthController::class,'logout'])->name('logout')
         ->middleware('access.token.only');
 
-    //get
+
     Route::post('/email/verify',[EmailVerificationController::class,'sendEmailVerificationLink'])
-        ->name('verification.notice')->middleware('access.token.only');
+        ->name('verification.notice')
+        ->middleware([
+            'access.token.only',
+        ]);
 
     Route::get('/email/verify/{id}/{hash}',[EmailVerificationController::class,'verifyEmailHashUrl'])
         ->name('verification.verify')->middleware('access.token.only');
 
 
     Route::post('/forgot-password',[ResetPasswordController::class,'sendEmailPasswdResetLink'])
-        ->middleware('guest')
+        //->middleware('guest')
         ->name('password.email');
+
     Route::post('/reset-password',[ResetPasswordController::class,'resetPassword'])
         ->middleware('guest')
         ->name('password.update');
 
 });
+
+
 
 

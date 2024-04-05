@@ -14,22 +14,22 @@ class ResetPasswordController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['sendEmailPasswdResetLink','resetPassword']]);
+        //$this->middleware('auth:api', ['except' => ['sendEmailPasswdResetLink','resetPassword']]);
     }
 
     public function sendEmailPasswdResetLink(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required','email'],
         ]);
 
         $status = Password::sendResetLink(
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+         return $status === Password::RESET_LINK_SENT
+            ? response(['message' => __($status)],200)
+            : response(['message' => __($status)],422);
     }
 
     public function resetPassword(Request $request)
@@ -38,11 +38,10 @@ class ResetPasswordController extends Controller
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'password_confirmation' => 'required|min:8', // УБРАТЬ ПОТОМ!!!
         ]);
 
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            $request->only('email','password', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
@@ -55,7 +54,7 @@ class ResetPasswordController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+            ? response(['message' => __($status)],200)
+            : response(['message' => __($status)],422);
     }
 }

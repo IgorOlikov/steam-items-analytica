@@ -66,19 +66,4 @@ Route::middleware(
 });
 
 
-/* Test */
-Route::get('test-guest',function () {
-   $url = URL::temporarySignedRoute(
-        'verification.verify',
-        Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-        [
-            'id' => 'aaaaa',
-            'hash' => 'bbbbb',
-        ]
-    ,false);
-   //return urlencode($url);
-    return ($url);
 
-    //return url(\route('login',null,false));
-   //return 'GUEST!';
-})->middleware('api','guest');
