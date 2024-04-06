@@ -25,6 +25,7 @@ onMounted(async () => {
 <template>
     <div>
     <h1>Home Page</h1>
+    <router-link to="/catalog">Каталог</router-link>
     <h1 v-for="product in products"  class="text-amber-300">APP COMPONENT{{ product.name }}</h1>
     </div>
 </template>

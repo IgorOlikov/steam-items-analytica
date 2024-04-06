@@ -81,14 +81,14 @@ const sendResetRequest = async () => {
             password: password.value
         })
         successMessage.value = response.data.message
-        authStore.userInfo.value.email_verified = true
-        await router.push('/login')
-    } catch (err) {
-        authStore.errorMessage = err.response.data.message
-    } finally {
         successMessage.value = ''
         authStore.errorMessage = ''
+        await router.push('/login')
+    } catch (err) {
+        console.log(err.response.data)
+        authStore.errorMessage = err.response.data.message
     }
+
   }
 }
 

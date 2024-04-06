@@ -1,6 +1,6 @@
 <template>
 
-    <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl">
+    <div class="bg-white w-4/6 m-auto rounded-xl shadow-xl">
         <Header/>
             <div class="min-h-screen">
 

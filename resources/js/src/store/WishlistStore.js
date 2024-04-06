@@ -1,11 +1,11 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 
-export const useCartStore = defineStore('cartStore', () => {
+export const useWishlistStore = defineStore('wishlistStore', () => {
 
-    const cartCount = ref(0)
+    const wishlistCount = ref(0)
 
-    const cart = ref([])
+    const wishlist = ref([])
 
 
     const addItem = async () => {

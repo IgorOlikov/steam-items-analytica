@@ -1,5 +1,5 @@
 <template>
-         <div class="border">
+         <div class="border min-h-64 max-h-64">
              <p>Id {{ id }}</p>
              <a :href="`/catalog/category/${categorySlug}/product/${slug}`">
             <p>Name {{ name }}</p>

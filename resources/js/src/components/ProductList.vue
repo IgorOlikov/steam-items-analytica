@@ -1,6 +1,8 @@
 <template>
 
+    <div class="flex-row space-y-4">
     <product-item
+        class=""
         v-for="product in products"
         :key="product.id"
         :name="product.name"
@@ -8,7 +10,7 @@
         :id="product.id"
         :slug="product.slug"
     />
-
+    </div>
 </template>
 
 <script setup>

@@ -4,8 +4,7 @@ import axios from "axios";
 import router from "@/router/router.js";
 import axiosJwtApi from "@/Axios/Api.js";
 
-export const useAuthStore
-    = defineStore('authStore', () => {
+export const useAuthStore = defineStore('authStore', () => {
 
     const userInfo = reactive({});
 
