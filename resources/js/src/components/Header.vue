@@ -12,7 +12,7 @@
                         <div class="h-12 flex-1 w-full">
                             <button
                                 @click.prevent="toggleMenu"
-                                class="bg-red-400 w-full h-full">
+                                class="bg-red-300 w-full h-full rounded-3xl hover:bg-red-400 ">
                                 Каталог
                             </button>
                         </div>

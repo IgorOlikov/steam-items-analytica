@@ -5,7 +5,7 @@
             <catalog-menu v-if="showMenu"/>
 
 
-            <div class="min-h-screen">
+            <div class="min-h-screen border-b-2">
                 <router-view></router-view>
             </div>
         <Footer></Footer>

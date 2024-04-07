@@ -1,6 +1,6 @@
 <script setup>
 
-import CatalogCategoryItem from "@/components/CatalogCategoryItem.vue";
+import CatalogCategoryItem from "@/components/MainCatalog/CatalogCategoryItem.vue";
 import {computed, ref} from "vue";
 
 defineProps({

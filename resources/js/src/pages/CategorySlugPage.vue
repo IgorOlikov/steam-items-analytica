@@ -3,7 +3,7 @@
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import {useRoute} from "vue-router";
-import CatalogCategoryList from "@/components/CatalogCategoryList.vue";
+import CatalogCategoryList from "@/components/MainCatalog/CatalogCategoryList.vue";
 
 const catalog = ref([])
 

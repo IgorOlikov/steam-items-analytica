@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="space-y-1">
+    <div class="space-y-1 pl-4 border-b-2">
     <catalog-menu-sub-sub-item
         v-for="subSubCategory in subSubCategories"
         :key="subSubCategory.id"

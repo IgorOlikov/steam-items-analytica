@@ -8,7 +8,7 @@
 <script setup>
 import axios from "axios";
 import {onMounted, ref} from "vue";
-import CatalogCategoryList from "@/components/CatalogCategoryList.vue";
+import CatalogCategoryList from "@/components/MainCatalog/CatalogCategoryList.vue";
 
 const catalog = ref([])
 

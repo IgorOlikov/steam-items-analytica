@@ -4,31 +4,32 @@ import {onMounted, ref} from "vue";
 import Header from "@/components/Header.vue";
 
 
-const products = ref([]);
 
-async function fetchApi() {
-    const { data }  = await axios.get(`http://localhost/api/v1/product`)
-
-
-    //products.value = data.map((obj) => ({
-    //    ...obj
-    //}));
-
-    products.value = data
-
-}
-
-onMounted(async () => {
-    await fetchApi()
-
-});
 </script>
 
 <template>
-    <div>
-    <h1>Home Page</h1>
-    <router-link to="/catalog">Каталог</router-link>
-    <h1 v-for="product in products"  class="text-amber-300">APP COMPONENT{{ product.name }}</h1>
+    <div class="grid grid-cols-4 gap-5 px-24 py-20 min-h-max">
+
+        <div class="border-2 ">
+            <a href="/catalog">
+                <div class="p-5">
+                    <div class="h-10 ">
+                        <h1>Каталог</h1>
+                    </div>
+                    <div>
+                        <h1>Большой выбор товаров</h1>
+                    </div>
+                    <div>
+                       <img height="1" src="http://localhost/shop/catalog.png"/>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="border-2 bg-red-400"></div>
+        <div class="border-2 "></div>
+        <div class="border-2 "></div>
+
+
     </div>
 </template>
 
