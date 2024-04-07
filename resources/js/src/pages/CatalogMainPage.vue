@@ -25,6 +25,7 @@ onMounted(async () => {
     await fetchCatalog()
 
 });
+
 </script>
 
 <style scoped>

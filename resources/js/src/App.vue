@@ -2,8 +2,10 @@
 
     <div class="bg-white w-4/6 m-auto rounded-xl shadow-xl">
         <Header/>
-            <div class="min-h-screen">
+            <catalog-menu v-if="showMenu"/>
 
+
+            <div class="min-h-screen">
                 <router-view></router-view>
             </div>
         <Footer></Footer>
@@ -15,10 +17,18 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
-import {onMounted} from "vue";
+import {provide, onMounted, ref} from "vue";
+import CatalogMenu from "@/components/CatalogMenu.vue";
+
 
 const authStore = useAuthStore()
 
+
+const showMenu = ref(false)
+
+provide('showMenus', {
+    showMenu
+})
 
 onMounted(() => {
     authStore.checkUserAuthStatus();

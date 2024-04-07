@@ -9,11 +9,13 @@ const products = ref([]);
 async function fetchApi() {
     const { data }  = await axios.get(`http://localhost/api/v1/product`)
 
-    console.log(data)
-    products.value = data.map((obj) => ({
-        ...obj
-    }));
-    console.log(products.value);
+
+    //products.value = data.map((obj) => ({
+    //    ...obj
+    //}));
+
+    products.value = data
+
 }
 
 onMounted(async () => {

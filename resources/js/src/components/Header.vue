@@ -10,7 +10,11 @@
                             </a>
                         </div>
                         <div class="h-12 flex-1 w-full">
-                            <catalog-menu/>
+                            <button
+                                @click.prevent="toggleMenu"
+                                class="bg-red-400 w-full h-full">
+                                Каталог
+                            </button>
                         </div>
                    </div>
                 </div> <!--row 1-->
@@ -24,7 +28,6 @@
                         <div v-if="!authStore.auth">
                             <ul>
                                 <li><router-link to="/login">Войти</router-link></li>
-                                <li><router-link to="/register">Зарегестрироваться</router-link></li>
                             </ul>
                         </div>
                         <div v-else>
@@ -43,12 +46,19 @@
 
 <script setup>
 import {useAuthStore} from "@/store/AuthStore.js";
-import CatalogMenu from "@/UI/CatalogMenu.vue";
-import {ref} from "vue";
+import CatalogMenu from "@/components/CatalogMenu.vue";
+import {inject, ref} from "vue";
 import SearchInput from "@/UI/SearchInput.vue";
 import router from "@/router/router.js";
+import {provide} from "vue";
 
 const authStore = useAuthStore();
+
+const { showMenu } = inject('showMenus')
+
+const toggleMenu = async () => {
+    showMenu.value ? showMenu.value = false : showMenu.value = true
+}
 
 const wishList = ref([]);
 const cart = ref([]);

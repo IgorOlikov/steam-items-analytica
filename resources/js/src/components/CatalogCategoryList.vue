@@ -14,6 +14,7 @@ defineProps({
 <template>
     <h1>Catalog category list</h1>
         <catalog-category-item
+
             v-for="category in catalog"
             :id="category.id"
             :key="category.id"

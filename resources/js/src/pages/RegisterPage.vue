@@ -61,7 +61,7 @@
                             checked>
                         <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-blue-700">Запомнить меня</label>
                     </div>
-                    <a href="#"
+                    <a href="/login"
                        class="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Войти</a>
                 </div>
