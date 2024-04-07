@@ -1,7 +1,6 @@
 <template>
-    <div class="p-1">
+    <div class="p-5 space-y-5">
     <catalog-menu-item
-
         v-for="catalog in catalogs"
         :key="catalog.id"
         :id="catalog.id"
@@ -15,7 +14,7 @@
 
 <script setup>
 
-import CatalogMenuItem from "@/components/CatalogMenuItem.vue";
+import CatalogMenuItem from "@/components/MegaMenu/MenuItem.vue";
 
 defineProps({
     catalogs: Array,

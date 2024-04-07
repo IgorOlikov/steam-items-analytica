@@ -1,6 +1,6 @@
 <template>
     <div class="border bg-white h-32"> <!--1-->
-            <div class="flex flex-row h-full items-center border border-blue-900"> <!-- flex flex row-->
+            <div class="flex flex-row h-full items-center border-b-2"> <!-- flex flex row-->
 
                 <div class="basis-4/12   border-l-red-900"> <!--row 1-->
                    <div class="flex flex-row px-10">
@@ -46,7 +46,7 @@
 
 <script setup>
 import {useAuthStore} from "@/store/AuthStore.js";
-import CatalogMenu from "@/components/CatalogMenu.vue";
+import CatalogMenu from "@/components/MegaMenu/Menu.vue";
 import {inject, ref} from "vue";
 import SearchInput from "@/UI/SearchInput.vue";
 import router from "@/router/router.js";

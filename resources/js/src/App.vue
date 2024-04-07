@@ -17,8 +17,8 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
-import {provide, onMounted, ref} from "vue";
-import CatalogMenu from "@/components/CatalogMenu.vue";
+import {provide, onMounted, ref, onBeforeUpdate} from "vue";
+import CatalogMenu from "@/components/MegaMenu/Menu.vue";
 
 
 const authStore = useAuthStore()
@@ -33,6 +33,14 @@ provide('showMenus', {
 onMounted(() => {
     authStore.checkUserAuthStatus();
 })
+
+onBeforeUpdate(() => {
+    removeCatalogFromLocalStorage()
+})
+
+const removeCatalogFromLocalStorage = async () => {
+    localStorage.removeItem('catalog')
+}
 
 </script>
 

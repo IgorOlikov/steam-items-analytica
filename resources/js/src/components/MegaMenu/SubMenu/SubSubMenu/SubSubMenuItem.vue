@@ -12,7 +12,11 @@ defineProps({
 </script>
 
 <template>
-    <h1> {{ name }}</h1>
+    <div class="hover:text-amber-300">
+        <a :href="`/catalog/category/${slug}/product`">
+            <h1> {{ name }}</h1>
+        </a>
+    </div>
 </template>
 
 <style scoped>

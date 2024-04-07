@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-200  min-h-24 max-h-96 min-w-64 max-w-96 top-20 absolute flex flex-col">
+    <div class="bg-white border-t-2 border-l-2 border-b-2 min-h-24 max-h-96 min-w-64 max-w-96 top-[88px] absolute flex flex-col rounded-bl-3xl">
         <catalog-menu-list
             :catalogs="catalogs"
         />
@@ -13,10 +13,10 @@
 </template>
 
 <script setup>
-import CatalogMenuList from "@/components/CatalogMenuList.vue";
+import CatalogMenuList from "@/components/MegaMenu/MenuList.vue";
 import {onMounted, ref, provide} from "vue";
 import axios from "axios";
-import CatalogSubMenu from "@/components/CatalogSubMenu.vue";
+import CatalogSubMenu from "@/components/MegaMenu/SubMenu/SubMenu.vue";
 
 const catalogs = ref([])
 
@@ -31,14 +31,22 @@ provide('catalogSubMenu', {
 
 
 async function fetchCatalog() {
-    if (catalogs.value.length === 0) {
 
+    if (sessionStorage.getItem('catalog') === null) {
+        try {
         const { data } = await axios.get(`http://localhost/api/v1/catalog`)
-        //console.log(data)
-        //catalogs.value = data.map((obj) => ({
-        //    ...obj
-        //}));
+
         catalogs.value = data
+
+        const jsonCatalog = JSON.stringify(data)
+
+        sessionStorage.setItem('catalog', jsonCatalog)
+
+        } catch (err) {
+            console.log(err)
+        }
+    } else {
+        catalogs.value = JSON.parse(sessionStorage.getItem('catalog'))
     }
 }
 

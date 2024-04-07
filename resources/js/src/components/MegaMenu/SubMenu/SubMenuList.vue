@@ -1,5 +1,5 @@
 <template>
-    <div class="p-1">
+    <div class="p-5 space-y-10">
         <catalog-sub-menu-item
             v-for="subCategory in subCategories"
             :key="subCategory.id"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import CatalogSubMenuItem from "@/components/CatalogSubMenuItem.vue";
+import CatalogSubMenuItem from "@/components/MegaMenu/SubMenu/SubMenuItem.vue";
 
 defineProps({
     subCategories: Array,

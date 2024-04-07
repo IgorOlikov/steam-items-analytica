@@ -1,10 +1,12 @@
 <template>
     <div
         @mouseover="haveNestedCategories"
+        class="hover:text-amber-300"
 
     >
-
-        <h1> {{ name }} </h1>
+        <a :href="`/catalog/category/${slug}`">
+            <h1> {{ name }} </h1>
+        </a>
     </div>
 
 

@@ -2,17 +2,17 @@ import {createRouter, createWebHistory} from "vue-router";
 import {useAuthStore} from "@/store/AuthStore.js";
 import HomePage from "@/pages/HomePage.vue";
 import AboutPage from "@/pages/AboutPage.vue";
-import RegisterPage from "@/pages/RegisterPage.vue";
-import LoginPage from "@/pages/LoginPage.vue";
+import RegisterPage from "@/pages/Auth/RegisterPage.vue";
+import LoginPage from "@/pages/Auth/LoginPage.vue";
 import CatalogMainPage from "@/pages/CatalogMainPage.vue";
 import CategorySlugProductSlugPage from "@/pages/CategorySlugProductSlugPage.vue";
 import CategorySlugProductPage from "@/pages/CategorySlugProductPage.vue";
 import CategorySlugPage from "@/pages/CategorySlugPage.vue";
 import ProfilePage from "@/pages/ProfilePage.vue";
-import VerifyEmailRequestPage from "@/pages/VerifyEmailRequestPage.vue";
-import SendEmailVerificationPage from "@/pages/SendEmailVerificationPage.vue";
-import SendEmailForgotPasswordPage from "@/pages/SendEmailForgotPasswordPage.vue";
-import ResetPasswordRequestPage from "@/pages/ResetPasswordRequestPage.vue";
+import VerifyEmailRequestPage from "@/pages/Auth/VerifyEmailRequestPage.vue";
+import SendEmailVerificationPage from "@/pages/Auth/SendEmailVerificationPage.vue";
+import SendEmailForgotPasswordPage from "@/pages/Auth/SendEmailForgotPasswordPage.vue";
+import ResetPasswordRequestPage from "@/pages/Auth/ResetPasswordRequestPage.vue";
 
 
 const routes = [

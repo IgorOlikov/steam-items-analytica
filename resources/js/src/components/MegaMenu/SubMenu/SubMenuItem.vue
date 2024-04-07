@@ -1,10 +1,11 @@
 <template>
     <div>
-        <div>
-            <h1> {{ name }} </h1>
-            <h2>  {{ parentId }}  </h2>
+        <div class="hover:text-amber-300 border-b-2">
+            <a :href="`/catalog/category/${slug}`">
+                <h1> {{ name }} </h1>
+            </a>
         </div>
-        <div >
+        <div class="mt-2">
             <catalog-menu-sub-sub-list
                 :subSubCategories="categories"
             />
@@ -15,8 +16,8 @@
 
 <script setup>
 
-import CatalogMenuSubSubList from "@/components/CatalogMenuSubSubList.vue";
-import CatalogMenuItem from "@/components/CatalogMenuItem.vue";
+import CatalogMenuSubSubList from "@/components/MegaMenu/SubMenu/SubSubMenu/SubSubMenuList.vue";
+import CatalogMenuItem from "@/components/MegaMenu/MenuItem.vue";
 
 defineProps({
     id: String,
