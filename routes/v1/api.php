@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Filter\CategoryFilterController;
@@ -54,8 +55,10 @@ Route::middleware(
         Route::get('profile',[ProfileController::class,'index']);
 });
 
+Route::apiResource('cart', CartController::class);
+
 /* Admin */
-Route::resource('admin', AdminController::class)
+Route::apiResource('admin', AdminController::class)
     ->middleware([
         'auth:api',
         'access.token.only',

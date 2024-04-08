@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 use App\Contracts\JwtAuthServiceInterface;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\User;
+use App\Observers\CategoryObserver;
+use App\Observers\ProductObserver;
+use App\Observers\UserObserver;
 use App\Services\JwtAuthService;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        User::observe(UserObserver::class);
+        Category::observe(CategoryObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }

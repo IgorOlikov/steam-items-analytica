@@ -21,3 +21,5 @@ yarn-error.log
 #/docker/production
 #vendor/laravel/framework/src/Illuminate/Http/Request.php
 /docker/postgresql
+/public/shop
+/public/main-catalog

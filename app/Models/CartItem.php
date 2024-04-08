@@ -12,7 +12,7 @@ class CartItem extends Model
     use HasFactory, HasUuids;
 
     protected $table = 'cart_items';
-    protected $fillable = ['cart_id','price','quantity'];
+    protected $fillable = ['cart_id','product_id','price','quantity'];
 
     public function cart(): BelongsTo
     {

@@ -14,7 +14,7 @@ class Cart extends Model
 
     protected $table = 'carts';
 
-    protected $fillable = ['id','user_id'];
+    protected $fillable = ['id','user_id','status'];
 
 
     public function user(): BelongsTo
