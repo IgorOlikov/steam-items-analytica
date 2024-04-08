@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 Route::prefix('/auth')->group(function () {

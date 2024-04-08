@@ -1,34 +1,23 @@
 <?php
 
-
-use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\CategoryFilterController;
-use App\Http\Controllers\CategoryProductController;
-use App\Http\Controllers\FilterController;
-use App\Http\Controllers\AttributeController;
-use App\Http\Controllers\AttributeValueController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Catalog\CatalogController;
+use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Filter\CategoryFilterController;
+use App\Http\Controllers\Filter\FilterController;
+use App\Http\Controllers\Product\AttributeController;
+use App\Http\Controllers\Product\AttributeValueController;
+use App\Http\Controllers\Product\CategoryProductController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
+
 
 
 /* !Prefix api/v1! */
 
-Route::get('/', function () {
-    return "hello";
-})->middleware('api','jwt.verified');
-
-
 /* Auth routes */
 require_once 'Auth.php';
-
-Route::get('about', function () {
-   return response('about',400);
-});
 
 
 /* Main site routes */
@@ -65,5 +54,17 @@ Route::middleware(
         Route::get('profile',[ProfileController::class,'index']);
 });
 
+/* Admin */
+Route::resource('admin', AdminController::class)
+    ->middleware([
+        'auth:api',
+        'access.token.only',
+        'jwt.verified',
+        'admin',
+    ]);
 
+
+Route::get('about', function () {
+    return response('about',400);
+});
 

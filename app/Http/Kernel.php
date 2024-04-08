@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AccessTokenOnly;
+use App\Http\Middleware\AdminRole;
 use App\Http\Middleware\JwtEmailVerified;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.verified' => JwtEmailVerified::class,
         'access.token.only' => AccessTokenOnly::class,
+        'admin' => AdminRole::class,
     ];
 }

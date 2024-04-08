@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center w-full dark:bg-gray-200">
-        <div class="bg-white dark:bg-green-300 shadow-md rounded-lg px-8 py-6 max-w-md">
+    <div class="min-h-screen flex items-center justify-center w-full bg-white">
+        <div class="bg-white dark:bg-white shadow-md rounded-lg px-8 py-6 max-w-md">
             <h1 class="text-2xl font-bold text-center mb-4 text-black">Добро пожаловать!</h1>
             <h1
                 v-if="authStore.isErrorMessage"

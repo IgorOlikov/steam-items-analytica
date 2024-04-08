@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Filter;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\isJson;
 
-class FilterController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $filters = Filter::all();
-
-       return response($filters);
+        //
     }
 
     /**
@@ -23,14 +20,7 @@ class FilterController extends Controller
      */
     public function store(Request $request)
     {
-        //dd(json_encode($request->input('filters')));
-
-       $filter = Filter::create([
-           'category_id' => $request->input('category_id'),
-           'filters' => json_encode($request->input('filters'))
-       ]);
-
-       return response($filter,201);
+        //
     }
 
     /**
