@@ -12,18 +12,20 @@ defineProps({
 </script>
 
 <template>
-    <h1>Catalog category list</h1>
-        <catalog-category-item
+    <div class="flex items-center justify-center max-h-screen py-96">
+        <div class="grid grid-cols-3 grid-rows-2 gap-5 min-h-96 min-w-96 border">
+            <catalog-category-item
 
-            v-for="category in catalog"
-            :id="category.id"
-            :key="category.id"
-            :name="category.name"
-            :categories="category.categories"
-            :slug="category.slug"
+                v-for="category in catalog"
+                :id="category.id"
+                :key="category.id"
+                :name="category.name"
+                :categories="category.categories"
+                :slug="category.slug"
 
-        />
-    <!--v if catalog.catagories   :link -->
+            />
+        </div>
+    </div>
 </template>
 
 <style scoped>

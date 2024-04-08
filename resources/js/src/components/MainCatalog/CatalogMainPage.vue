@@ -1,8 +1,9 @@
 <template>
-    <h1>Catalog Page</h1>
+
         <CatalogCategoryList
             :catalog="catalog"
         />
+
 </template>
 
 <script setup>
@@ -15,9 +16,7 @@ const catalog = ref([])
 async function fetchCatalog() {
     const { data } = await axios.get(`http://localhost/api/v1/catalog`)
 
-    catalog.value = data.map((obj) => ({
-        ...obj
-    }));
+    catalog.value = data
 }
 
 

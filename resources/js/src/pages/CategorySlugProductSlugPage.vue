@@ -1,5 +1,4 @@
 <template>
-    <h1>Product Page</h1>
     <p>Product ID = {{ product.id }}</p>
     <p>Category ID = {{ product.category_id }}</p>
     <p>Name = {{ product.name }}</p>

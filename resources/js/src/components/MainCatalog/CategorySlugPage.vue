@@ -11,11 +11,9 @@ const route = useRoute();
 const categorySlug = route.params.categorySlug;
 
 async function fetchCatalog() {
-    const { data } = await axios.get(`http://localhost/api/v1/catalog/category/${categorySlug}`) //?!
+    const { data } = await axios.get(`http://localhost/api/v1/catalog/category/${categorySlug}`)
 
-    catalog.value = data.map((obj) => ({
-        ...obj
-    }));
+    catalog.value = data
 }
 
 
@@ -28,9 +26,7 @@ onMounted(async () => {
 </script>
 
 <template>
-<h1>Добавить историю категорий</h1>
 
-    <h1>Catalog ID Page</h1>
     <CatalogCategoryList
         :catalog="catalog"
     />

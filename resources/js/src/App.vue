@@ -4,10 +4,12 @@
         <Header/>
             <catalog-menu v-if="showMenu"/>
 
-
+            <!-- router view begins -->
             <div class="min-h-screen border-b-2">
                 <router-view></router-view>
             </div>
+             <!-- router view ends -->
+
         <Footer></Footer>
     </div>
 

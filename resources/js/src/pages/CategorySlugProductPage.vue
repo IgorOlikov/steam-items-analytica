@@ -1,6 +1,6 @@
 <template>
     <div class="h-10">
-        <h1>Category Slug = {{ $route.params.categorySlug }} Products Page</h1>
+
     </div>
     <div class="flex space-x-4">
        <div class="flex-col min-h-screen w-2/6 bg-green-300">
