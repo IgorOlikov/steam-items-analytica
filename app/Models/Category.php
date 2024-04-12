@@ -31,7 +31,9 @@ class Category extends Model
     public function categories(): HasMany
     {
         return $this->hasMany(Category::class,'parent_id','id')
-            ->with('categories');
+            ->with('categories')
+            ->join('images','categories.id','=','images.imageable_id')
+            ->select('categories.*','images.url as image');
     }
 
     public function image(): MorphOne

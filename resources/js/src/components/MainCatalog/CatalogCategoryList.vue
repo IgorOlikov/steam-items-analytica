@@ -22,6 +22,7 @@ defineProps({
                 :name="category.name"
                 :categories="category.categories"
                 :slug="category.slug"
+                :image="category.image"
 
             />
         </div>
