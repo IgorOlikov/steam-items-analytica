@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users');
             $table->foreignId('order_status_id')->default(1)->constrained('order_statuses');
+            $table->unsignedDouble('total_price',8,2);
             $table->timestamps();
         });
     }

@@ -55,7 +55,8 @@ Route::middleware(
         Route::get('profile',[ProfileController::class,'index']);
 });
 
-Route::apiResource('cart', CartController::class);
+/* Cart */
+Route::apiResource('cart', CartController::class)->middleware(['auth:api','jwt.verified','access.token.only']);
 
 /* Admin */
 Route::apiResource('admin', AdminController::class)

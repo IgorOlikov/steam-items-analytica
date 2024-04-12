@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->foreignUuid('cart_id')->constrained('carts');
             $table->foreignUuid('product_id')->constrained('products');
-            $table->unsignedDouble('price',8,2);
-            $table->unsignedInteger('quantity');
+            //$table->unsignedDouble('price',8,2);
+            $table->unsignedInteger('quantity')->default(1);
             $table->timestamps();
         });
     }
