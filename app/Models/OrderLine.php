@@ -13,7 +13,12 @@ class OrderLine extends Model
 
     protected $table = 'order_lines';
 
-    protected $fillable = ['id','order_id','product_id','price','quantity'];
+    protected $fillable = [
+        'id',
+        'order_id',
+        'product_id',
+        //'price',
+        'quantity'];
 
 
     public function order(): BelongsTo

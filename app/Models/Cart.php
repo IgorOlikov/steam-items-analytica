@@ -26,4 +26,10 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class,'cart_id','id');
     }
+
+    public function cartItemsWithPrice(): HasMany
+    {
+        return $this->hasMany(CartItem::class,'cart_id','id')
+            ->join('products','cart_items.product_id','=','products.id'); // select
+    }
 }

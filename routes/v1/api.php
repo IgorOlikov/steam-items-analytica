@@ -6,6 +6,7 @@ use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Filter\CategoryFilterController;
 use App\Http\Controllers\Filter\FilterController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Product\AttributeController;
 use App\Http\Controllers\Product\AttributeValueController;
 use App\Http\Controllers\Product\CategoryProductController;
@@ -56,7 +57,10 @@ Route::middleware(
 });
 
 /* Cart */
-Route::apiResource('cart', CartController::class)->middleware(['auth:api','jwt.verified','access.token.only']);
+Route::middleware(['auth:api','jwt.verified','access.token.only'])->group(function () {
+    Route::apiResource('cart', CartController::class);
+    Route::apiResource('order', OrderController::class);
+});
 
 /* Admin */
 Route::apiResource('admin', AdminController::class)

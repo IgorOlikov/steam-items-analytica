@@ -14,7 +14,7 @@ class Order extends Model
 
     protected $table = 'orders';
 
-    protected $fillable = ['id','user_id'];
+    protected $fillable = ['id','user_id','amount'];
 
 
     public function user(): HasOne
