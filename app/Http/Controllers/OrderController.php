@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderLine;
@@ -22,8 +23,9 @@ class OrderController extends Controller
     {
         $user = auth()->user();
 
-        $cartItems = $user->cart->first()
-            ->cartItemsWithPrice()->get(['product_id', 'quantity', 'price']);
+        $cart = $user->cart->first();
+
+        $cartItems = $cart->cartItemsWithPrice()->get(['product_id', 'quantity', 'price']);
 
         foreach($cartItems as $item) {
             $amount[] =  $item['quantity'] * $item['price'];
@@ -51,6 +53,8 @@ class OrderController extends Controller
         }, $cartItemsArray);
 
         OrderLine::insert($orderLines);
+
+        CartItem::where('cart_id','=',$cart->id)->delete();
 
         return response($newOrder);
     }
