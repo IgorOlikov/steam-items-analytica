@@ -9,10 +9,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CartItem extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
+        //HasUuids;
 
     protected $table = 'cart_items';
-    protected $fillable = ['cart_id','product_id','price','quantity'];
+    protected $fillable = [
+        'cart_id',
+        'product_id',
+        //'price',
+        'quantity'];
+
+    protected $primaryKey = 'product_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
 
     public function cart(): BelongsTo
     {
