@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderLine;
@@ -42,9 +41,11 @@ class OrderController extends Controller
 
         $timeStamp = Carbon::now();
 
-        $orderLines = array_map(function ($item) use ($newOrder, $timeStamp) {
+        $orderId = $newOrder->id;
+
+        $orderLines = array_map(function ($item) use ($newOrder, $timeStamp, $orderId) {
             unset($item['price']);
-            $item['order_id'] = $newOrder->id;
+            $item['order_id'] = $orderId;
             $item['id'] = Uuid::uuid();
             $item['created_at'] = $timeStamp;
             $item['updated_at'] = $timeStamp;
@@ -54,14 +55,17 @@ class OrderController extends Controller
 
         OrderLine::insert($orderLines);
 
-        CartItem::where('cart_id','=',$cart->id)->delete();
+        CartItem::where('cart_id','=', $cart->id)->delete();
 
-        return response($newOrder);
+        //redirect to payment
+        return response($newOrder, 201);
     }
 
-    public function show(string $id)
+    public function show(Order $order)
     {
-        //
+        $order = $order->with('orderLines')->get();
+
+        return response($order);
     }
 
     public function update(Request $request, string $id)
