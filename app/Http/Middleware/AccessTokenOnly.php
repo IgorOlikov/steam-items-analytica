@@ -19,7 +19,7 @@ class AccessTokenOnly
 
         $type = $payload->get('token_type');
 
-        if ($type !== "access_token"){
+        if ($type !== "access_token") {
             return response(['message' => 'Invalid token,this is refresh token'],401);
         }
 

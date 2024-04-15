@@ -10,9 +10,6 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
 
@@ -22,7 +19,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategoriesSeeder::class,
             ProductsSeeder::class,
-            CategoryImageSeeder::class
+            CategoryImageSeeder::class,
+            ProductImageSeeder::class,
         ]);
 
 

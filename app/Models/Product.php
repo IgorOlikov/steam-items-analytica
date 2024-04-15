@@ -40,6 +40,9 @@ class Product extends Model
         return $this->morphOne(Image::class, 'imageable')->oldestOfMany();
     }
 
+
+
+
     //  Get all of the tags for the product.
     public function tags(): MorphToMany
     {

@@ -1,19 +1,18 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Filter\CategoryFilterController;
 use App\Http\Controllers\Filter\FilterController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Product\AttributeController;
 use App\Http\Controllers\Product\AttributeValueController;
 use App\Http\Controllers\Product\CategoryProductController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 
 
 /* !Prefix api/v1! */
