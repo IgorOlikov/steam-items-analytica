@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -17,10 +18,15 @@ class Product extends Model
     use HasFactory,HasUuids;
 
     protected $casts = [
-      'price' => 'float'
+        'price' => 'float',
+        'id' => 'string',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
-    protected $fillable = ['id','category_id','name','price','slug'];
+   protected $keyType = 'string';
+
+   protected $fillable = ['id','category_id','name','price','slug'];
 
     protected $table = 'products';
 
@@ -35,12 +41,21 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function oldestImage(): MorphOne
+
+    public function image(): MorphOne
     {
-        return $this->morphOne(Image::class, 'imageable')->oldestOfMany();
+        return $this->morphOne(Image::class,'imageable');
+
     }
 
 
+    public function scopeOldestImage(Builder $builder): Builder
+    {
+        //return $builder->orderBy('created_at','asc')->limit(1);
+        return $builder->join('images','products.id','=','images.imageable_id');
+
+
+    }
 
 
     //  Get all of the tags for the product.
