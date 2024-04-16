@@ -21,10 +21,11 @@ import Footer from "@/components/Footer.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
 import {provide, onMounted, ref, onBeforeUpdate} from "vue";
 import CatalogMenu from "@/components/MegaMenu/Menu.vue";
+import {useWishlistStore} from "@/store/WishlistStore.js";
 
 
 const authStore = useAuthStore()
-
+const wishlistStore = useWishlistStore()
 
 const showMenu = ref(false)
 
@@ -34,6 +35,8 @@ provide('showMenus', {
 
 onMounted(() => {
     authStore.checkUserAuthStatus();
+    wishlistStore.getWishListFromLocalStorage();
+
 })
 
 onBeforeUpdate(() => {
