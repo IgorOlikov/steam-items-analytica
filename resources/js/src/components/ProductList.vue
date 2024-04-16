@@ -1,6 +1,6 @@
 <template>
 
-    <div class="flex-row space-y-4">
+    <div class="flex flex-col gap-10 ">
     <product-item
         class=""
         v-for="product in products"

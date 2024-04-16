@@ -1,8 +1,8 @@
 <template>
-    <div class="border bg-white h-32"> <!--1-->
-            <div class="flex flex-row h-full items-center border-b-2"> <!-- flex flex row-->
+    <div class="border-b-2 bg-white h-32"> <!--1-->
+            <div class="flex flex-row h-full items-center px-12"> <!-- flex flex row-->
 
-                <div class="basis-4/12   border-l-red-900"> <!--row 1-->
+                <div class="basis-4/12   "> <!--row 1-->
                    <div class="flex flex-row px-10">
                         <div class="h-12">
                             <a href="/">
@@ -24,21 +24,23 @@
                 </div>
 
                 <div class="basis-4/12 border-l-red-900"> <!--row 3-->
-                    <div>
-                        <div v-if="!authStore.auth">
-                            <ul>
-                                <li><router-link to="/login">Войти</router-link></li>
-                            </ul>
+
+                    <div class="flex flex-row">
+
+                        <div class="cursor-pointer hover:border-2 rounded-2xl hover:shadow basis-1/3">
+                            <wishlist-button class="p-1"/>
                         </div>
-                        <div v-else>
-                            <ul>
-                                <li><router-link to="/profile">Профиль</router-link></li>
-                                <li
-                                    @click="authStore.logout()"
-                                    class="cursor-pointer">Выйти</li>
-                            </ul>
+                        <div class="cursor-pointer hover:border-2 rounded-2xl hover:shadow basis-1/3">
+                            <cart-button class="p-1"/>
                         </div>
-                    </div>
+
+                        <div class="cursor-pointer hover:border-2 rounded-2xl hover:shadow basis-1/3">
+                            <profile-button class="p-1"/>
+                        </div>
+
+
+                        </div>
+
                 </div> <!--row 3-->
             </div> <!-- flex flex row-->
     </div> <!--1-->
@@ -51,6 +53,9 @@ import {inject, ref} from "vue";
 import SearchInput from "@/UI/SearchInput.vue";
 import router from "@/router/router.js";
 import {provide} from "vue";
+import CartButton from "@/components/CartButton.vue";
+import WishlistButton from "@/components/WishlistButton.vue";
+import ProfileButton from "@/components/ProfileButton.vue";
 
 const authStore = useAuthStore();
 

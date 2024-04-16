@@ -3,14 +3,14 @@
 
     </div>
     <div class="flex space-x-4">
-       <div class="flex-col min-h-screen w-2/6 bg-green-300">
+       <div class="flex-col min-h-screen w-2/6 border-r-2 border-t-2 rounded-tr-2xl">
             <product-filter></product-filter>
        </div>
        <div class="flex-col w-full">
-           <div class="border h-10 mb-4">
+           <div class="border-b-2 border-l-2 border-t-2 h-10 mb-4 rounded-l-2xl">
 
            </div>
-           <div class="mb-4">
+           <div class="mb-10">
             <product-list
                 :products="products"
 
