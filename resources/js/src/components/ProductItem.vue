@@ -11,8 +11,22 @@
                 </div>
                 <div class="">
                     <p>Цена {{ price }} .руб</p>
-                    <button class="bg-red-400">Желаемое</button>
-                    <button class="bg-lime-500">Купить</button>
+                    <button
+                        v-if="!wishlistStore.issetWishlistItem(id)"
+                        @click="wishlistStore.addWishlistItem({ id: id, name: name, price: price, image: image, quantity: 1 })"
+                        class="bg-red-400">
+                        Желаемое
+                    </button>
+                    <button
+                        v-else
+                        @click="wishlistStore.removeWishlistItem(id)"
+                        class="bg-red-400">
+                        Убрать из желаемого
+                    </button>
+
+                    <button
+                        @click="cartStore.addCartItem()"
+                        class="bg-lime-500">Купить</button>
                 </div>
             </div>
          </div>
@@ -22,6 +36,13 @@
 
 <script setup>
 import {useRoute} from "vue-router";
+import {useWishlistStore} from "@/store/WishlistStore.js";
+import {useCartStore} from "@/store/CartStore.js";
+import {useAuthStore} from "@/store/AuthStore.js";
+
+const wishlistStore = useWishlistStore()
+const cartStore = useCartStore()
+const authStore = useAuthStore()
 
 
 const route = useRoute();
@@ -34,6 +55,7 @@ defineProps({
     slug: String,
     image: String,
 })
+
 
 
 

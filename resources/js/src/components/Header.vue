@@ -65,8 +65,7 @@ const toggleMenu = async () => {
     showMenu.value ? showMenu.value = false : showMenu.value = true
 }
 
-const wishList = ref([]);
-const cart = ref([]);
+
 
 </script>
 
