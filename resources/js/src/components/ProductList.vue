@@ -9,6 +9,7 @@
         :price="product.price"
         :id="product.id"
         :slug="product.slug"
+        :image="product.image"
     />
     </div>
 </template>

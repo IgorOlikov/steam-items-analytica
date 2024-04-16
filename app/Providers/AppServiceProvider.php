@@ -10,6 +10,7 @@ use App\Observers\CategoryObserver;
 use App\Observers\ProductObserver;
 use App\Observers\UserObserver;
 use App\Services\JwtAuthService;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        JsonResource::withoutWrapping();
         User::observe(UserObserver::class);
         Category::observe(CategoryObserver::class);
         Product::observe(ProductObserver::class);
