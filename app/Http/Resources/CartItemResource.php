@@ -16,9 +16,10 @@ class CartItemResource extends JsonResource
     {
        return [
            'id' => $this->product_id,
-           'quantity' => $this->quantity,
            'image' => $this->whenLoaded('image', $this->image->url),
-           'price' => $this->whenLoaded('product', $this->product->price)
+           'name' => $this->whenLoaded('product', $this->product->name),
+           'price' => $this->whenLoaded('product', $this->product->price),
+           'quantity' => $this->quantity,
        ];
     }
 }

@@ -1,6 +1,6 @@
 <template>
          <div class=" min-h-64 max-h-64 ">
-            <div class="p-10 flex flex-row border-b-2 border-l-2 border-t-2 rounded-l-2xl">
+             <div class="p-10 flex flex-row border-b-2 border-l-2 border-t-2 rounded-l-2xl">
                 <div class="min-w-52 cursor-pointer hover:border-b-2">
                     <img :src="`${ image }`" alt="image"/>
                 </div>
@@ -25,8 +25,18 @@
                     </button>
 
                     <button
+                        v-if="!cartStore.issetCartItem(id)"
                         @click="cartStore.addCartItem({ id: id, name: name, price: price, image: image, quantity: 1 })"
-                        class="bg-lime-500">Купить</button>
+                        class="bg-lime-500">
+                        Добавить в корзину
+                    </button>
+                    <button
+                        v-else
+                        @click="cartStore.removeCartItem(id)"
+                        class="bg-lime-500">
+                        Удалить из корзины
+                    </button>
+
                 </div>
             </div>
          </div>

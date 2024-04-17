@@ -22,11 +22,12 @@ import {useAuthStore} from "@/store/AuthStore.js";
 import {provide, onMounted, ref, onBeforeUpdate} from "vue";
 import CatalogMenu from "@/components/MegaMenu/Menu.vue";
 import {useWishlistStore} from "@/store/WishlistStore.js";
+import {useCartStore} from "@/store/CartStore.js";
 
 
 const authStore = useAuthStore()
 const wishlistStore = useWishlistStore()
-
+const cartStore = useCartStore()
 const showMenu = ref(false)
 
 provide('showMenus', {
@@ -36,6 +37,7 @@ provide('showMenus', {
 onMounted(() => {
     authStore.checkUserAuthStatus();
     wishlistStore.getWishListFromLocalStorage();
+    cartStore.getCart();
 
 })
 
