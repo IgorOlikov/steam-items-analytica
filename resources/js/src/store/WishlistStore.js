@@ -9,10 +9,13 @@ export const useWishlistStore = defineStore('wishlistStore', () => {
 
 
     const addWishlistItem = async (obj) => {
+        const itemIsset = issetWishlistItem(obj.id)
+        if (!itemIsset) {
             wishlist.value.push(obj)
             wishlistCount.value = wishlistCount.value + 1
             localStorage.setItem('wishList', JSON.stringify(wishlist.value))
             localStorage.setItem('wishListCount', JSON.stringify(wishlistCount.value))
+        }
     }
 
     const removeWishlistItem = async (id) => {
@@ -24,7 +27,7 @@ export const useWishlistStore = defineStore('wishlistStore', () => {
     }
 
     const issetWishlistItem = (id) => {
-       return  wishlist.value.some(obj => obj.id === id);
+       return wishlist.value.some(obj => obj.id === id);
     }
 
     const getWishListFromLocalStorage = async () => {

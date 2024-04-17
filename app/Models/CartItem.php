@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class CartItem extends Model
 {
@@ -35,5 +37,10 @@ class CartItem extends Model
     }
 
 
+    public function image(): HasOne
+    {
+        return $this->hasOne(Image::class,'imageable_id','product_id')
+            ->orderBy('created_at','desc');
+    }
 
 }

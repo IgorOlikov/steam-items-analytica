@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cart;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartItem;
 use App\Http\Requests\UpdateCartItem;
+use App\Http\Resources\CartItemResource;
 
 class CartController extends Controller
 {
@@ -15,9 +16,9 @@ class CartController extends Controller
 
         $cart = $user->cart()->first();
 
-        $cartItems = $cart->cartItems()->get(); // добавить агр функ взапрос (+price+). cart summary price column
+        $cartItems = $cart->cartItems()->with(['image','product'])->get();
 
-        return response($cartItems);
+        return CartItemResource::collection($cartItems);
     }
 
     public function store(StoreCartItem $request)
