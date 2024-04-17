@@ -19,7 +19,7 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
-import {provide, onMounted, ref, onBeforeUpdate} from "vue";
+import {provide, onMounted, ref, onBeforeUpdate, watch} from "vue";
 import CatalogMenu from "@/components/MegaMenu/Menu.vue";
 import {useWishlistStore} from "@/store/WishlistStore.js";
 import {useCartStore} from "@/store/CartStore.js";
@@ -40,6 +40,8 @@ onMounted(() => {
     cartStore.getCart();
 
 })
+
+
 
 onBeforeUpdate(() => {
     removeCatalogFromLocalStorage()

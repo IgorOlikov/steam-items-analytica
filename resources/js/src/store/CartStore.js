@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {useAuthStore} from "@/store/AuthStore.js";
 import axiosJwtApi from "@/Axios/Api.js";
 
@@ -22,17 +22,11 @@ export const useCartStore = defineStore('cartStore', () => {
                         product_id: obj.id
                 })
                 cart.value.push(obj)
-                cartCount.value = cartCount.value + 1
-                localStorage.setItem('cart', JSON.stringify(cart.value))
-                localStorage.setItem('cartCount', JSON.stringify(cartCount.value))
                 } catch (err) {
                     console.log(err)
                 }
             } else {
                 cart.value.push(obj)
-                cartCount.value = cartCount.value + 1
-                localStorage.setItem('cart', JSON.stringify(cart.value))
-                localStorage.setItem('cartCount', JSON.stringify(cartCount.value))
             }
         }
     }
@@ -43,25 +37,36 @@ export const useCartStore = defineStore('cartStore', () => {
         if (authStore.auth) {
             try {
                 const response = await axiosJwtApi.delete(`${authStore.appDomain}${authStore.apiVersion}/cart/${obj.id}`)
-
                 cart.value.splice(cart.value.indexOf(obj),1)
-                cartCount.value = cartCount.value - obj.quantity
-                localStorage.setItem('wishList', JSON.stringify(cart.value))
-                localStorage.setItem('wishListCount', JSON.stringify(cartCount.value))
-
             } catch (err) {
                 console.log(err)
             }
         } else {
             cart.value.splice(cart.value.indexOf(obj),1)
-            cartCount.value = cartCount.value - obj.quantity
-            localStorage.setItem('wishList', JSON.stringify(cart.value))
-            localStorage.setItem('wishListCount', JSON.stringify(cartCount.value))
         }
     }
 
-    const updateCartItemQuantity = async () => {
-        // server request
+    const updateCartItemQuantity = async (id, quantity) => {
+        const obj = cart.value.find((obj) => obj.id === id)
+
+        obj.quantity = quantity
+
+        const index = cart.value.indexOf(obj)
+
+        if (index !== -1) {
+            if (authStore.auth) {
+                try {
+                    const response = await axiosJwtApi.put(`${authStore.appDomain}${authStore.apiVersion}/cart/${id}`,{
+                        quantity: quantity
+                    })
+                    cart.value[index] = obj
+                } catch (err) {
+                    console.log(err)
+                }
+            } else {
+                cart.value[index] = obj
+            }
+        }
     }
 
     const issetCartItem = (id) => {
@@ -99,6 +104,25 @@ export const useCartStore = defineStore('cartStore', () => {
         }
     }
 
+     function quantityCalculator ()  {
+
+        if (cart.value.length !== 0) {
+            const quantityArr = cart.value.map((itemObj) => {
+                return itemObj.quantity
+            })
+            cartCount.value = quantityArr.reduce((sum, quantity) => sum + quantity);
+
+        } else {
+            cartCount.value = 0
+        }
+        localStorage.setItem('cart', JSON.stringify(cart.value))
+        localStorage.setItem('cartCount', JSON.stringify(cartCount.value))
+    }
+
+    watch(cart,  quantityCalculator, {deep: true})
+
+
+
     return {
         cartCount,
         cart,
@@ -107,8 +131,7 @@ export const useCartStore = defineStore('cartStore', () => {
         updateCartItemQuantity,
         issetCartItem,
         getCart,
-
-
+        quantityCalculator,
     }
 
 
