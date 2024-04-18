@@ -6,7 +6,7 @@
 
             <!-- router view begins -->
             <div class="min-h-screen border-b-2">
-                <router-view></router-view>
+                <router-view :key="$route.path"></router-view>
             </div>
              <!-- router view ends -->
 
@@ -19,7 +19,7 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
-import {provide, onMounted, ref, onBeforeUpdate, watch} from "vue";
+import {provide, onMounted, ref, onBeforeUpdate, watch, computed} from "vue";
 import CatalogMenu from "@/components/MegaMenu/Menu.vue";
 import {useWishlistStore} from "@/store/WishlistStore.js";
 import {useCartStore} from "@/store/CartStore.js";

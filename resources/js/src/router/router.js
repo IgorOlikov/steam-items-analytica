@@ -13,6 +13,8 @@ import VerifyEmailRequestPage from "@/pages/Auth/VerifyEmailRequestPage.vue";
 import SendEmailVerificationPage from "@/pages/Auth/SendEmailVerificationPage.vue";
 import SendEmailForgotPasswordPage from "@/pages/Auth/SendEmailForgotPasswordPage.vue";
 import ResetPasswordRequestPage from "@/pages/Auth/ResetPasswordRequestPage.vue";
+import WishlistPage from "@/pages/WishlistPage.vue";
+import CartPage from "@/pages/CartPage.vue";
 
 
 const routes = [
@@ -68,6 +70,18 @@ const routes = [
         path: '/profile',
         component: ProfilePage,
         name: 'profile',
+        meta: { authRequired: true, emailVerifyRequired: true  }
+    },
+    {
+        path: '/wishlist',
+        component: WishlistPage,
+        name: 'wishlist',
+        meta: { authRequired: false, emailVerifyRequired: false  }
+    },
+    {
+        path: '/cart',
+        component: CartPage,
+        name: 'cart',
         meta: { authRequired: true, emailVerifyRequired: true  }
     },
     {

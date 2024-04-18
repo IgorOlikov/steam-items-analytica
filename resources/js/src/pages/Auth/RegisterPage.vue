@@ -13,7 +13,6 @@
                     <input
                         v-model="email"
                         type="email"
-                        id="email"
                         placeholder="Ваш@email.com"
                         required
                         class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -24,7 +23,6 @@
                     <input
                         v-model="name"
                         type="email"
-                        id="email"
                         placeholder="Мой никнейм"
                         required
                         class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -35,7 +33,6 @@
                     <input
                         v-model="password"
                         type="password"
-                        id="password"
                         placeholder="Введите пароль"
                         required
                         class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -46,7 +43,6 @@
                     <input
                         v-model="confirmPassword"
                         type="password"
-                        id="password"
                         placeholder="Подтвердите пароль"
                         required
                         class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -61,9 +57,9 @@
                             checked>
                         <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-blue-700">Запомнить меня</label>
                     </div>
-                    <a href="/login"
+                    <RouterLink :to="{ name: 'login' }"
                        class="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Войти</a>
+                        Войти</RouterLink>
                 </div>
 
                 <button

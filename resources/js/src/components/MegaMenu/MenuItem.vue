@@ -2,11 +2,10 @@
     <div
         @mouseover="haveNestedCategories"
         class="hover:text-amber-300"
-
     >
-        <a :href="`/catalog/category/${slug}`">
+        <RouterLink :to="{ name: 'catalogCategory', params: { categorySlug: slug }}">
             <h1> {{ name }} </h1>
-        </a>
+        </RouterLink>
     </div>
 
 

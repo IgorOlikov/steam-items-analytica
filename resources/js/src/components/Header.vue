@@ -5,9 +5,9 @@
                 <div class="basis-4/12   "> <!--row 1-->
                    <div class="flex flex-row px-10">
                         <div class="h-12">
-                            <a href="/">
-                                <img  width="50" height="50" src="http://localhost/logo.jpg" alt="logo">
-                            </a>
+                            <RouterLink :to="{ name: 'home' }">
+                                <img  width="50" height="50" :src="`${authStore.appDomain}/logo.jpg`" alt="logo">
+                            </RouterLink>
                         </div>
                         <div class="h-12 flex-1 w-full">
                             <button
@@ -28,16 +28,21 @@
                     <div class="flex flex-row">
 
                         <div class="cursor-pointer hover:border-2 rounded-2xl hover:shadow basis-1/3">
-                            <wishlist-button class="p-1"/>
+                            <RouterLink :to="{ name: 'wishlist' }">
+                                <wishlist-button class="p-1"/>
+                            </RouterLink>
                         </div>
                         <div class="cursor-pointer hover:border-2 rounded-2xl hover:shadow basis-1/3">
-                            <cart-button class="p-1"/>
+                            <RouterLink :to="{ name: 'cart' }">
+                                <cart-button class="p-1"/>
+                            </RouterLink>
                         </div>
 
                         <div class="cursor-pointer hover:border-2 rounded-2xl hover:shadow basis-1/3">
-                            <profile-button class="p-1"/>
+                            <RouterLink :to="{ name: 'profile' }">
+                                <profile-button class="p-1"/>
+                            </RouterLink>
                         </div>
-
 
                         </div>
 
@@ -48,11 +53,8 @@
 
 <script setup>
 import {useAuthStore} from "@/store/AuthStore.js";
-import CatalogMenu from "@/components/MegaMenu/Menu.vue";
-import {inject, ref} from "vue";
+import {inject} from "vue";
 import SearchInput from "@/UI/SearchInput.vue";
-import router from "@/router/router.js";
-import {provide} from "vue";
 import CartButton from "@/components/CartButton.vue";
 import WishlistButton from "@/components/WishlistButton.vue";
 import ProfileButton from "@/components/ProfileButton.vue";

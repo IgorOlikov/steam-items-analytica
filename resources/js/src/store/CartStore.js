@@ -74,6 +74,7 @@ export const useCartStore = defineStore('cartStore', () => {
     }
 
     const getCart = async () => {
+
         if (authStore.auth) {
             try {
                 const response = await axiosJwtApi.get(`${authStore.appDomain}${authStore.apiVersion}/cart`)

@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="hover:text-amber-300 border-b-2">
-            <a :href="`/catalog/category/${slug}`">
+            <RouterLink :to="{ name: 'catalogCategory', params: { categorySlug: slug }}">
                 <h1> {{ name }} </h1>
-            </a>
+            </RouterLink>
         </div>
         <div class="mt-2">
             <catalog-menu-sub-sub-list

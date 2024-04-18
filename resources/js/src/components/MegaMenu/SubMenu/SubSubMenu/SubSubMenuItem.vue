@@ -13,9 +13,9 @@ defineProps({
 
 <template>
     <div class="hover:text-amber-300">
-        <a :href="`/catalog/category/${slug}/product`">
+        <RouterLink :to="{ name: 'categoryProducts', params: { categorySlug: slug }}">
             <h1> {{ name }}</h1>
-        </a>
+        </RouterLink>
     </div>
 </template>
 

@@ -20,17 +20,17 @@ defineProps({
                 v-if="categories.length !== 0"
                 class="mx-auto my-auto"
             >
-                <a :href="`/catalog/category/${slug}`">
-                    <img  :src="`${image}`">
-                </a>
+                <RouterLink :to="{ name: 'catalogCategory', params: { categorySlug: slug }}">
+                    <img :src="`${image}`">
+                </RouterLink>
             </div>
             <div
                 v-else
                 class="mx-auto my-auto"
             >
-                <a :href="`/catalog/category/${slug}/product`">
-                    <img  :src="`${image}`">
-                </a>
+                <RouterLink :to="{ name: 'categoryProducts', params: { categorySlug: slug }}">
+                    <img :src="`${image}`">
+                </RouterLink>
             </div>
             <div class="mx-auto mt-2">
                 <p>{{ name }}</p>
