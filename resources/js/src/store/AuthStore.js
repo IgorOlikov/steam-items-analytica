@@ -3,6 +3,7 @@ import {computed, reactive, ref} from "vue";
 import axios from "axios";
 import router from "@/router/router.js";
 import axiosJwtApi from "@/Axios/Api.js";
+import {useCartStore} from "@/store/CartStore.js";
 
 export const useAuthStore = defineStore('authStore', () => {
 
@@ -24,6 +25,8 @@ export const useAuthStore = defineStore('authStore', () => {
 
     const isAuth = computed (() => auth.value )
 
+    const cartStore = useCartStore()
+
     const sighIn = async (email, password) => {
        try {
            const response = await axios.post(`${appDomain}${apiVersion}/auth/login`,{
@@ -34,10 +37,11 @@ export const useAuthStore = defineStore('authStore', () => {
            expiresIn.value = response.data.expires_in
            userInfo.value =  response.data.user
 
-
-
            localStorage.setItem('userInfo', JSON.stringify(userInfo.value))
            auth.value = true
+
+           await cartStore.cartSync()
+
            await router.push('/')
        } catch (err) {
            errorMessage.value = err.response.data.message
@@ -59,6 +63,9 @@ export const useAuthStore = defineStore('authStore', () => {
                 userInfo.value = response.data.user
                 localStorage.setItem('userInfo', JSON.stringify(userInfo.value))
                 auth.value = true
+
+                await cartStore.cartSync()
+
                 await router.push('/') /// verify email
             } catch (err) {
                 errorMessage.value = err.response.data.message

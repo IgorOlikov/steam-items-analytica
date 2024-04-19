@@ -44,20 +44,19 @@ Route::apiResource('category.filter', CategoryFilterController::class);
 Route::apiResource('filter', FilterController::class);
 
 /* Profile */
-Route::middleware(
-    [
+Route::middleware([
         'auth:api',
         'access.token.only',
         'jwt.verified',
-
-    ])
-    ->group(function () {
+    ])->group(function () {
         Route::get('profile',[ProfileController::class,'index']);
 });
 
 /* Cart */
 Route::middleware(['auth:api','jwt.verified','access.token.only'])->group(function () {
     Route::apiResource('cart', CartController::class);
+    Route::post('cart-sync', [CartController::class, 'packetStore']);
+
     Route::apiResource('order', OrderController::class);
 });
 

@@ -120,6 +120,21 @@ export const useCartStore = defineStore('cartStore', () => {
         localStorage.setItem('cartCount', JSON.stringify(cartCount.value))
     }
 
+    async function cartSync () {
+         const cart = JSON.parse(localStorage.getItem('cart'))
+        try {
+            const response = await axiosJwtApi.post(`${authStore.appDomain}${authStore.apiVersion}/cart-sync`,{
+                ...cart
+            })
+
+            localStorage.setItem('cart',JSON.stringify(response.data))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+
+
     watch(cart,  quantityCalculator, {deep: true})
 
 
@@ -133,6 +148,7 @@ export const useCartStore = defineStore('cartStore', () => {
         issetCartItem,
         getCart,
         quantityCalculator,
+        cartSync,
     }
 
 

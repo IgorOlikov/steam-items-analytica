@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Cart;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartItem;
 use App\Http\Requests\UpdateCartItem;
+use App\Http\Requests\CartPacketStoreRequest;
 use App\Http\Resources\CartItemResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class CartController extends Controller
 {
@@ -33,6 +37,42 @@ class CartController extends Controller
 
         return response($cartItem,201);
     }
+
+    public function packetStore(CartPacketStoreRequest $request)
+    {
+        $syncCartItems = $request->validated();
+
+        $user = auth()->user();
+
+        $cart = $user->cart()->first();
+
+        $userCartItems = $cart->cartItems()->get('product_id as id');
+
+        $userCartItems = $userCartItems->toArray();
+
+        $cartItemsDiff = array_map(
+            'unserialize',
+            array_diff(
+                array_map('serialize', $syncCartItems),
+                array_map('serialize', $userCartItems)
+            ));
+
+        if(!empty($cartItemsDiff)) {
+            $newCartItems = array_map(function ($arr) {
+                $arr['product_id'] = $arr['id'];
+                unset($arr['id']);
+                return $arr;
+            } ,$cartItemsDiff);
+
+           $cart->cartItems()->createMany($newCartItems);
+
+           $cartItems = $cart->cartItems()->get();
+
+           return CartItemResource::collection($cartItems);
+        }
+        return response('cart sync', 422);
+    }
+
 
     public function show(string $id)
     {

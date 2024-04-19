@@ -5,9 +5,9 @@
                     <img :src="`${ image }`" alt="image"/>
                 </div>
                 <div class=" basis-2/4">
-                    <a :href="`/catalog/category/${categorySlug}/product/${slug}`">
+                    <RouterLink :to="{ name: 'categoryProduct', params: { categorySlug: categorySlug, productSlug: slug }}">
                         <p class="hover:text-amber-400">{{ name }}</p>
-                    </a>
+                    </RouterLink>
                 </div>
                 <div class="">
                     <p>Цена {{ price }} .руб</p>
