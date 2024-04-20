@@ -11,6 +11,7 @@ export const useCartStore = defineStore('cartStore', () => {
 
     const cart = ref([]);
 
+    const summaryPrice = ref(0)
 
     const addCartItem = async (obj) => {
         const itemIsset = issetCartItem(obj.id)
@@ -47,24 +48,28 @@ export const useCartStore = defineStore('cartStore', () => {
     }
 
     const updateCartItemQuantity = async (id, quantity) => {
-        const obj = cart.value.find((obj) => obj.id === id)
 
-        obj.quantity = quantity
+        if (quantity !== 0) {
 
-        const index = cart.value.indexOf(obj)
+            const obj = cart.value.find((obj) => obj.id === id)
 
-        if (index !== -1) {
-            if (authStore.auth) {
-                try {
-                    const response = await axiosJwtApi.put(`${authStore.appDomain}${authStore.apiVersion}/cart/${id}`,{
-                        quantity: quantity
-                    })
+            obj.quantity = quantity
+
+            const index = cart.value.indexOf(obj)
+
+            if (index !== -1) {
+                if (authStore.auth) {
+                    try {
+                        const response = await axiosJwtApi.put(`${authStore.appDomain}${authStore.apiVersion}/cart/${id}`,{
+                            quantity: quantity
+                        })
+                        cart.value[index] = obj
+                    } catch (err) {
+                        console.log(err)
+                    }
+                } else {
                     cart.value[index] = obj
-                } catch (err) {
-                    console.log(err)
                 }
-            } else {
-                cart.value[index] = obj
             }
         }
     }
@@ -133,9 +138,23 @@ export const useCartStore = defineStore('cartStore', () => {
         }
     }
 
+    const calculateSummaryPrice = async () => {
+
+        if (cart.value.length !== 0) {
+            const priceArr = cart.value.map((itemObj) => {
+                return itemObj.quantity * itemObj.price
+            })
+
+            summaryPrice.value = priceArr.reduce((sum, price) => sum + price).toFixed(2);
+        }
+    }
 
 
-    watch(cart,  quantityCalculator, {deep: true})
+
+    watch(cart, async  () => {
+        quantityCalculator()
+        await calculateSummaryPrice()
+        }, {deep: true})
 
 
 
@@ -149,6 +168,8 @@ export const useCartStore = defineStore('cartStore', () => {
         getCart,
         quantityCalculator,
         cartSync,
+        calculateSummaryPrice,
+        summaryPrice,
     }
 
 

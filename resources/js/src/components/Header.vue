@@ -55,9 +55,9 @@
 import {useAuthStore} from "@/store/AuthStore.js";
 import {inject} from "vue";
 import SearchInput from "@/UI/SearchInput.vue";
-import CartButton from "@/components/CartButton.vue";
-import WishlistButton from "@/components/WishlistButton.vue";
-import ProfileButton from "@/components/ProfileButton.vue";
+import CartButton from "@/components/Cart/CartComponent.vue";
+import WishlistButton from "@/components/Wishlist/WishlistComponent.vue";
+import ProfileButton from "@/components/ProfileComponent.vue";
 
 const authStore = useAuthStore();
 
