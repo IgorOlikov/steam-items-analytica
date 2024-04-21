@@ -110,7 +110,7 @@ export const useCartStore = defineStore('cartStore', () => {
         }
     }
 
-     function quantityCalculator ()  {
+     function itemQuantityCalculator ()  {
 
         if (cart.value.length !== 0) {
             const quantityArr = cart.value.map((itemObj) => {
@@ -152,7 +152,7 @@ export const useCartStore = defineStore('cartStore', () => {
 
 
     watch(cart, async  () => {
-        quantityCalculator()
+        itemQuantityCalculator()
         await calculateSummaryPrice()
         }, {deep: true})
 
@@ -166,7 +166,7 @@ export const useCartStore = defineStore('cartStore', () => {
         updateCartItemQuantity,
         issetCartItem,
         getCart,
-        quantityCalculator,
+        itemQuantityCalculator,
         cartSync,
         calculateSummaryPrice,
         summaryPrice,

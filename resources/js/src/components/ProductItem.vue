@@ -13,7 +13,7 @@
                     <p>Цена {{ price }} .руб</p>
                     <button
                         v-if="!wishlistStore.issetWishlistItem(id)"
-                        @click="wishlistStore.addWishlistItem({ id: id, name: name, price: price, image: image, quantity: 1 })"
+                        @click="wishlistStore.addWishlistItem({ id: id, image: image, name: name, price: price, quantity: 1 })"
                         class="bg-red-400">
                         Добавить в желаемое
                     </button>
@@ -26,7 +26,7 @@
 
                     <button
                         v-if="!cartStore.issetCartItem(id)"
-                        @click="cartStore.addCartItem({ id: id, name: name, price: price, image: image, quantity: 1 })"
+                        @click="cartStore.addCartItem({ id: id, image: image, name: name, price: price, quantity: 1 })"
                         class="bg-lime-500">
                         Добавить в корзину
                     </button>

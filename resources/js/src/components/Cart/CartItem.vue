@@ -62,6 +62,8 @@ function incrementItemQuantity (id ,quantity) {
 
 function decrementItemQuantity(id, quantity) {
 
+    const initVal = quantity
+
     quantity--
 
     if (quantity <= 0 ) {
@@ -73,7 +75,9 @@ function decrementItemQuantity(id, quantity) {
         }
     }
 
-    cartStore.updateCartItemQuantity(id, quantity)
+    if (initVal !== quantity) {
+        cartStore.updateCartItemQuantity(id, quantity)
+    }
 }
 
 

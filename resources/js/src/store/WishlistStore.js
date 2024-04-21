@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 export const useWishlistStore = defineStore('wishlistStore', () => {
 
@@ -13,8 +13,8 @@ export const useWishlistStore = defineStore('wishlistStore', () => {
         if (!itemIsset) {
             wishlist.value.push(obj)
             wishlistCount.value = wishlistCount.value + 1
-            localStorage.setItem('wishList', JSON.stringify(wishlist.value))
-            localStorage.setItem('wishListCount', JSON.stringify(wishlistCount.value))
+            //localStorage.setItem('wishList', JSON.stringify(wishlist.value))
+            //localStorage.setItem('wishListCount', JSON.stringify(wishlistCount.value))
         }
     }
 
@@ -22,8 +22,8 @@ export const useWishlistStore = defineStore('wishlistStore', () => {
         const obj = wishlist.value.find((obj) => obj.id === id)
         wishlist.value.splice(wishlist.value.indexOf(obj),1)
         wishlistCount.value = wishlistCount.value - 1
-        localStorage.setItem('wishList', JSON.stringify(wishlist.value))
-        localStorage.setItem('wishListCount', JSON.stringify(wishlistCount.value))
+        //localStorage.setItem('wishList', JSON.stringify(wishlist.value))
+        //localStorage.setItem('wishListCount', JSON.stringify(wishlistCount.value))
     }
 
     const issetWishlistItem = (id) => {
@@ -33,6 +33,7 @@ export const useWishlistStore = defineStore('wishlistStore', () => {
     const getWishListFromLocalStorage = async () => {
         const wishListStorage = localStorage.getItem('wishList')
         const wishListCountStorage = localStorage.getItem('wishListCount')
+
         if (wishListStorage !== null) {
             wishlist.value = JSON.parse(wishListStorage)
         }
@@ -40,6 +41,23 @@ export const useWishlistStore = defineStore('wishlistStore', () => {
             wishlistCount.value = JSON.parse(wishListCountStorage)
         }
     }
+
+    function itemQuantityCalculator ()  {
+
+        if (wishlist.value.length !== 0) {
+            const quantityArr = wishlist.value.map((itemObj) => {
+                return itemObj.quantity
+            })
+            wishlistCount.value = quantityArr.reduce((sum, quantity) => sum + quantity);
+
+        } else {
+            wishlistCount.value = 0
+        }
+        localStorage.setItem('wishList', JSON.stringify(wishlist.value))
+        localStorage.setItem('wishListCount', JSON.stringify(wishlistCount.value))
+    }
+
+    watch(wishlist, itemQuantityCalculator, {deep: true})
 
 
     return {

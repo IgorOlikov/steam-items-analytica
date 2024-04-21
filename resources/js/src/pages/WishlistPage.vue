@@ -1,4 +1,7 @@
 <template>
+
+
+
     <WishlistList
         :wishlist="wishlistStore.wishlist"
     />
