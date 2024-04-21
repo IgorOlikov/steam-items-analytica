@@ -1,10 +1,15 @@
 <template>
-    <div class="px-80 py-4">
-        <div class="mx-auto px-64 mt-5">
-            <button
-                v-if="wishlistStore.wishlist.length !== 0"
-                @click="addWishlistToCart"
-                class="border-2 rounded-xl p-1 hover:bg-lime-400">Добавить В Корзину</button>
+    <div class="px-80 py-4 ">
+        <div class="flex flex-col items-center">
+            <div v-if="wishlistStore.wishlist.length !== 0">
+                <button
+                    @click="addWishlistToCart"
+                    class="border-2 rounded-xl p-1 bg-lime-200 hover:bg-lime-400">Добавить Товары В Корзину
+                </button>
+            </div>
+            <div v-else>
+                <h1>Список желаемого пуст...</h1>
+            </div>
         </div>
         <div class="flex flex-col gap-1 mt-4">
             <wishlist-item
@@ -35,8 +40,6 @@ const router = useRouter()
 defineProps({
     wishlist: Array,
 })
-
-
 
 
 const addWishlistToCart = async () => {

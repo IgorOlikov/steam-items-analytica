@@ -8,7 +8,11 @@
                 <h1>Товаров в корзине {{ cartStore.cartCount }} .шт</h1>
             </div>
             <div class="basis-1/4 ">
-                <button class="border-2 border-orange-600 rounded-xl h-full  bg-lime-200 hover:bg-lime-400"> Оформить</button>
+                <button
+
+                    class="border-2 border-orange-600 rounded-xl h-full  bg-lime-200 hover:bg-lime-400">
+                    Оформить
+                </button>
             </div>
         </div>
         <div v-else>

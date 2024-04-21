@@ -28,6 +28,13 @@
                         >
                             Уже в корзине
                         </button>
+                        <button
+                            v-else
+                            @click="cartStore.addCartItem({ id: id, image: image, name: name, price: price, quantity: 1 })"
+                            class="border-2 rounded-3xl bg-orange-400 mt-2 p-2"
+                        >
+                            Добавить в корзину
+                        </button>
                     </div>
                 </div>
             </div>
