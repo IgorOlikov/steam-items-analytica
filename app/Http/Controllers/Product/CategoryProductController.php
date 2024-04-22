@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Http\Filters\ProductFilter;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Image;
@@ -14,11 +15,24 @@ class CategoryProductController extends Controller
 {
     public function index(Request $request,Category $category)
     {
-        //$products = (new FilterService($category))->filter()->get(['products.*','values']);
-
+        /*
         $products  = $category->products();
 
-        $products = $products->with('image')->get();
+        $products = $products->with('image') // filter
+            //->offset(20)
+            ->get();
+            //->take(10); //offset
+        */
+
+        try {
+            $products = Product::filter()->get();
+
+        } catch (\Exception $e) {
+            //writeLog $E
+            return  response('Ничего не найдено',422);
+        }
+
+        //dd($products);
 
         return ProductResource::collection($products);
     }

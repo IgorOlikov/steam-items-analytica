@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Product extends Model
 {
-    use HasFactory,HasUuids;
+    use HasFactory,HasUuids, Filterable;
 
     protected $casts = [
         'price' => 'float',
@@ -81,9 +82,9 @@ class Product extends Model
         return  $query->where('values->type',$type);
     }
 
-    public function scopePriceBetween(Builder $query, $priceFrom,$priceTo): Builder
+    public function scopePriceBetween(Builder $query, $priceFrom, $priceTo): Builder
     {
-        return $query->whereBetween('price', [$priceFrom,$priceTo]);
+        return $query->whereBetween('price', [$priceFrom, $priceTo]);
     }
 
     public function scopeName(Builder $query, $name): Builder
