@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 class SmartphonesFilter extends AbstractFilter
 {
 
-
     public const SLUG = 'slug';
 
     public const CATEGORY_ID = 'category_id';

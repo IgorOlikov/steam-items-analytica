@@ -29,7 +29,6 @@ trait Filterable
         foreach ($filters as $filter){
 
             (new $filter())->apply($builder);
-
         }
 
         return $builder;

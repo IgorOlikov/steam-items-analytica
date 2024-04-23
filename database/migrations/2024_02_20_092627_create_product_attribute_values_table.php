@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('product_id')->constrained('products');
             $table->foreignUuid('attribute_id')->constrained('attributes');
-            $table->jsonb('values');
+            $table->jsonb('attributes');
             $table->timestamps();
         });
     }

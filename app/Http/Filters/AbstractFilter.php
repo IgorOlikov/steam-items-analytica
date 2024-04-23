@@ -25,14 +25,14 @@ abstract class AbstractFilter implements FilterInterface
 
                 if(str_contains($this->queryParams[$name],'-')) {
                     $paramsArr = explode('-',$this->queryParams[$name]);
+
                     call_user_func($callback, $builder, ...$paramsArr);
+                } else {
+                    call_user_func($callback, $builder, $this->queryParams[$name]);
                 }
-                call_user_func($callback, $builder, $this->queryParams[$name]);
             }
         }
     }
-
-
 
 
 
@@ -41,6 +41,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function before(Builder $builder)
     {
+        //
     }
 
     /**

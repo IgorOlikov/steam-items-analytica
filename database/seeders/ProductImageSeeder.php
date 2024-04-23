@@ -25,7 +25,7 @@ class ProductImageSeeder extends Seeder
         foreach ($products as $product) {
             $imageType = $imagesArray[$product['slug']]['type'];
 
-            $product->oldestImage()->create(['url' => config('app.url') . '/products/' . $product['slug'] . '.' . $imageType]);
+            $product->images()->create(['url' => config('app.url') . '/products/' . $product['slug'] . '.' . $imageType]);
         }
     }
 }

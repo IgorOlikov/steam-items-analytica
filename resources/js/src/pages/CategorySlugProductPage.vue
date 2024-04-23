@@ -4,7 +4,9 @@
     </div>
     <div class="flex space-x-4">
        <div class="flex-col min-h-screen w-2/6 border-r-2 border-t-2 rounded-tr-2xl">
-            <product-filter></product-filter>
+            <product-filter>
+
+            </product-filter>
        </div>
        <div class="flex-col w-full">
            <div class="border-b-2 border-l-2 border-t-2 h-10 mb-4 rounded-l-2xl">
@@ -42,7 +44,7 @@ async function fetchCatalog() {
 
     try {
         const {data} = await axios.get(`${appDomain}${apiVersion}/category/${categorySlug}/product`,{
-
+            params: { offset: 0, price: "" }
         })
         products.value = data
     } catch (err) {

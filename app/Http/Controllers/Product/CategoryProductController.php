@@ -13,28 +13,31 @@ use Illuminate\Http\Request;
 
 class CategoryProductController extends Controller
 {
+
+    private int $offset = 0;
+
     public function index(Request $request,Category $category)
     {
-        /*
-        $products  = $category->products();
+        $queryOffset = $request->query->get('offset');
 
-        $products = $products->with('image') // filter
-            //->offset(20)
-            ->get();
-            //->take(10); //offset
-        */
+        if (!is_null($queryOffset)) {
+            $this->offset = $queryOffset;
+        }
 
         try {
-            $products = Product::filter()->get();
+            $products = Product::where('category_id', $category->id)
+                ->with('image')
+                ->filter()
+                ->offset($this->offset)
+                ->take(10)
+                ->get();
 
         } catch (\Exception $e) {
             //writeLog $E
-            return  response('Ничего не найдено',422);
+            return response('Ничего не найдено',422);
         }
 
-        //dd($products);
-
-        return ProductResource::collection($products);
+       return ProductResource::collection($products);
     }
 
     public function store(Request $request)
