@@ -24,7 +24,7 @@ class CategoryProductController extends Controller
             $this->offset = $queryOffset;
         }
 
-        try {
+        //try {
             $products = Product::where('category_id', $category->id)
                 ->with('image')
                 ->filter()
@@ -32,10 +32,10 @@ class CategoryProductController extends Controller
                 ->take(10)
                 ->get();
 
-        } catch (\Exception $e) {
-            //writeLog $E
-            return response('Ничего не найдено',422);
-        }
+        //} catch (\Exception $e) {
+        //    //writeLog $E
+        //    return response($e,422);
+        //}
 
        return ProductResource::collection($products);
     }

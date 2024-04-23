@@ -32,7 +32,7 @@ class Product extends Model
     protected $table = 'products';
 
 
-    public function attributeValue(): HasOne
+    public function attributes(): HasOne
     {
         return $this->hasOne(AttributeValue::class, 'product_id','id');
     }

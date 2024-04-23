@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
             ProductsSeeder::class,
             CategoryImageSeeder::class,
             ProductImageSeeder::class,
+            AttributesSeeder::class,
         ]);
 
 
-        //dd(Str::slug('ПК и ноутбуки фывйцуйц йцуйцуф фвфв'));
 
 
         //User::factory()->create();

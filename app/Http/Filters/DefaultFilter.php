@@ -21,19 +21,19 @@ class DefaultFilter extends AbstractFilter
         ];
     }
 
-    public function price(Builder $builder, $priceFrom, $priceTo)
+    public function price(Builder $builder, $value): Builder
     {
-        $builder->whereBetween('price', [$priceFrom, $priceTo]);
+        return $builder->whereBetween('price', $value);
     }
 
-    public function name(Builder $builder, $name)
+    public function name(Builder $builder, $value): Builder
     {
-        $builder->where('name','like', "%$name%");
+        return $builder->where('name','like', "%{$value[0]}%");
     }
 
-    public function brand(Builder $builder, $brand) // many brands params ? whereIn?
+    public function brand(Builder $builder, $value): Builder
     {
-        $builder->where('props->brand', $brand);
+       return $builder->whereIn('attributes->brand', $value);
     }
 
 }

@@ -15,18 +15,17 @@ class DefaultSortFilter extends AbstractFilter
         return [
             self::SORT_BY_PRICE => [$this, 'sortByPrice'],
             self::SORT_BY_NAME => [$this, 'sortByName'],
-
         ];
     }
 
-    public function sortByPrice(Builder $builder, $direction)
+    public function sortByPrice(Builder $builder, $value): Builder
     {
-        $builder->orderBy('price', $direction);
+        return $builder->orderBy('price', $value[0]);
     }
 
-    public function sortByName(Builder $builder, $direction)
+    public function sortByName(Builder $builder, $value): Builder
     {
-        $builder->orderBy('name', $direction);
+        return $builder->orderBy('name', $value[0]);
     }
 
 
