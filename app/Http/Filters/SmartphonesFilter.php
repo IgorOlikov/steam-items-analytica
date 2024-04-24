@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 // 'screenDiagonal' => 6.0,
 // 'screenResolution' => '1920x1080',
 // 'os' => 'ios',
-// 'memory' => 8,
+// 'memory' => 8,/
 // 'cores' => 4,
 
 class SmartphonesFilter extends AbstractFilter
