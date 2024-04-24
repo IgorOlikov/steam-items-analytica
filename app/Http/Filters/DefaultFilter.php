@@ -2,6 +2,8 @@
 
 namespace App\Http\Filters;
 
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use Illuminate\Database\Eloquent\Builder;
 
 class DefaultFilter extends AbstractFilter
@@ -33,7 +35,9 @@ class DefaultFilter extends AbstractFilter
 
     public function brand(Builder $builder, $value): Builder
     {
-       return $builder->whereIn('attributes->brand', $value);
+       return $builder->whereHas('attributes', function ($query) use ($value) {
+                $query->whereIn('attributes->brand', $value);
+        });
     }
 
 }

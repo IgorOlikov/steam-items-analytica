@@ -26,7 +26,7 @@ class CategoryProductController extends Controller
 
         //try {
             $products = Product::where('category_id', $category->id)
-                ->with('image')
+                ->with(['image'])
                 ->filter()
                 ->offset($this->offset)
                 ->take(10)
@@ -36,6 +36,8 @@ class CategoryProductController extends Controller
         //    //writeLog $E
         //    return response($e,422);
         //}
+
+        //return response($products);
 
        return ProductResource::collection($products);
     }

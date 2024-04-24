@@ -5,16 +5,15 @@ namespace App\Http\Filters;
 use Illuminate\Database\Eloquent\Builder;
 
 
-//'brand' => 'apple',
-//            'screenDiagonal' => 6.0,
-//            'screenResolution' => '1920x1080',
-//            'os' => 'ios',
-//            'memory' => 8,
-//            'cores' => 4,
+// 'brand' => 'apple',
+// 'screenDiagonal' => 6.0,
+// 'screenResolution' => '1920x1080',
+// 'os' => 'ios',
+// 'memory' => 8,
+// 'cores' => 4,
 
 class SmartphonesFilter extends AbstractFilter
 {
-
     public const SCREEN_DIAGONAL = 'screenDiagonal';
 
     public const SCREEN_RESOLUTION = 'screenResolution';
@@ -24,8 +23,6 @@ class SmartphonesFilter extends AbstractFilter
     public const MEMORY = 'memory';
 
     public const CORES = 'cores';
-
-
 
     protected function getCallbacks(): array
     {
@@ -40,25 +37,37 @@ class SmartphonesFilter extends AbstractFilter
 
     public function screenDiagonal(Builder $builder, $value): Builder
     {
-        return $builder->whereIn('attributes->screenDiagonal', $value);
+        return $builder->whereHas('attributes', function ($query) use ($value) {
+            $query->whereIn('attributes->screenDiagonal', $value);
+        });
     }
+
     public function screenResolution(Builder $builder, $value): Builder
     {
-        return $builder->whereIn('attributes->screenResolution', $value);
+        return $builder->whereHas('attributes', function ($query) use ($value) {
+            $query->whereIn('attributes->screenResolution', $value);
+        });
     }
+
     public function os(Builder $builder, $value): Builder
     {
-        return $builder->whereIn('attributes->os', $value);
+    return $builder->whereHas('attributes', function ($query) use ($value) {
+             $query->whereIn('attributes->os', $value);
+        });
     }
 
     public function memory(Builder $builder, $value): Builder
     {
-        return $builder->whereIn('attributes->memory', $value);
+        return $builder->whereHas('attributes', function ($query) use ($value) {
+            $query->whereIn('attributes->memory', $value);
+        });
     }
 
     public function cores(Builder $builder, $value): Builder
     {
-        return $builder->whereIn('attributes->os', $value);
+        return $builder->whereHas('attributes', function ($query) use ($value) {
+            return $query->whereIn('attributes->os', $value);
+        });
     }
 
 
