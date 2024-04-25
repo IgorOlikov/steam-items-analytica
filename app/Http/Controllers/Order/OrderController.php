@@ -9,12 +9,15 @@ use App\Models\OrderLine;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::all();
+        $user = auth()->user();
+
+        $orders = $user->orders()->get();
 
         return response($orders,200);
     }
@@ -33,45 +36,60 @@ class OrderController extends Controller
 
         $amount = array_sum($amount);
 
-        $newOrder = Order::create([
-             'user_id' => $user->id,
-             'amount' => $amount,
-             ]);
+        DB::beginTransaction();
 
-        $cartItemsArray = $cartItems->toArray();
+        try {
+            $newOrder = Order::create([
+                'user_id' => $user->id,
+                'amount' => $amount,
+            ]);
 
-        $timeStamp = Carbon::now();
+            $cartItemsArray = $cartItems->toArray();
 
-        $orderId = $newOrder->id;
+            $orderLines = array_map(function ($cartItem) use ($newOrder) {
+                unset($cartItem['price']);
+                return $cartItem;
+            }, $cartItemsArray);
 
-        $orderLines = array_map(function ($item) use ($newOrder, $timeStamp, $orderId) {
-            unset($item['price']);
-            $item['order_id'] = $orderId;
-            $item['id'] = Uuid::uuid();
-            $item['created_at'] = $timeStamp;
-            $item['updated_at'] = $timeStamp;
+            $newOrder->orderLines()->createMany($orderLines);
 
-            return $item;
-        }, $cartItemsArray);
+        } catch (\Exception $e) {
+            //log write error
+            DB::rollBack();
 
-        OrderLine::insert($orderLines);
+            return response($e,422);
+        }
 
-        CartItem::where('cart_id','=', $cart->id)->delete();
+        //send order to payment service
 
         //redirect to payment
-        return response($newOrder, 201);
+
+        DB::commit();
+
+        //empty cart
+        CartItem::where('cart_id', '=', $cart->id)->delete();
+
+        return response($newOrder, 201)->redirectTo('/');
     }
 
     public function show(Order $order)
     {
+        if ($order->user_id !== auth()->user()->id) {
+            return response('Пользователь не имеет доступ',403);
+        }
+
         $order = $order->with('orderLines')->get();
 
         return response($order);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Order $order)
     {
-        //
+        if (auth()->user()->role_id !== 1) {
+            return response('Пользователь не имеет доступ',403);
+        }
+
+
     }
 
     public function destroy(string $id)

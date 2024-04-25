@@ -9,7 +9,7 @@
             </div>
             <div class="basis-1/4 ">
                 <button
-
+                    @click="sendCheckout"
                     class="border-2 border-orange-600 rounded-xl h-full  bg-lime-200 hover:bg-lime-400">
                     Оформить
                 </button>
@@ -36,6 +36,7 @@
 import CartItem from "@/components/Cart/CartItem.vue";
 import {useCartStore} from "@/store/CartStore.js";
 import {ref, watch} from "vue";
+import axiosJwtApi from "@/Axios/Api.js";
 
 const cartStore = useCartStore()
 
@@ -44,6 +45,18 @@ defineProps({
     cart: Array
 })
 
+
+const sendCheckout = async () => {
+    try {
+        const res = axiosJwtApi.post(`http://localhost/api/v1/order`);
+
+        cartStore.cart = []
+        //redirect then
+    } catch (err) {
+        console.log(err)
+    }
+
+}
 
 
 

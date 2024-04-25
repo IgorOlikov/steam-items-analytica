@@ -55,8 +55,6 @@ class Product extends Model
     {
         //return $builder->orderBy('created_at','asc')->limit(1);
         return $builder->join('images','products.id','=','images.imageable_id');
-
-
     }
 
 
