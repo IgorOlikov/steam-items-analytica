@@ -34,17 +34,22 @@ import {useAuthStore} from "@/store/AuthStore.js";
 
 const products = ref([])
 
+const offset = ref(0)
+
 const filter = reactive({})
 
 const { appDomain, apiVersion} = useAuthStore()
 const route = useRoute();
 const categorySlug = route.params.categorySlug;
 
+
+
+
 async function fetchCatalog() {
 
     try {
         const {data} = await axios.get(`${appDomain}${apiVersion}/category/${categorySlug}/product`,{
-            params: { offset: 0, price: "" }
+            params: { offset: offset.value, price: '' }
         })
         products.value = data
     } catch (err) {

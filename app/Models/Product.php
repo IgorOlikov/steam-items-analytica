@@ -72,31 +72,4 @@ class Product extends Model
     }
 
 
-    public function scopeBrand(Builder $query, $brand): Builder
-    {
-        return  $query->where('values->brand',$brand);
-    }
-
-    public function scopeType(Builder $query, $type): Builder
-    {
-        return  $query->where('values->type',$type);
-    }
-
-    public function scopePriceBetween(Builder $query, $priceFrom, $priceTo): Builder
-    {
-        return $query->whereBetween('price', [$priceFrom, $priceTo]);
-    }
-
-    public function scopeName(Builder $query, $name): Builder
-    {
-        return $query->where('name','like', "%$name%");
-    }
-
-    public function scopeCores(Builder $query, $cores): Builder
-    {
-        return $query->whereBetween('values->cores', $cores);
-    }
-
-
-
 }

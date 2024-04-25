@@ -9,26 +9,24 @@ use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 
 class CategoryProductController extends Controller
 {
 
-    private int $offset = 0;
+
 
     public function index(Request $request,Category $category)
     {
-        $queryOffset = $request->query->get('offset');
 
-        if (!is_null($queryOffset)) {
-            $this->offset = $queryOffset;
-        }
 
+        //cursor paginate?
         //try {
             $products = Product::where('category_id', $category->id)
                 ->with(['image'])
                 ->filter()
-                ->offset($this->offset)
+                ->offset($request->offset ?? 0)
                 ->take(10)
                 ->get();
 
