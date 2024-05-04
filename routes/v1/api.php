@@ -57,8 +57,18 @@ Route::middleware(['auth:api','jwt.verified','access.token.only'])->group(functi
     Route::apiResource('cart', CartController::class);
     Route::post('cart-sync', [CartController::class, 'packetStore']);
 
-    Route::apiResource('order', OrderController::class);
 });
+
+
+/* Order */
+Route::middleware(['auth:api','jwt.verified','access.token.only'])->group(function () {
+    Route::apiResource('order', OrderController::class);
+
+});
+
+Route::post('order-webhook', [OrderController::class, 'orderWebhook']);
+
+
 
 /* Admin */
 Route::apiResource('admin', AdminController::class)

@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderLine;
 use Faker\Provider\Uuid;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,7 @@ class OrderController extends Controller
         $cartItems = $cart->cartItemsWithPrice()->get(['product_id', 'quantity', 'price']);
 
         foreach($cartItems as $item) {
-            $amount[] =  $item['quantity'] * $item['price'];
+            $amount[] = $item['quantity'] * $item['price'];
         }
 
         $amount = array_sum($amount);
@@ -39,6 +40,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
+
             $newOrder = Order::create([
                 'user_id' => $user->id,
                 'amount' => $amount,
@@ -53,6 +55,11 @@ class OrderController extends Controller
 
             $newOrder->orderLines()->createMany($orderLines);
 
+            //send order to payment service
+            //$client = new Client();
+            //$response = $client->request('');
+
+
         } catch (\Exception $e) {
             //log write error
             DB::rollBack();
@@ -60,7 +67,7 @@ class OrderController extends Controller
             return response($e,422);
         }
 
-        //send order to payment service
+        //send order to payment service?
 
         //redirect to payment
 
@@ -69,7 +76,22 @@ class OrderController extends Controller
         //empty cart
         CartItem::where('cart_id', '=', $cart->id)->delete();
 
+
+        //
+        //    $merchant_id = '7012';
+        //    $secret_word = 'secret';
+        //    $order_id = '154';
+        //    $order_amount = '100.11';
+        //    $currency = 'RUB';
+        //    $sign = md5($merchant_id.':'.$order_amount.':'.$secret_word.':'.$currency.':'.$order_id);
+        //
+
         return response($newOrder, 201)->redirectTo('/');
+    }
+
+    public function orderWebhook(Request $request)
+    {
+        //check sign
     }
 
     public function show(Order $order)
@@ -88,8 +110,7 @@ class OrderController extends Controller
         if (auth()->user()->role_id !== 1) {
             return response('Пользователь не имеет доступ',403);
         }
-
-
+        return response('lol?');
     }
 
     public function destroy(string $id)

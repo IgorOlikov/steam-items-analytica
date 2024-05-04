@@ -12,13 +12,6 @@ services:
       depends_on:
         - postgresql
 
-        #DB_CONNECTION=pgsql
-          #DB_HOST=postgresql
-          #DB_PORT=5432
-          #DB_DATABASE=app
-          #DB_USERNAME=app
-          #DB_PASSWORD=password
-
     php-fpm:
       build:
         context: docker
