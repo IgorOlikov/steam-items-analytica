@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Contracts\Payment;
 use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+
+    public function __construct(private readonly Payment $payment)
+    {
+    }
+
     public function index()
     {
         $user = auth()->user();
@@ -55,10 +61,6 @@ class OrderController extends Controller
 
             $newOrder->orderLines()->createMany($orderLines);
 
-            //send order to payment service
-            //$client = new Client();
-            //$response = $client->request('');
-
 
         } catch (\Exception $e) {
             //log write error
@@ -67,31 +69,23 @@ class OrderController extends Controller
             return response($e,422);
         }
 
-        //send order to payment service?
-
-        //redirect to payment
-
         DB::commit();
 
         //empty cart
         CartItem::where('cart_id', '=', $cart->id)->delete();
 
+        $paymentLink = $this->payment->generatePaymentLink($amount, $newOrder->id);
 
-        //
-        //    $merchant_id = '7012';
-        //    $secret_word = 'secret';
-        //    $order_id = '154';
-        //    $order_amount = '100.11';
-        //    $currency = 'RUB';
-        //    $sign = md5($merchant_id.':'.$order_amount.':'.$secret_word.':'.$currency.':'.$order_id);
-        //
-
-        return response($newOrder, 201)->redirectTo('/');
+        return redirect($paymentLink);
     }
 
     public function orderWebhook(Request $request)
     {
-        //check sign
+        // validate signature/amount
+        // update order status
+        // mail notification - заказ оплачен
+
+        dd($request);
     }
 
     public function show(Order $order)

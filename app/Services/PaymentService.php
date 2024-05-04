@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class PaymentService
+use App\Contracts\Payment;
+
+class PaymentService implements Payment
 {
     //const CURRENCY = 'RUB';
     //const PAYMENT_SYSTEM_DOMAIN = 'https://pay.freekassa.ru/';
