@@ -4,19 +4,20 @@ namespace App\Http\Controllers\Order;
 
 use App\Contracts\Payment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderWebhookRequest;
+use App\Jobs\OrderPaidNotification;
 use App\Models\CartItem;
 use App\Models\Order;
-use App\Models\OrderLine;
-use Faker\Provider\Uuid;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
 
-    public function __construct(private readonly Payment $payment)
+    public function __construct(
+        private readonly Payment $payment
+    )
     {
     }
 
@@ -71,7 +72,6 @@ class OrderController extends Controller
 
         DB::commit();
 
-        //empty cart
         CartItem::where('cart_id', '=', $cart->id)->delete();
 
         $paymentLink = $this->payment->generatePaymentLink($amount, $newOrder->id);
@@ -79,13 +79,24 @@ class OrderController extends Controller
         return redirect($paymentLink);
     }
 
-    public function orderWebhook(Request $request)
+    public function orderWebhook(OrderWebhookRequest $request)
     {
-        // validate signature/amount
-        // update order status
-        // mail notification - заказ оплачен
+        $sign = $this->payment->generatePaymentLink($request->validated('AMOUNT'), $request->validated('MERCHANT_ORDER_ID'));
 
-        dd($request);
+        if ($sign != $request->validated('SIGN')) {
+            return response('Подпись не действительна !', 422);
+        }
+
+        $order = Order::where('id', $request->validated('MERCHANT_ORDER_ID'))->first();
+
+        $user = $order->user();
+
+        $updatedOrder = $order->update(['order_status_id' => 2]);
+
+        //JOB mail notification - заказ оплачен
+        OrderPaidNotification::dispatch($user, $updatedOrder);
+
+        return response('YES',200);
     }
 
     public function show(Order $order)
