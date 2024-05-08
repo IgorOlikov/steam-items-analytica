@@ -43,6 +43,7 @@ Route::apiResource('category.product', CategoryProductController::class)
 Route::apiResource('category.filter', CategoryFilterController::class);
 Route::apiResource('filter', FilterController::class);
 
+
 /* Profile */
 Route::middleware([
         'auth:api',

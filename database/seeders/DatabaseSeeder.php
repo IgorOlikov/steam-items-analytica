@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CategoryImageSeeder::class,
             ProductImageSeeder::class,
             AttributesSeeder::class,
+            CategoryFilterSeeder::class
         ]);
 
 

@@ -19,7 +19,7 @@ class CategoryProductController extends Controller
 
     public function index(Request $request,Category $category)
     {
-
+        //dd($request->query);
 
         //cursor paginate?
         //try {

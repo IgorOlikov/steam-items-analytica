@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Filter;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Filter;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,9 @@ class FilterController extends Controller
      */
     public function index()
     {
-       $filters = Filter::all();
+        $filters = Filter::all();
 
-       return response($filters);
+        return response($filters);
     }
 
     /**
@@ -25,20 +26,24 @@ class FilterController extends Controller
     {
         //dd(json_encode($request->input('filters')));
 
-       $filter = Filter::create([
-           'category_id' => $request->input('category_id'),
-           'filters' => json_encode($request->input('filters'))
-       ]);
+         $filter = Filter::create([
+             'category_id' => $request->input('category_id'),
+             'filters' => json_encode($request->input('filters'))
+         ]);
 
-       return response($filter,201);
+         return response($filter,201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $string)
     {
-        //
+        $category = Category::where('slug','=', $string)->first();
+
+        $filter = $category->productFilter()->pluck('filters')[0];
+
+        return response(json_decode($filter,true));
     }
 
     /**

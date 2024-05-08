@@ -17,7 +17,10 @@ class OrderPaidNotification implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly User $user,
+        private readonly Order $order
+    )
     {
         //
     }
@@ -25,7 +28,7 @@ class OrderPaidNotification implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(User $user, Order $order): void
+    public function handle(): void
     {
         //
     }

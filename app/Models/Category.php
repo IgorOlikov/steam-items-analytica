@@ -62,5 +62,10 @@ class Category extends Model
         return $this->hasOne(Attribute::class, 'category_id',  'id');
     }
 
+    public function productFilter(): HasOne
+    {
+        return $this->hasOne(Filter::class, 'category_id', 'id');
+    }
+
 
 }
