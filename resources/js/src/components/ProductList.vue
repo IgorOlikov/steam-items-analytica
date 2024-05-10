@@ -12,6 +12,7 @@
         :image="product.image"
     />
     </div>
+
 </template>
 
 <script setup>

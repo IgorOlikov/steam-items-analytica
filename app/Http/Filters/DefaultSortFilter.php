@@ -20,12 +20,14 @@ class DefaultSortFilter extends AbstractFilter
 
     public function sortByPrice(Builder $builder, $value): Builder
     {
-        return $builder->orderBy('price', $value[0]); // asc-desc
+
+
+        return $builder->orderBy('price', $value); // asc-desc
     }
 
     public function sortByName(Builder $builder, $value): Builder
     {
-        return $builder->orderBy('name', $value[0]);
+        return $builder->orderBy('name', $value);
     }
 
 

@@ -39,12 +39,12 @@ axiosJwtApi.interceptors.response.use((response) => {
                authStore.userInfo.value = response.data.user
                authStore.expiresIn.value = response.data.expires_in
            } catch (err) {
-               originalRequest._retry = false  // refresh with error -> logout
+               originalRequest._retry = true  // refresh with error -> logout
 
 
            }
        } else {
-           originalRequest._retry = false; // not 401 status
+           originalRequest._retry = true; // not 401 status
        }
 
         return axiosJwtApi(originalRequest);

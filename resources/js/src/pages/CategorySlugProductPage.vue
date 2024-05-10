@@ -26,14 +26,33 @@
        </div>
        <div class="flex-col w-full">
            <div class="border-b-2 border-l-2 border-t-2 h-10 mb-4 rounded-l-2xl">
-                <h1>sort</h1>
+
+               <div class="flex flex-row m-1 mr-10 pl-14">
+                   <div>
+                       <h1>Сортировка: </h1>
+                   </div>
+                   <div>
+                       <select @change="selectSort($event)" v-model="selected">
+                            <option disabled value="">Выбрать фильтр</option>
+                            <option value="1">Сначала недорогие</option>
+                            <option value="2">Сначала дорогие</option>
+                            <option value="3">По имени убыванию</option>
+                            <option value="4">По имени возрастанию</option>
+                        </select>
+                   </div>
+               </div>
+
+
            </div>
-           <div class="mb-10">
+           <div ref="scrollPoint" class="mb-10">
             <product-list
                 :products="products"
 
-            ></product-list>
+            />
            </div>
+
+           <div >scroll point</div>
+
        </div>
    </div>
 
@@ -41,12 +60,18 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref , provide} from "vue";
+import {onMounted, reactive, ref, provide, onUnmounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import axios from "axios";
 import ProductList from "@/components/ProductList.vue";
 import ProductFilter from "@/components/Filter/ProductFilter.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
+
+
+
+const scrollPoint = ref(null)
+
+const selected = ref('')
 
 const products = ref([])
 
@@ -56,7 +81,7 @@ const filter = ref([])
 
 const filterParams = reactive({})
 
-const { appDomain, apiVersion} = useAuthStore()
+const { appDomain, apiVersion } = useAuthStore()
 const route = useRoute();
 const router = useRouter();
 const categorySlug = route.params.categorySlug;
@@ -68,10 +93,16 @@ async function fetchProducts() {
 
     try {
         const {data} = await axios.get(`${appDomain}${apiVersion}/category/${categorySlug}/product`,{
+
         params: filterParams
+
         })
 
-        products.value = data
+        if (offset.value !== 0 ) {
+            products.value.push(...data)
+        } else {
+            products.value = data
+        }
     } catch (err) {
         console.log(err)
     }
@@ -97,18 +128,62 @@ async function emptyFilter() {
     router.go(0)
 }
 
+async function selectSort(event) {
 
 
-// sort
-// offset
-//category filters
+    offset.value = 0
+    filterParams['offset'] = offset.value
+    filterParams['sortByName'] = ''
+    filterParams['sortByPrice'] = ''
+
+    switch (event.target.value) {
+
+        case "1":
+            filterParams['sortByPrice'] = 'asc'
+            break
+        case "2":
+            filterParams['sortByPrice'] = 'desc'
+            break
+        case "3":
+            filterParams['sortByName'] = 'desc'
+            break
+        case "4":
+            filterParams['sortByName'] = 'asc'
+            break
+    }
+
+    await fetchProducts()
+}
+
+async function loadMoreProducts() {
+    offset.value = offset.value + 10
+
+    filterParams['offset'] = offset.value
+
+    await fetchProducts()
+}
+
+const handeScroll = () => {
+    let element = scrollPoint.value
+    if (element.getBoundingClientRect().bottom < window.innerHeight) {
+        loadMoreProducts()
+    }
+}
 
 
 onMounted(async () => {
     await fetchProducts()
     await fetchFilter()
+    window.addEventListener("scroll", handeScroll)
 
 });
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", handeScroll)
+})
+
+
+
 
 
 
