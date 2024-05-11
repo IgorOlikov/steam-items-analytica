@@ -50,14 +50,44 @@ services:
       ports:
         - "5432:5432"
 
+
+    scheduler:
+        build:
+            context: docker
+            dockerfile: development/scheduler/Dockerfile
+        volumes:
+            - ./:/app
+        environment:
+            POSTGRES_HOST: postgresql
+            POSTGRES_USER: app
+            POSTGRES_DB: app
+            POSTGRES_PASSWORD: password
+        depends_on:
+            - php-fpm
+
+    worker:
+        build:
+            context: docker
+            dockerfile: development/worker/Dockerfile
+        volumes:
+            - ./:/app
+        environment:
+            POSTGRES_HOST: postgresql
+            POSTGRES_USER: app
+            POSTGRES_DB: app
+            POSTGRES_PASSWORD: password
+
+
+
+
     node:
-      build:
-        context: docker
-        dockerfile: development/node/Dockerfile
-      volumes:
-        - ./:/app
-      ports:
-        - "5173:5173"
+        build:
+            context: docker
+            dockerfile: development/node/Dockerfile
+        volumes:
+            - ./:/app
+        ports:
+            - "5173:5173"
 
 
 

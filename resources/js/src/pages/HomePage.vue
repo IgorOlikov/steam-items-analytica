@@ -1,24 +1,24 @@
 <template>
     <div class="grid grid-cols-4 gap-5 px-24 py-20 min-h-max">
 
-        <div class="border-2 ">
+        <div class="border-2 rounded-xl">
             <RouterLink :to="{ name: 'catalog'}">
-                <div class="p-5">
-                    <div class="h-10 ">
+                <div class="flex flex-col p-5">
+                    <div class="basis-1/3">
                         <h1>Каталог</h1>
                     </div>
-                    <div>
+                    <div class="mt-10 basis-1/3">
                         <h1>Большой выбор товаров</h1>
                     </div>
-                    <div>
-                       <img height="1" :src="`${authStore.appDomain}/shop/catalog.png`"/>
+                    <div class="mt-10 basis-1/3">
+                       <img  :src="`${authStore.appDomain}/shop/catalog.png`"/>
                     </div>
                 </div>
             </RouterLink>
         </div>
-        <div class="border-2 bg-red-400"></div>
-        <div class="border-2 "></div>
-        <div class="border-2 "></div>
+        <div class="border-2 rounded-xl"></div>
+        <div class="border-2 rounded-xl"></div>
+        <div class="border-2 rounded-xl"></div>
 
     </div>
 </template>

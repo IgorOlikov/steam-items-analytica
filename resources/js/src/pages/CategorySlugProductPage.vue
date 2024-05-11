@@ -10,7 +10,7 @@
 
             <button
                 @p.prevent
-                @click="fetchProducts"
+                @click="applyFilter"
                 class="border-2 rounded-xl p-2 bg-orange-400 hover:bg-lime-500"
             >
                 Применить фильтр
@@ -41,32 +41,24 @@
                         </select>
                    </div>
                </div>
-
-
            </div>
+
            <div ref="scrollPoint" class="mb-10">
-            <product-list
-                :products="products"
-
-            />
+                <product-list
+                    :products="products"
+                />
            </div>
-
-           <div >scroll point</div>
-
        </div>
    </div>
-
-
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, provide, onUnmounted} from "vue";
+import {onMounted, reactive, ref, provide, onUnmounted, defineAsyncComponent} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import axios from "axios";
 import ProductList from "@/components/ProductList.vue";
 import ProductFilter from "@/components/Filter/ProductFilter.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
-
 
 
 const scrollPoint = ref(null)
@@ -86,11 +78,9 @@ const route = useRoute();
 const router = useRouter();
 const categorySlug = route.params.categorySlug;
 
-
 provide('filter', filterParams)
 
 async function fetchProducts() {
-
     try {
         const {data} = await axios.get(`${appDomain}${apiVersion}/category/${categorySlug}/product`,{
 
@@ -124,12 +114,20 @@ async function fetchFilter() {
 }
 
 async function emptyFilter() {
-
     router.go(0)
 }
 
-async function selectSort(event) {
 
+async function applyFilter() {
+
+    offset.value = 0
+    filterParams['offset'] = offset.value
+
+
+    await fetchProducts()
+}
+
+async function selectSort(event) {
 
     offset.value = 0
     filterParams['offset'] = offset.value
@@ -151,7 +149,6 @@ async function selectSort(event) {
             filterParams['sortByName'] = 'asc'
             break
     }
-
     await fetchProducts()
 }
 
@@ -170,22 +167,15 @@ const handeScroll = () => {
     }
 }
 
-
 onMounted(async () => {
     await fetchProducts()
     await fetchFilter()
     window.addEventListener("scroll", handeScroll)
-
 });
 
 onUnmounted(() => {
     window.removeEventListener("scroll", handeScroll)
 })
-
-
-
-
-
 
 </script>
 
