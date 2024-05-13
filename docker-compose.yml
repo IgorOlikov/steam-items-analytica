@@ -23,6 +23,7 @@ services:
         POSTGRES_USER: app
         POSTGRES_DB: app
         POSTGRES_PASSWORD: password
+        #PHP_IDE_CONFIG: "serverName=Docker"
       depends_on:
         - nginx
 
