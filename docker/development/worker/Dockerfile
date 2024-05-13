@@ -16,7 +16,7 @@ COPY ./development/worker/conf/supervisord.conf /etc/supervisord.conf
 WORKDIR /app
 
 
-CMD [ "/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf" ]
+CMD [ "/usr/bin/supervisord","-n", "-c", "/etc/supervisord.conf" ]
 
 
 
