@@ -10,7 +10,11 @@ class AttributeValue extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['id','name','attributes','product_id','attribute_id'];
+    protected $casts = [
+      'attributes->screenDiagonal' => 'float'
+    ];
+
+    protected $fillable = ['id','product_id','attribute_id','attributes'];
 
     protected $table = 'attribute_values';
 }

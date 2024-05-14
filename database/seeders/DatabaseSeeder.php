@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             CategoriesSeeder::class,
+            AttributesSeeder::class,
             ProductsSeeder::class,
             CategoryImageSeeder::class,
             ProductImageSeeder::class,
-            AttributesSeeder::class,
             CategoryFilterSeeder::class
         ]);
 
