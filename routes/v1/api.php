@@ -64,11 +64,8 @@ Route::middleware(['auth:api','jwt.verified','access.token.only'])->group(functi
 /* Order */
 Route::middleware(['auth:api','jwt.verified','access.token.only'])->group(function () {
     Route::apiResource('order', OrderController::class);
-
 });
-
 Route::post('order-webhook', [OrderController::class, 'orderWebhook']);
-
 
 
 /* Admin */
@@ -79,9 +76,4 @@ Route::apiResource('admin', AdminController::class)
         'jwt.verified',
         'admin',
     ]);
-
-
-Route::get('about', function () {
-    return response('about',400);
-});
 

@@ -30,7 +30,7 @@ class DefaultFilter extends AbstractFilter
 
     public function name(Builder $builder, $value): Builder
     {
-        return $builder->where('name','like', "%{$value[0]}%");
+        return $builder->where('name','like', "%{$value}%");
     }
 
     public function brand(Builder $builder, $value): Builder

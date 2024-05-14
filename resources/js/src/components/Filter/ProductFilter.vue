@@ -1,4 +1,7 @@
 <template>
+    <default-filter
+
+    />
 
     <FilterItem
         v-for="item in filter"
@@ -15,6 +18,7 @@
 <script setup>
 
 import FilterItem from "@/components/Filter/FilterItem.vue";
+import DefaultFilter from "@/components/Filter/DefaultFilter.vue";
 
 defineProps({
     filter: Array

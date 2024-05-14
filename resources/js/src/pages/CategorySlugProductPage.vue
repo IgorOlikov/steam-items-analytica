@@ -4,7 +4,8 @@
     </div>
     <div class="flex space-x-4">
        <div class="flex-col min-h-screen w-2/6 border-r-2 border-t-2 rounded-tr-2xl">
-            <product-filter
+
+           <product-filter
                 :filter="filter"
             />
 
@@ -59,6 +60,7 @@ import axios from "axios";
 import ProductList from "@/components/ProductList.vue";
 import ProductFilter from "@/components/Filter/ProductFilter.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
+import DefaultFilter from "@/components/Filter/DefaultFilter.vue";
 
 
 const scrollPoint = ref(null)
@@ -71,7 +73,10 @@ const offset = ref(0)
 
 const filter = ref([])
 
-const filterParams = reactive({})
+const filterParams = reactive({
+    name: [],
+    price: []
+})
 
 const { appDomain, apiVersion } = useAuthStore()
 const route = useRoute();
@@ -122,7 +127,6 @@ async function applyFilter() {
 
     offset.value = 0
     filterParams['offset'] = offset.value
-
 
     await fetchProducts()
 }

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         //
       $users = [
           [
-              'id' => Uuid::uuid(),
+             //'id' => Uuid::uuid(),
             'name' => 'igoruser',
             'role_id' => 2,
             'email' => 'igoruser@mail.ru',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10),
          ],
          [
-             'id' => Uuid::uuid(),
+            // 'id' => Uuid::uuid(),
             'name' => 'igoradmin',
              'role_id' => 1,
             'email' => 'igoradmin@mail.ru',
@@ -38,11 +38,9 @@ class UserSeeder extends Seeder
          ]
       ];
 
-      foreach ($users as $user) {
-            User::create($user);
-      }
-
-      //User::insert($users);
+     foreach ($users as $user) {
+         User::create($user);
+     }
 
 
 
