@@ -2,13 +2,13 @@
 
     <div>
         <div>
-            <h1>Цена</h1>
-            <div>
+            <h1 class="border-b-2 ">Цена</h1>
+            <div class="my-2">
                 <label>От </label>
                 <input
                     class="border-2 rounded-xl"
                     @input="applyPriceFrom($event)"
-
+                    placeholder="0"
                     type="text">
 
             </div>
@@ -17,17 +17,19 @@
                 <input
                     class="border-2 rounded-xl"
                     @input="applyPriceTo($event)"
-
+                    placeholder="9999999999"
                     type="text">
 
             </div>
         </div>
         <div>
-            <h1> Имя</h1>
+            <h1 class="border-b-2 mt-2 mb-2">Имя</h1>
             <input
                 class="border-2 rounded-xl"
                 @input="applyName($event)"
-                type="text">
+                type="text"
+                placeholder="Имя товара..."
+                >
 
         </div>
     </div>

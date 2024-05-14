@@ -1,7 +1,7 @@
 <template>
 
 
-    <h1>{{ name }}</h1>
+    <h1 class="border-b-2  my-2">{{ name }}</h1>
     <checkbox-list
         :checkboxlist="filters"
         :filter="filter"

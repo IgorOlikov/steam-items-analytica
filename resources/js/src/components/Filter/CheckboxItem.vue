@@ -2,7 +2,7 @@
 
     <div>
         <input @change="addFilterToQuery(filterName, value)" :type="type" :name="value" :value="value" v-model="checked">
-        <label  :for="value">{{ name }}</label>
+        <label class="ml-2" :for="value">{{ name }}</label>
     </div>
 
 </template>

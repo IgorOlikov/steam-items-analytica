@@ -1,14 +1,17 @@
 <template>
-    <default-filter
 
-    />
+    <div class="border-b-2">
+        <default-filter
 
-    <FilterItem
-        v-for="item in filter"
-        :filter="item.filter"
-        :name="item.name"
-        :filters="item.filters"
-    />
+        />
+
+        <FilterItem
+            v-for="item in filter"
+            :filter="item.filter"
+            :name="item.name"
+            :filters="item.filters"
+        />
+    </div>
 
 
 

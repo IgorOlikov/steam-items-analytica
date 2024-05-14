@@ -3,23 +3,24 @@
 
     </div>
     <div class="flex space-x-4">
-       <div class="flex-col min-h-screen w-2/6 border-r-2 border-t-2 rounded-tr-2xl">
+       <div class="flex-col min-h-screen w-2/6 border-r-2 border-t-2 rounded-tr-2xl px-5 py-5">
 
            <product-filter
                 :filter="filter"
+
             />
 
             <button
                 @p.prevent
                 @click="applyFilter"
-                class="border-2 rounded-xl p-2 bg-orange-400 hover:bg-lime-500"
+                class="border-2 rounded-xl p-2 bg-orange-400 hover:bg-lime-500 mt-4 mx-10"
             >
                 Применить фильтр
             </button>
            <button
                @p.prevent
                @click="emptyFilter"
-               class="border-2 rounded-xl p-2 bg-red-300 hover:bg-red-500"
+               class="border-2 rounded-xl p-2 bg-red-300 hover:bg-red-500 mx-10"
            >
                Сбросить фильтр
            </button>
@@ -44,6 +45,20 @@
                </div>
            </div>
 
+           <div
+               v-if="productsEmpty"
+               class="mt-10"
+           >
+               <p>По вашему запросу ничего не найдено. Сбросте фильтр и попробуйте снова...</p>
+               <button
+                   @p.prevent
+                   @click="emptyFilter"
+                   class="border-2 rounded-xl p-2 bg-red-300 hover:bg-red-500 mx-80 mt-10"
+               >
+                   Сбросить фильтр
+               </button>
+           </div>
+
            <div ref="scrollPoint" class="mb-10">
                 <product-list
                     :products="products"
@@ -62,6 +77,7 @@ import ProductFilter from "@/components/Filter/ProductFilter.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
 import DefaultFilter from "@/components/Filter/DefaultFilter.vue";
 
+const productsEmpty = ref(false)
 
 const scrollPoint = ref(null)
 
@@ -98,6 +114,11 @@ async function fetchProducts() {
         } else {
             products.value = data
         }
+
+        if(products.value.length === 0) {
+            productsEmpty.value = true
+        }
+
     } catch (err) {
         console.log(err)
     }
