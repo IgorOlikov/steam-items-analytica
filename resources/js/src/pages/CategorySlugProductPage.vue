@@ -47,7 +47,7 @@
 
            <div
                v-if="productsEmpty"
-               class="mt-10"
+               class="mt-10 mb-[1000px]   "
            >
                <p>По вашему запросу ничего не найдено. Сбросте фильтр и попробуйте снова...</p>
                <button
@@ -58,11 +58,10 @@
                    Сбросить фильтр
                </button>
            </div>
-
-           <div ref="scrollPoint" class="mb-10">
                 <product-list
                     :products="products"
                 />
+           <div ref="obs" class="mt-5 h-4 ">
            </div>
        </div>
    </div>
@@ -79,7 +78,7 @@ import DefaultFilter from "@/components/Filter/DefaultFilter.vue";
 
 const productsEmpty = ref(false)
 
-const scrollPoint = ref(null)
+const obs = ref(null)
 
 const selected = ref('')
 
@@ -102,6 +101,7 @@ const categorySlug = route.params.categorySlug;
 provide('filter', filterParams)
 
 async function fetchProducts() {
+
     try {
         const {data} = await axios.get(`${appDomain}${apiVersion}/category/${categorySlug}/product`,{
 
@@ -146,6 +146,7 @@ async function emptyFilter() {
 
 async function applyFilter() {
 
+    productsEmpty.value = false
     offset.value = 0
     filterParams['offset'] = offset.value
 
@@ -185,21 +186,30 @@ async function loadMoreProducts() {
     await fetchProducts()
 }
 
-const handeScroll = () => {
-    let element = scrollPoint.value
-    if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        loadMoreProducts()
+const options = {
+    rootMargin: '0px',
+    threshold: 1.0
+}
+
+const callback = (entries, observer) => {
+    if (entries[0].isIntersecting) {
+        if (products.value.length !== 0) {
+            loadMoreProducts()
+        }
     }
 }
+
+const observer = new IntersectionObserver(callback, options);
 
 onMounted(async () => {
     await fetchProducts()
     await fetchFilter()
-    window.addEventListener("scroll", handeScroll)
+
+    observer.observe(obs.value)
 });
 
 onUnmounted(() => {
-    window.removeEventListener("scroll", handeScroll)
+
 })
 
 </script>

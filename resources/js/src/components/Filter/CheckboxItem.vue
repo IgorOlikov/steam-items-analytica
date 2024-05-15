@@ -1,8 +1,10 @@
 <template>
 
-    <div>
-        <input @change="addFilterToQuery(filterName, value)" :type="type" :name="value" :value="value" v-model="checked">
-        <label class="ml-2" :for="value">{{ name }}</label>
+    <div
+        @click="clickFilter(filterName, value)"
+        class="hover:bg-gray-200 cursor-pointer">
+        <input @change="addFilterToQuery(filterName, value)" :type="type" :name="value" :value="value" v-model="checked" class="cursor-pointer">
+        <label class="ml-2 cursor-pointer" :for="value">{{ name }}</label>
     </div>
 
 </template>
@@ -32,6 +34,12 @@ const addFilterToQuery = async (filterName, value) => {
             filter[filterName].splice(index, 1);
         }
     }
+}
+
+const clickFilter = async (filterName, value) => {
+    checked.value = !checked.value;
+
+    await addFilterToQuery(filterName, value)
 }
 
 

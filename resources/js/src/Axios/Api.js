@@ -1,5 +1,6 @@
 import axios from "axios";
 import {useAuthStore} from "@/store/AuthStore.js";
+import router from "@/router/router.js";
 
 
 const axiosJwtApi = axios.create()
@@ -19,6 +20,8 @@ axiosJwtApi.interceptors.response.use((response) => {
 }, async function (error){
 
     const authStore = useAuthStore();
+
+
     console.log(error)
 
     const originalRequest = error.config
@@ -40,11 +43,17 @@ axiosJwtApi.interceptors.response.use((response) => {
                authStore.expiresIn.value = response.data.expires_in
            } catch (err) {
                originalRequest._retry = true  // refresh with error -> logout
-
+               console.log('logout')
+               authStore.auth = false
+               localStorage.removeItem('token')
+               localStorage.removeItem('userInfo')
+               authStore.userInfo = {}
+               await router.push('/')
 
            }
        } else {
            originalRequest._retry = true; // not 401 status
+           console.log('error status not 401')
        }
 
         return axiosJwtApi(originalRequest);
