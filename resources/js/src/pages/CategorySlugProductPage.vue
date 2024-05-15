@@ -68,13 +68,13 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, provide, onUnmounted, defineAsyncComponent} from "vue";
+import {onMounted, reactive, ref, provide, onUnmounted, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import axios from "axios";
 import ProductList from "@/components/ProductList.vue";
 import ProductFilter from "@/components/Filter/ProductFilter.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
-import DefaultFilter from "@/components/Filter/DefaultFilter.vue";
+
 
 const productsEmpty = ref(false)
 
@@ -101,6 +101,7 @@ const categorySlug = route.params.categorySlug;
 provide('filter', filterParams)
 
 async function fetchProducts() {
+    productsEmpty.value = false
 
     try {
         const {data} = await axios.get(`${appDomain}${apiVersion}/category/${categorySlug}/product`,{
@@ -179,9 +180,16 @@ async function selectSort(event) {
 }
 
 async function loadMoreProducts() {
-    offset.value = offset.value + 10
 
-    filterParams['offset'] = offset.value
+    if (products.value.length > 9) {
+        offset.value = offset.value + 10
+
+        filterParams['offset'] = offset.value
+    } else {
+        offset.value = 0
+
+        filterParams['offset'] = offset.value
+    }
 
     await fetchProducts()
 }
@@ -208,9 +216,11 @@ onMounted(async () => {
     observer.observe(obs.value)
 });
 
-onUnmounted(() => {
+watch(filterParams, async () => {
+    await fetchProducts()
+}, { deep: true })
 
-})
+
 
 </script>
 
