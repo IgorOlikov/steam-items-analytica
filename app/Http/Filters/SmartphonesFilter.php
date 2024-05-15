@@ -60,7 +60,7 @@ class SmartphonesFilter extends AbstractFilter
     public function cores(Builder $builder, $value): Builder
     {
         return $builder->whereHas('attributes', function ($query) use ($value) {
-            return $query->whereIn('attributes->os', $value);
+            return $query->whereIn('attributes->cores', $value);
         });
     }
 

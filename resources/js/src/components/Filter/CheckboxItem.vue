@@ -1,10 +1,13 @@
 <template>
 
     <div
-        @click="clickFilter(filterName, value)"
+        @click.stop="clickFilter(filterName, value)"
         class="hover:bg-gray-200 cursor-pointer">
-        <input @change="addFilterToQuery(filterName, value)" :type="type" :name="value" :value="value" v-model="checked" class="cursor-pointer">
-        <label class="ml-2 cursor-pointer" :for="value">{{ name }}</label>
+        <input :type="type" :name="value" :value="value" v-model="checked" class="cursor-pointer">
+        <label
+            class="ml-2 cursor-pointer"
+
+            :for="value">{{ name }}</label>
     </div>
 
 </template>
