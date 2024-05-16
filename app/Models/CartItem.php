@@ -18,8 +18,8 @@ class CartItem extends Model
     protected $fillable = [
         'cart_id',
         'product_id',
-        //'price',
-        'quantity'];
+        'quantity'
+    ];
 
     protected $primaryKey = 'product_id';
     public $incrementing = false;

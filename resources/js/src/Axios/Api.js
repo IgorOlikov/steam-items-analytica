@@ -42,17 +42,18 @@ axiosJwtApi.interceptors.response.use((response) => {
                authStore.userInfo.value = response.data.user
                authStore.expiresIn.value = response.data.expires_in
            } catch (err) {
-               originalRequest._retry = true  // refresh with error -> logout
-               console.log('logout')
-               authStore.auth = false
-               localStorage.removeItem('token')
-               localStorage.removeItem('userInfo')
-               authStore.userInfo = {}
-               await router.push('/')
+               console.log('logout . refresh error')
+
+               originalRequest._retry = false  // refresh with error -> logout
+               //authStore.auth = false
+               //localStorage.removeItem('token')
+               //localStorage.removeItem('userInfo')
+               //authStore.userInfo = {}
+               //await router.push('/')
 
            }
        } else {
-           originalRequest._retry = true; // not 401 status
+           originalRequest._retry = false; // not 401 status - 200 - 300 -400 not 401!
            console.log('error status not 401')
        }
 

@@ -13,8 +13,14 @@ class Comment extends Model
     use HasFactory, HasUuids;
 
     protected $table = 'comments';
-    protected $fillable = ['id','user_id','parent_id','comment'];
+    protected $fillable = [
+        //'id',
+        //'user_id',
+        'parent_id',
+        'comment'
+    ];
 
+    protected $guarded = ['id', 'user_id'];
 
     public function commentable(): MorphTo
     {

@@ -39,6 +39,7 @@ onMounted(() => {
     wishlistStore.getWishListFromLocalStorage();
     cartStore.getCart();
 
+
 })
 
 

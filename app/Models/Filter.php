@@ -15,6 +15,7 @@ class Filter extends Model
 
     protected $fillable = ['id','category_id','filters'];
 
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class,'category_id','id');

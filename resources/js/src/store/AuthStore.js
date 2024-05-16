@@ -102,6 +102,7 @@ export const useAuthStore = defineStore('authStore', () => {
         const accessToken = localStorage.getItem('token')
         const userInfoStorage = localStorage.getItem('userInfo')
 
+
         if (accessToken && userInfoStorage) {
             userInfo.value = JSON.parse(userInfoStorage)
             auth.value = true

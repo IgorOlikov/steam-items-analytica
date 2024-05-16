@@ -26,6 +26,7 @@ defineProps({
 })
 
 const filter = inject('filter')
+const offset = inject('offset')
 
 const addFilterToQuery = async (filterName, value) => {
     if(checked.value) {
@@ -40,6 +41,13 @@ const addFilterToQuery = async (filterName, value) => {
 }
 
 const clickFilter = async (filterName, value) => {
+
+    offset.value = 0;
+
+    filter['offset'] = offset.value
+
+
+
     checked.value = !checked.value;
 
     await addFilterToQuery(filterName, value)

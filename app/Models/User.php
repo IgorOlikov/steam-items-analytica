@@ -31,8 +31,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
         'name',
         'email',
         'password',
-        'role_id',
+        //'role_id',
     ];
+
+    protected $guarded = ['id', 'role_id'];
 
     /**
      * The attributes that should be hidden for serialization.

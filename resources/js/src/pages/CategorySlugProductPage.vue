@@ -99,6 +99,8 @@ const router = useRouter();
 const categorySlug = route.params.categorySlug;
 
 provide('filter', filterParams)
+provide('offset', offset)
+
 
 async function fetchProducts() {
     productsEmpty.value = false
